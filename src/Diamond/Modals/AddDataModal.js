@@ -10,6 +10,7 @@ export default function AddDataModal(props) {
     const [date, setDate] = useState();
     const [patla,setPatla] = useState("")
     const [zada,setZada] = useState("")
+    console.log("🚀 ~ file: AddDataModal.js ~ line 13 ~ AddDataModal ~ zada", zada)
     const [extraZada,setExtraZada] = useState("")
     const [empList,setEmpList] = useState([])
     const [valid,isValid] = useState(false)
@@ -19,6 +20,15 @@ export default function AddDataModal(props) {
             console.log("Inside the get WorkerList",x.data.data)
         });
     }, [])
+
+    useEffect(()=>{
+        setEmpName("")
+        setProcess("")
+        setDate("")
+        setPatla("")
+        setZada("")
+        setExtraZada("")
+    },[props.show])
     
     const handleChange = () => {
         console.log("Data Submitted")
@@ -34,6 +44,7 @@ export default function AddDataModal(props) {
             // "dailywork":10,
             // "price":[2,2,3]
         }
+        console.log("🚀 ~ file: AddDataModal.js ~ line 37 ~ handleChange ~ params", params)
 
         addReport(params).then(
             notification["success"]({
@@ -104,9 +115,9 @@ export default function AddDataModal(props) {
                             Process Name:
                         </div>
                         <div className="col-6">
-                        <Input style={{ width: '100%', margin: "5px" }} disabled value={process} onChange={(e)=>setPatla(e.target.value)}/><br />
+                        {/* <Input style={{ width: '100%', margin: "5px" }} disabled value={process} onChange={(e)=>setPatla(e.target.value)}/><br /> */}
 
-                            {/* <Select
+                            <Select
                                 showSearch
                                 style={{ width: '100%', margin: "3px" }}
                                 placeholder="Select Process"
@@ -121,23 +132,41 @@ export default function AddDataModal(props) {
                                 <Option value="pel">Pel</Option>
                                 <Option value="mathala">Mathala</Option>
                                 <Option value="russian">Russian</Option>
-                            </Select> */}
+                            </Select>
                         </div>
                     </div>
                 </div>
+                <hr />
 
                 <div className="container">
                     <div className="row">
-                        <div className="col-2">
-                            Type:
+                        <div className="col-12">
+                          Diamond Quntity (size/type):
                         </div>
-                        <div className="col-10">    
+                        {/* <div className="col-8">    
                             <div style={{ fontSize: "12px" }}>
-                                Patla :<Input style={{ width: '50%', margin: "5px",marginLeft:"44px" }}  onChange={(e)=>setPatla(e.target.value)}/><br />
-                                Zada : <Input style={{ width: '50%', margin: "5px",marginLeft:"44px" }}  onChange={(e)=>setZada(e.target.value)}/><br />
-                                Extra-Zada : <Input style={{ width: '50%', margin: "5px" }}  onChange={(e)=>setExtraZada(e.target.value)} />
+                                Patla :<Input type='number' style={{ width: '50%', margin: "5px",marginLeft:"44px" }}  onChange={(e)=>setPatla(e.target.value)}/><br />
+                                Zada : <Input type='number' style={{ width: '50%', margin: "5px",marginLeft:"44px" }}  onChange={(e)=>setZada(e.target.value)}/><br />
+                                Extra-Zada : <Input  type='number' style={{ width: '50%', margin: "5px" }}  onChange={(e)=>setExtraZada(e.target.value)} />
                             </div>
-                        </div>
+                        </div> */}
+                    </div>
+                </div>
+<hr />
+                <div className="container">
+                           <div style={{ fontSize: "12px" }}>
+                           <div className='row '>   
+                           <div className='col-6'>  Patla : </div>
+                           <div className='col-6'><Input type='number' onChange={(e)=>setPatla(e.target.value)}/><br /></div>
+                           </div>   
+                           <div className='row mt-3'>
+                           <div className='col-6'>   Zada :</div>
+                           <div className='col-6'><Input type='number' onChange={(e)=>setZada(e.target.value)}/><br /></div>
+                           </div>  
+                           <div className='row mt-3'>
+                           <div className='col-6'>     Extra-Zada  :</div>
+                           <div className='col-6'><Input type='number' onChange={(e)=>setExtraZada(e.target.value)}/><br /></div>
+                           </div>  
                     </div>
                 </div>
 

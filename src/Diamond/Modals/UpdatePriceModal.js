@@ -15,8 +15,14 @@ export default function UpdatePriceModal(props) {
         console.log("Updatae")
     }, [extraZada])
 
+    useEffect(() => {
+        setPatla("")
+        setZada("")
+        setExtraZada("")
+        setProcess("")
+    }, [props.show])
+
     const handleChange = () => {
-        console.log("Data is :patla,zada and extraZada", patla, zada, extraZada, process)
 
         let params = [
             {
@@ -68,7 +74,7 @@ export default function UpdatePriceModal(props) {
                         <div className="col-8">
                             <Select
                                 showSearch
-                                style={{ width: '100%', margin: "3px" }}
+                                style={{ width: '100%' }}
                                 placeholder="Select Process"
                                 onChange={(value) => {
                                     setProcess(value)
@@ -97,33 +103,33 @@ export default function UpdatePriceModal(props) {
                         </div>
                     </div>
                 </div>
-                <div className="container">
+                <div className="container mt-3">
                     <div className="row">
                         <div className="col-4">
                             Patla:
                         </div>
                         <div className="col-8">
-                            <Input style={{ width: '50%', margin: "3px" }} value={patla} onChange={(e) => setPatla(e.target.value)} />
+                            <Input  value={patla} onChange={(e) => setPatla(e.target.value)} />
                         </div>
                     </div>
                 </div>
-                <div className="container">
+                <div className="container mt-3">
                     <div className="row">
                         <div className="col-4">
                             Zada:
                         </div>
                         <div className="col-8">
-                            <Input style={{ width: '50%', margin: "3px" }} value={zada} onChange={(e) => setZada(e.target.value)} />
+                            <Input value={zada} onChange={(e) => setZada(e.target.value)} />
                         </div>
                     </div>
                 </div>
-                <div className="container">
+                <div className="container mt-3">
                     <div className="row">
                         <div className="col-4">
                             Extra Zada:
                         </div>
                         <div className="col-8">
-                            <Input style={{ width: '50%', margin: "3px" }} value={extraZada} onChange={(e) => setExtraZada(e.target.value)} />
+                            <Input  value={extraZada} onChange={(e) => setExtraZada(e.target.value)} />
                         </div>
                     </div>
                 </div>

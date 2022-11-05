@@ -1,5 +1,5 @@
 import { Button, DatePicker, Input, notification, Select } from 'antd';
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { CloseOutlined } from '@mui/icons-material';
 import { addWorkerName } from '../ApiConn/Api';
@@ -18,6 +18,12 @@ export default function AddEmpModal(props) {
         setDate("")
         props.handleClose()
     }
+
+    useEffect(() => {
+        setDate("")
+        setName("")
+        setProcess("")
+    }, [props.show])
 
     const onChange = (date, dateString) => {
         console.log(dateString);

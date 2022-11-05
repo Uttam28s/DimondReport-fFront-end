@@ -15,21 +15,28 @@ export default function AddUppadModal(props) {
         getWorkerList().then(x => {
             setEmpList(x.data.data)
         });
+
     }, [])
 
-    const handleSubmit = (props) => {
+    
+    useEffect(() => {
+        setDate("")
+        setAmmount("")
+        setEmpName("")
+    }, [props.show])
+
+    const handleSubmit = () => {
         console.log("All Value is ", empName, date, ammount)
         addUppad(empName, ammount, date).then(
             notification["success"]({
                 message: 'Uppad Added Successfully',
             })
         )
-        props.handleCloseUppad()
-        
+        props.handleCloseUppad ()
     }
 
     return (
-        <Modal show={props.show} handlecloseuppad={props.handleCloseUppad}> 
+        <Modal show={props.show} > 
             <Modal.Header>
                 <Modal.Title>Uppads</Modal.Title>
                 <div onClick={props.handleCloseUppad}><CloseOutlined /></div>

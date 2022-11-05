@@ -4,6 +4,7 @@ import AddEmpModal from './Modals/AddEmpModal';
 import AddDataModal from './Modals/AddDataModal';
 import UpdatePriceModal from './Modals/UpdatePriceModal';
 import AddUppadModal from './Modals/AddUppadModal';
+import MonthReport from './Modals/MonthleyReport';
 import { useNavigate } from "react-router-dom";
 const Header = () => {
     let navigate = useNavigate();
@@ -22,7 +23,12 @@ const Header = () => {
 
     const [showUppad, setUppadUpd] = useState(false);
     const handleShowUppad = () => setUppadUpd(true);
-    const handleCloseUppad = () => setUppadUpd(false);
+    const handleCloseUppad  = () => setUppadUpd(false);
+
+    const [showMonth, setshowMonth] = useState(false);
+    const handleMonthReport = () => setshowMonth(true);
+    const handleCloseMonthReport  = () => setshowMonth(false);
+
 
     const handleBulkUpload = () => {
         navigate("./bulkUpload")
@@ -35,14 +41,15 @@ const Header = () => {
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowAdd}>Add Report</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowPrice}>Update Price</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowUppad}>Uppad</button>
+                <button type="button" className="btn btn-secondary funcbtn" onClick={handleMonthReport}>Month Report</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleBulkUpload}>Bulk Upload</button>
             </div>
-
             <AddEmpModal show={show} onHide={() => setShow(false)} handleClose={handleClose} />
             <AddDataModal show={dataAdd} onHide={() => setDataAdd(false)} handleCloseData={handleCloseData} />
             <UpdatePriceModal show={showPrice} onHide={() => setPriceUpd(false)} handleClosePrice={handleClosePrice} />
-            <AddUppadModal show={showUppad} onHide={() => setUppadUpd(false)} handleCloseUppad={handleCloseUppad} />
-            
+            <AddUppadModal show={showUppad} onHide={() => setUppadUpd(false)} handleCloseUppad ={handleCloseUppad } />
+            <MonthReport show={showMonth} onHide={() => setshowMonth(false)} handleCloseMonthReport ={handleCloseMonthReport } />
+
         </div>
     )
 }
