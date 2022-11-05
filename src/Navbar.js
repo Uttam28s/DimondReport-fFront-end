@@ -20,6 +20,7 @@ export const Navbar = () => {
                             <Link class="nav-link" to="/diamond">Diamond</Link>
                         </li>
 
+
                     </ul>
                 </div>
             </nav>
