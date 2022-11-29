@@ -61,6 +61,7 @@ export default function AddDataModal(props) {
         const result = empList.filter((emp) => {
             return emp._id == value;
           });
+          console.log("🚀 ~ file: AddDataModal.js ~ line 65 ~ employeechange ~ result[0].process", result[0].process)
         setProcess(result[0].process)
     }
     return (
@@ -84,10 +85,6 @@ export default function AddDataModal(props) {
                                     placeholder="Search Employee"
                                     onChange={(value) => employeechange(value)}
                                     optionFilterProp="children"
-                                    // filterOption={(input, option) => option.children.includes(input)}
-                                    // filterSort={(optionA, optionB) =>
-                                    //     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                    // }
                                 >
                                     {empList.map((ele,index) =>{
                                         return <Option key={index} value={ele._id}>{ele.name}</Option>
@@ -122,6 +119,7 @@ export default function AddDataModal(props) {
                                 style={{ width: '100%', margin: "3px" }}
                                 placeholder="Select Process"
                                 onChange={(value) => setProcess(value)}
+                                value = {process}
                                 optionFilterProp="children"
                                 filterOption={(input, option) => option.children.includes(input)}
                                 filterSort={(optionA, optionB) =>
@@ -143,13 +141,6 @@ export default function AddDataModal(props) {
                         <div className="col-12">
                           Diamond Quntity (size/type):
                         </div>
-                        {/* <div className="col-8">    
-                            <div style={{ fontSize: "12px" }}>
-                                Patla :<Input type='number' style={{ width: '50%', margin: "5px",marginLeft:"44px" }}  onChange={(e)=>setPatla(e.target.value)}/><br />
-                                Zada : <Input type='number' style={{ width: '50%', margin: "5px",marginLeft:"44px" }}  onChange={(e)=>setZada(e.target.value)}/><br />
-                                Extra-Zada : <Input  type='number' style={{ width: '50%', margin: "5px" }}  onChange={(e)=>setExtraZada(e.target.value)} />
-                            </div>
-                        </div> */}
                     </div>
                 </div>
 <hr />

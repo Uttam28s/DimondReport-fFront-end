@@ -70,6 +70,12 @@ export const getReport = async (params) =>{
   return response;
 }
 
+export const getEmployeeReport = async (params) => {
+  console.log("Api is called",params)
+  const response = await axios.get(`${apiURL}/employee/report?emp_id=${params['emp_id']}&from=${params['from']}&to=${params['to']}`)
+  return response.data;
+}
+
 export const GetMonthReport = async (params) =>{
   console.log("Api is called",params)
   // 2022-12-22T01:14:00.000Z

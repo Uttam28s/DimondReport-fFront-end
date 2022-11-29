@@ -6,6 +6,9 @@ import UpdatePriceModal from './Modals/UpdatePriceModal';
 import AddUppadModal from './Modals/AddUppadModal';
 import MonthReport from './Modals/MonthleyReport';
 import { useNavigate } from "react-router-dom";
+
+
+
 const Header = () => {
     let navigate = useNavigate();
 
@@ -29,7 +32,6 @@ const Header = () => {
     const handleMonthReport = () => setshowMonth(true);
     const handleCloseMonthReport  = () => setshowMonth(false);
 
-
     const handleBulkUpload = () => {
         navigate("./bulkUpload")
     }
@@ -43,6 +45,7 @@ const Header = () => {
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowUppad}>Uppad</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleMonthReport}>Month Report</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleBulkUpload}>Bulk Upload</button>
+                <button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./empReport")}}>Emp. Record</button>
             </div>
             <AddEmpModal show={show} onHide={() => setShow(false)} handleClose={handleClose} />
             <AddDataModal show={dataAdd} onHide={() => setDataAdd(false)} handleCloseData={handleCloseData} />

@@ -10,6 +10,12 @@ const columns = [
     fixed: 'center'
   },
   {
+    title: 'Date',
+    dataIndex: 'date',
+    width: 60,
+    fixed: 'center'
+  },
+  {
     title: 'Name',
     dataIndex: 'name',
     key: '_id',
