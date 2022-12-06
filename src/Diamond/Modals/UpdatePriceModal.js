@@ -59,6 +59,16 @@ export default function UpdatePriceModal(props) {
         setProcess("")
         props.handleClosePrice()
     }
+
+    const handleProcess = async (value) => {
+        setProcess(value)
+        await getPriceList(value).then((d) => {
+            let da = d.data.pricelist
+            setExtraZada(da['extrajadaPrice'])
+            setZada(da['jadaPrice'])
+            setPatla(da['patlaPrice'])
+        })
+    }
     return (
         <Modal show={props.show}>
             <Modal.Header>
@@ -77,15 +87,8 @@ export default function UpdatePriceModal(props) {
                                 style={{ width: '100%' }}
                                 placeholder="Select Process"
                                 onChange={(value) => {
-                                    setProcess(value)
-                                    getPriceList().then((d) => {
-                                        let da = d.data.data
-                                        console.log("Da", da[value])
-                                        setExtraZada(da[value]['extrajadaPrice'])
-                                        setZada(da[value]['jadaPrice'])
-                                        setPatla(da[value]['patlaPrice'])
-                                    })
-                                }
+                                    handleProcess(value)
+                                    }
                                 }
                                 optionFilterProp="children"
                                 filterOption={(input, option) => option.children.includes(input)}
@@ -94,8 +97,8 @@ export default function UpdatePriceModal(props) {
                                 }
                             >
                                 <Option value="taliya">Taliya</Option>
-                                <Option value="pel">Pel</Option>
                                 <Option value="mathala">Mathala</Option>
+                                <Option value="pel">Pel</Option>
                                 <Option value="russian">Russian</Option>
                                 <Option value="table">Table</Option>
 

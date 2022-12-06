@@ -18,7 +18,6 @@ export default function PrintComponent(props) {
                     trigger={() => <Button>Print pdf</Button>}
                     content={() => componentRef}
                 />
-
                 <div style={{ display: "none", margin: "20px" }}>
                     <ComponentToPrint ref={(el) => (componentRef = el)} data={props.report} EmployeeName={props.EmployeeName} />
                 </div>
@@ -56,7 +55,7 @@ class ComponentToPrint extends React.Component {
                 <hr />
                 <h4>Month : {MonthName[this.props.data.month]}</h4>
                 <h4>Upad :  {this.props.data.upad}</h4>
-                <h4>This Month    Earned : {this.props.data.total} </h4>
+                <h4>This Month Earned : {this.props.data.total} </h4>
                 {this.props.data.jama ? <h4> Previous Month Jama: {this.props.data.jama}</h4> : ''}
             </div>
         );

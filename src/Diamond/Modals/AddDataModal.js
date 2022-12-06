@@ -3,48 +3,41 @@ import React, { useEffect, useState } from 'react'
 import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
 import { addReport, getWorkerList } from '../ApiConn/Api'
+import moment from 'moment';
 export default function AddDataModal(props) {
     const { Option } = Select;
     const [empName, setEmpName] = useState("")
-    const [process,setProcess] = useState("")
+    const [process, setProcess] = useState("")
     const [date, setDate] = useState();
-    const [patla,setPatla] = useState("")
-    const [zada,setZada] = useState("")
-    console.log("🚀 ~ file: AddDataModal.js ~ line 13 ~ AddDataModal ~ zada", zada)
-    const [extraZada,setExtraZada] = useState("")
-    const [empList,setEmpList] = useState([])
-    const [valid,isValid] = useState(false)
+    const [patla, setPatla] = useState("")
+    const [zada, setZada] = useState("")
+    const [extraZada, setExtraZada] = useState("")
+    const [empList, setEmpList] = useState([])
     useEffect(() => {
-        getWorkerList().then(x => { 
+        getWorkerList().then(x => {
             setEmpList(x.data.data)
-            console.log("Inside the get WorkerList",x.data.data)
         });
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         setEmpName("")
         setProcess("")
         setDate("")
         setPatla("")
         setZada("")
         setExtraZada("")
-    },[props.show])
-    
-    const handleChange = () => {
-        console.log("Data Submitted")
+    }, [props.show])
 
-        let params =  {
-            "workerid": empName, 
-            "process": process, 
-            "date": date, 
-            "patla": patla, 
-            "jada": zada, 
+    const handleChange = () => {
+        let params = {
+            "workerid": empName,
+            "process": process,
+            "date": date,
+            "patla": patla,
+            "jada": zada,
             "extraJada": extraZada,
-            "total": Number(patla)+Number(zada)+Number(extraZada),
-            // "dailywork":10,
-            // "price":[2,2,3]
+            "total": Number(patla) + Number(zada) + Number(extraZada),
         }
-        console.log("🚀 ~ file: AddDataModal.js ~ line 37 ~ handleChange ~ params", params)
 
         addReport(params).then(
             notification["success"]({
@@ -54,14 +47,11 @@ export default function AddDataModal(props) {
         props.handleCloseData()
     }
 
-    const employeechange = (value) =>{
+    const employeechange = (value) => {
         setEmpName(value)
-        console.log("emplist",empList)
-        console.log("value isValid",value)
         const result = empList.filter((emp) => {
             return emp._id == value;
-          });
-          console.log("🚀 ~ file: AddDataModal.js ~ line 65 ~ employeechange ~ result[0].process", result[0].process)
+        });
         setProcess(result[0].process)
     }
     return (
@@ -86,7 +76,7 @@ export default function AddDataModal(props) {
                                     onChange={(value) => employeechange(value)}
                                     optionFilterProp="children"
                                 >
-                                    {empList.map((ele,index) =>{
+                                    {empList.map((ele, index) => {
                                         return <Option key={index} value={ele._id}>{ele.name}</Option>
                                     })}
                                 </Select>
@@ -101,7 +91,7 @@ export default function AddDataModal(props) {
                             Date:
                         </div>
                         <div className="col-6">
-                            <DatePicker style={{ width: '100%', margin: "3px" }} onChange={(date,dateString) => setDate(dateString) }/>
+                            <DatePicker style={{ width: '100%', margin: "3px" }} disabledDate={(current) => current.isAfter(moment())} onChange={(date, dateString) => setDate(dateString)} />
                         </div>
                     </div>
                 </div>
@@ -112,14 +102,12 @@ export default function AddDataModal(props) {
                             Process Name:
                         </div>
                         <div className="col-6">
-                        {/* <Input style={{ width: '100%', margin: "5px" }} disabled value={process} onChange={(e)=>setPatla(e.target.value)}/><br /> */}
-
                             <Select
                                 showSearch
                                 style={{ width: '100%', margin: "3px" }}
                                 placeholder="Select Process"
                                 onChange={(value) => setProcess(value)}
-                                value = {process}
+                                value={process}
                                 optionFilterProp="children"
                                 filterOption={(input, option) => option.children.includes(input)}
                                 filterSort={(optionA, optionB) =>
@@ -127,9 +115,10 @@ export default function AddDataModal(props) {
                                 }
                             >
                                 <Option value="taliya">Taliya</Option>
-                                <Option value="pel">Pel</Option>
                                 <Option value="mathala">Mathala</Option>
+                                <Option value="pel">Pel</Option>
                                 <Option value="russian">Russian</Option>
+                                <Option value="table">Table</Option>
                             </Select>
                         </div>
                     </div>
@@ -139,25 +128,25 @@ export default function AddDataModal(props) {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                          Diamond Quntity (size/type):
+                            Diamond Quntity (size/type):
                         </div>
                     </div>
                 </div>
-<hr />
+                <hr />
                 <div className="container">
-                           <div style={{ fontSize: "12px" }}>
-                           <div className='row '>   
-                           <div className='col-6'>  Patla : </div>
-                           <div className='col-6'><Input type='number' onChange={(e)=>setPatla(e.target.value)}/><br /></div>
-                           </div>   
-                           <div className='row mt-3'>
-                           <div className='col-6'>   Zada :</div>
-                           <div className='col-6'><Input type='number' onChange={(e)=>setZada(e.target.value)}/><br /></div>
-                           </div>  
-                           <div className='row mt-3'>
-                           <div className='col-6'>     Extra-Zada  :</div>
-                           <div className='col-6'><Input type='number' onChange={(e)=>setExtraZada(e.target.value)}/><br /></div>
-                           </div>  
+                    <div style={{ fontSize: "12px" }}>
+                        <div className='row '>
+                            <div className='col-6'>  Patla : </div>
+                            <div className='col-6'><Input type='number' onChange={(e) => setPatla(e.target.value)} /><br /></div>
+                        </div>
+                        <div className='row mt-3'>
+                            <div className='col-6'>   Zada :</div>
+                            <div className='col-6'><Input type='number' onChange={(e) => setZada(e.target.value)} /><br /></div>
+                        </div>
+                        <div className='row mt-3'>
+                            <div className='col-6'>     Extra-Zada  :</div>
+                            <div className='col-6'><Input type='number' onChange={(e) => setExtraZada(e.target.value)} /><br /></div>
+                        </div>
                     </div>
                 </div>
 

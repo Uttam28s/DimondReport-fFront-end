@@ -82,12 +82,6 @@ const columns = [
     dataIndex: 'dailywork',
     key: '_id',
     width: 40,
-  },    
-  {
-    title: 'Total Uppad',
-    dataIndex: 'dailywork',
-    key: '_id',
-    width: 40,
   }
 ];
 

@@ -3,16 +3,26 @@ import React, { useState,useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { CloseOutlined } from '@mui/icons-material';
 import { addWorkerName } from '../ApiConn/Api';
+import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 export default function AddEmpModal(props) {
+    let navigate = useNavigate();
     const { Option } = Select;
     const [date, setDate] = useState("");
     const [name, setName] = useState("");
     const [process, setProcess] = useState("")
     const handleSubmit = () => {
-        addWorkerName(name,process).then(
+        addWorkerName(name,process).then((res) => {
             notification["success"]({
-                message: 'Worker Added Successfully',
+                message: "Worker Added Successfully",
             })
+            window.location.reload(false);
+        }
+        ).catch((res) => {
+            notification["error"]({
+                message: "Name Already Exist",
+            })
+        }
         )
         setName("")
         setDate("")
@@ -43,7 +53,7 @@ export default function AddEmpModal(props) {
                         <span style={{margin:"2px"}}>Date:</span>
                         </div>
                         <div className="col-8">
-                            <DatePicker onChange={onChange} style={{ width: '60%',margin:'2px' }} />
+                            <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={onChange} style={{ width: '60%',margin:'2px' }} />
                         </div>
                     </div>
                 </div>
@@ -75,8 +85,8 @@ export default function AddEmpModal(props) {
                                 }
                             >
                                 <Option value="taliya">Taliya</Option>
-                                <Option value="pel">Pel</Option>
                                 <Option value="mathala">Mathala</Option>
+                                <Option value="pel">Pel</Option>
                                 <Option value="russian">Russian</Option>
                                 <Option value="table">Table</Option>
 
@@ -91,7 +101,7 @@ export default function AddEmpModal(props) {
                 <Button variant="secondary" onClick={props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" disabled={name == "" || date == ""} onClick={handleSubmit} >
+                <Button variant="primary" disabled={name == "" || date == "" || process === ""} onClick={handleSubmit} >
                     Add
                 </Button>
             </Modal.Footer>

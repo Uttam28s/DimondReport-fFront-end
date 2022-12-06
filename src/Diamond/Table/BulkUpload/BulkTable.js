@@ -1,4 +1,4 @@
-import { Button, Input, Table } from 'antd';
+import { Button, Input, notification, Table } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { addBulkReport, getWorkerListBulk } from '../../ApiConn/Api';
 
@@ -85,20 +85,21 @@ const BulkTable = (props) => {
             ele.process = props.process
             ele.date = today
         })
-        console.log("Alll finnal data for ready to Upload", data[0])
-        addBulkReport(data,props.process).then((res) => console.log("Responce is",res))
+        addBulkReport(data,props.process).then((res) => {
+            notification["success"]({
+                message: res?.data?.message,
+            })
+        }
+        )
     }
 
     useEffect(() => {
-        console.log("Inside the bulk Tbale",props.process)
         getWorkerListBulk(props.process).then(x => {
             setData(x.data.data)
         });
     }, [])
 
     const onChangeHandler = (name, value, id) => {
-        console.log("--------------", name, value, id)
-        console.log("the Data is", data[id]['name'])
         let newname = name
         data[id][newname] = value
         data[id]['total'] = Number(data[id]['extraJada']) + Number(data[id]['jada']) + Number(data[id]['patla'])

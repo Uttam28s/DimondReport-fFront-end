@@ -1,5 +1,7 @@
-import { DatePicker, notification, Select, Table } from 'antd';
+import { Button, DatePicker, notification, Select, Table } from 'antd';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getEmployeeReport, getWorkerList } from '../ApiConn/Api';
 import PrintComponenEmployee, { ComponentToPrint } from './EmpReportPrint';
 
@@ -93,6 +95,7 @@ const TableNew = (props) => {
         patlaTotal: 0,
         extraZadaTotal: 0
     })
+    const navigate = useNavigate();
     useEffect(() => {
         getWorkerList().then(x => {
             setEmpList(x.data.data)
@@ -138,6 +141,11 @@ const TableNew = (props) => {
         }
         getEmployeeReport(params).then(x => {
             const report = x.data
+            if(report.length === 0){
+                notification["error"]({
+                    message: 'No Data Found',
+                })
+            }
             getWorkerList().then(x => {
                 let data = x.data.data
                 for (let j = 0; j < report.length; j++) {
@@ -158,11 +166,13 @@ const TableNew = (props) => {
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <h4 style={{ margin: "10px" }}>Diamond</h4>
+                <Button onClick={() => navigate("/diamond")}>Back</Button>
+
             </nav>
             <div className='semiTitle'>Emp Record</div>
             <div className="p-2 bd-highlight" style={{ display: "flex" }}>
-                <DatePicker onChange={(date, dateString) => { setStart(dateString) }} style={{ margin: "10px" }} />
-                <DatePicker onChange={(date, dateString) => {
+                <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={(date, dateString) => { setStart(dateString) }} style={{ margin: "10px" }} />
+                <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={(date, dateString) => {
                     setEnd(dateString)
                 }} style={{ margin: "10px" }} />
 

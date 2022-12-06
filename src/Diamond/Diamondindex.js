@@ -4,6 +4,7 @@ import Header from './Header';
 import { getReport, getWorkerList, } from './ApiConn/Api'
 import TableAll from './Table/TableAll';
 import { findIndex } from 'lodash';
+import moment from 'moment';
 
 const DiamondIndex = () => {
     const [start, setStart] = useState()
@@ -36,6 +37,25 @@ const DiamondIndex = () => {
         });
     }, [])
 
+    const handleReport = (params) => {
+        getReport(params).then(x => {
+            const report = x.data.data
+            getWorkerList().then(x => {
+                let data = x.data.data
+                for (let j = 0; j < report.length; j++) {
+                    for (let i = 0; i < data.length; i++) {
+                        if (report[j].workerid == data[i]._id) {
+                            report[j].index = j + 1
+                            report[j].name = data[i].name
+                            report[j].date = (report[j].date).slice(0,10)
+                        }
+                    }
+                }
+                setData(report)
+            })
+        });
+    }
+    
     const onClickHandle = (a) => {
         if (a == 1) {
             params = { process: "taliya" }
@@ -51,22 +71,23 @@ const DiamondIndex = () => {
         params['from'] = ""
         params['to'] = ""
         setProcess(params['process'])
-        getReport(params).then(x => {
-            const report = x.data.data
-            getWorkerList().then(x => {
-                let data = x.data.data
-                for (let j = 0; j < report.length; j++) {
-                    for (let i = 0; i < data.length; i++) {
-                        if (report[j].workerid == data[i]._id) {
-                            report[j].index = j + 1
-                            report[j].name = data[i].name
-                            report[j].date = (report[j].date).slice(0,10)
-                        }
-                    }
-                }
-                setData(report)
-            });
-        });
+        handleReport(params)
+        // getReport(params).then(x => {
+        //     const report = x.data.data
+        //     getWorkerList().then(x => {
+        //         let data = x.data.data
+        //         for (let j = 0; j < report.length; j++) {
+        //             for (let i = 0; i < data.length; i++) {
+        //                 if (report[j].workerid == data[i]._id) {
+        //                     report[j].index = j + 1
+        //                     report[j].name = data[i].name
+        //                     report[j].date = (report[j].date).slice(0,10)
+        //                 }
+        //             }
+        //         }
+        //         setData(report)
+        //     });
+        // });
         setTableShow(a)
     }
 
@@ -90,30 +111,16 @@ const DiamondIndex = () => {
                 </ul>
             </div>
             <div className="p-2 bd-highlight col-lg-4 col-sm-6">
-                <DatePicker onChange={(date, dateString) => { setStart(dateString) }} style={{ margin: "10px" }} />
-                <DatePicker onChange={(date, dateString) => {
-                    console.log(date, "----------------------", dateString)
+                <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={(date, dateString) => { setStart(dateString) }} style={{ margin: "10px" }} />
+                <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={(date, dateString) => {
                     setEnd(dateString)
                     let params = {
                         'from': start,
                         'to': dateString,
                         'process': process
                     }
-                    getReport(params).then(x => {
-                        const report = x.data.data
-                        getWorkerList().then(x => {
-                            let data = x.data.data
-                            for (let j = 0; j < report.length; j++) {
-                                for (let i = 0; i < data.length; i++) {
-                                    if (report[j].workerid == data[i]._id) {
-                                        report[j].index = j + 1
-                                        report[j].name = data[i].name
-                                    }
-                                }
-                            }
-                            setData(report)
-                        })
-                    });
+                    handleReport(params)
+                    
                 }} style={{ margin: "10px" }} />
             </div>
             <Header />

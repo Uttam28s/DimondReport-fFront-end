@@ -1,8 +1,8 @@
-import { Button, DatePicker, Input, notification, Select } from 'antd';
+import { Button, notification, Select } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
-import { GetMonthReport, getWorkerList } from '../ApiConn/Api'
+import { ChangePaidStatus, GetMonthReport, getWorkerList } from '../ApiConn/Api'
 import PrintComponent from './PrintComponent';
 
 const MonthName = {
@@ -26,21 +26,15 @@ export default function MonthReport(props) {
     const [empName, setEmpName] = useState("")
     const [month, setMonth] = useState('');
     const [report, setReport] = useState();
-    console.log("🚀 ~ file: MonthleyReport.js ~ line 13 ~ MonthReport ~ report", report)
-
-
+    const [status, setStatus] = useState('pending');
     const [empList, setEmpList] = useState([])
 
     useEffect(() => {
         getWorkerList().then(x => {
             setEmpList(x.data.data)
-            console.log("Inside the get WorkerList", x.data.data)
         });
     }, [])
 
-    useEffect(() => {
-        setEmpName("")
-    }, [props.show])
 
     const handleChange = async () => {
         console.log("Data Submitted")
@@ -48,24 +42,45 @@ export default function MonthReport(props) {
             month: month,
             workerid: empName,
         }
-        const result = await GetMonthReport(params)
-        result.status && setReport(result.data.data)
+        await GetMonthReport(params).then((res) => {
+            console.log("🚀 ~ file: MonthleyReport.js:46 ~ result ~ res", res)
+            notification["success"]({
+                message: res?.data.message,
+            })
+            setStatus(res.data.data.salary[0].status)
+            res.status && setReport(res.data.data)
+        }).catch((res) => {
+            props.handleCloseMonthReport()
+            notification["error"]({
+                message: res?.response?.data?.message,
+            })
+        })
+
         props.handleCloseMonthReport()
+    }
+
+
+    const handlePaidButton = async () => {
+        let params = {
+            month: month,
+            workerid: empName,
+        }
+        await ChangePaidStatus(params).then((res) => {
+            console.log("🚀 ~ file: MonthleyReport.js:62 ~ changePaidStatus ~ res", res)
+        })
     }
 
     const employeechange = (value) => {
         setEmpName(value)
-        console.log("emplist", empList)
-        console.log("value isValid", value)
-        const result = empList.filter((emp) => {
-            return emp._id == value;
+        empList.filter((emp) => {
+            return emp._id === value;
         });
     }
     return (
         <>
             <Modal show={props.show} handlecloseuppad={props.handleCloseMonthReport}>
                 <Modal.Header>
-                    <Modal.Title>Add New Data</Modal.Title>
+                    <Modal.Title>Monthly Report</Modal.Title>
                     <div onClick={props.handleCloseMonthReport}><CloseOutlined /></div>
                 </Modal.Header>
                 <Modal.Body>
@@ -125,24 +140,24 @@ export default function MonthReport(props) {
 
             <Modal show={report}>
                 <Modal.Header>
-                    <Modal.Title>Monthley Report</Modal.Title>
+                    <Modal.Title>Monthly Report</Modal.Title>
                     <div onClick={() => setReport(false)}><CloseOutlined /></div>
                 </Modal.Header>
                 <Modal.Body>
                     {report?.salary?.length ? <div>
-                        <div className='row'>  <div className='col-4'>Worker Name</div><div className='col-3'><h5>:{empList?.find(d => d._id == report?.workerid)?.name}</h5></div></div>
+                        <div className='row'>  <div className='col-4'>Worker Name</div><div className='col-3'><h5>:{empList?.find(d => d._id === report?.workerid)?.name}</h5></div></div>
                         <hr />
                         <div className='row'>   <div className='col-4'>Salary</div></div>
                         <hr />
                         {report?.salary?.map(data => {
                             return (
                                 <>
-                                    <div className='row'>  <div className='col-5'>Month</div><div className='col-7'>:{MonthName[data.month]}</div></div>
-                                    <div className='row'>    <div className='col-5'>Upad</div><div className='col-7'>:{data.upad}</div></div>
-                                    <div className='row'>    <div className='col-5'>This Month Earned</div><div className='col-7'>:{data.total}</div></div>
-                                    {data.jama ? <div className='row'>    <div className='col-5'> Previous Month Jama</div><div className='col-7'>:{data.jama}</div></div> : ''}
-                                    <PrintComponent report={data} EmployeeName={empList?.find(d => d._id == report?.workerid)?.name} />
-
+                                    <div className='row'>  <div className='col-8'>Month</div><div className='col-4'>: {MonthName[data.month]}</div></div>
+                                    <div className='row'>    <div className='col-8'>Upad</div><div className='col-4'>: {data.upad || 0}</div></div>
+                                    <div className='row'>    <div className='col-8'>This Month Earned</div><div className='col-4'>: {data.total}</div></div>
+                                    {data.jama ? <div className='row'>    <div className='col-8'> Previous Month Jama</div><div className='col-4'>: {data.jama}</div></div> : ''}
+                                    {status === "paid" ? "" : <Button style={{ margin: "10px" }} variant="secondary" onClick={() => handlePaidButton("paid")}>Paid</Button>}
+                                    <PrintComponent report={data} EmployeeName={empList?.find(d => d._id === report?.workerid)?.name} />
                                 </>
                             )
                         })}

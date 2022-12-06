@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { CloseOutlined } from '@mui/icons-material';
 import { addUppad, getWorkerList } from '../ApiConn/Api'
+import moment from 'moment';
 
 export default function AddUppadModal(props) {
     const { Option } = Select;
@@ -27,10 +28,17 @@ export default function AddUppadModal(props) {
 
     const handleSubmit = () => {
         console.log("All Value is ", empName, date, ammount)
-        addUppad(empName, ammount, date).then(
-            notification["success"]({
-                message: 'Uppad Added Successfully',
-            })
+        addUppad(empName, ammount, date).then((res) => {
+            if(res?.data?.error){
+                notification["error"]({
+                    message: res?.data?.error,
+                })
+            }else{
+                notification["success"]({
+                    message: 'Uppad Added Successfully',
+                })
+            }
+        }
         )
         props.handleCloseUppad ()
     }
@@ -73,7 +81,7 @@ export default function AddUppadModal(props) {
                                 Date:
                             </div>
                             <div className="col-6">
-                                <DatePicker style={{ width: '100%', margin: "3px" }} onChange={(date, dateString) => setDate(dateString)} />
+                                <DatePicker style={{ width: '100%', margin: "3px" }} disabledDate={(current) => current.isAfter(moment())} onChange={(date, dateString) => setDate(dateString)} />
                             </div>
                         </div>
                     </div>
