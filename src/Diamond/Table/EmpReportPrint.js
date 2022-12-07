@@ -87,7 +87,7 @@ class ComponentToPrint extends React.Component {
                             <Td> {price.extraZadaTotal}</Td>
                         </Tr>
                         <Tr>
-                            <Td>Total Salary </Td>
+                            <Td>Total Price </Td>
                             <Td></Td>
                             <Td> {totalSalary}</Td>
                         </Tr>

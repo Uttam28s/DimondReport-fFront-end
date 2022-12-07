@@ -41,9 +41,15 @@ export default function AddDataModal(props) {
 
         addReport(params).then(
             notification["success"]({
-                message: 'Report Added Successfully',
+                message: 'Report Added Successfully'
             })
-        )
+        ).catch(() => {
+            notification["error"]({
+                message: 'Something Went Wrong'
+            })
+        })  
+        // window.location.reload(false)
+
         props.handleCloseData()
     }
 
@@ -58,7 +64,7 @@ export default function AddDataModal(props) {
         <Modal show={props.show} handlecloseuppad={props.handlecloseData}>
             <Modal.Header>
                 <Modal.Title>Add New Data</Modal.Title>
-                <div onClick={props.handleCloseData}><CloseOutlined /></div>
+                <Button style={{ border: 'none'}}><CloseOutlined /></Button>
 
             </Modal.Header>
             <Modal.Body>
@@ -128,7 +134,7 @@ export default function AddDataModal(props) {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            Diamond Quntity (size/type):
+                            Diamond Quantity (size/type):
                         </div>
                     </div>
                 </div>

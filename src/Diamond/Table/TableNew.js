@@ -69,7 +69,7 @@ const columns = [
         width: 40,
     },
     {
-        title: 'Total Salary',
+        title: 'Total Work',
         dataIndex: 'dailywork',
         key: '_id',
         width: 40,
@@ -110,7 +110,6 @@ const TableNew = (props) => {
         let extraJadaPcs = 0
         let pricePcs = {}
         data.map((ele) => {
-            console.log("🚀 ~ file: TableNew.js ~ line 108 ~ data.map ~ ele", ele)
             salary = salary + ele.dailywork
             patlaPcs = patlaPcs + ele.patla
             extraJadaPcs = extraJadaPcs + ele.extraJada

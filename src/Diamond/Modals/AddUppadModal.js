@@ -88,7 +88,7 @@ export default function AddUppadModal(props) {
                     <div className="container">
                         <div className="row">
                             <div className="col-6">
-                                Ammount:
+                                Amount:
                             </div>
                             <div className="col-6">
                                 <InputNumber style={{ width: '100%', margin: "3px" }} onChange={(value) => setAmmount(value)} />

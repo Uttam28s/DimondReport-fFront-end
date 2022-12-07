@@ -20,7 +20,6 @@ const MonthName = {
     12: 'December',
 }
 
-
 export default function MonthReport(props) {
     const { Option } = Select;
     const [empName, setEmpName] = useState("")
@@ -116,7 +115,7 @@ export default function MonthReport(props) {
                                 <Select
                                     showSearch
                                     style={{ width: '100%', margin: "3px" }}
-                                    placeholder="slect month"
+                                    placeholder="select month"
                                     onChange={(value) => setMonth(value)}
                                     optionFilterProp="children"
                                 >
@@ -141,7 +140,7 @@ export default function MonthReport(props) {
             <Modal show={report}>
                 <Modal.Header>
                     <Modal.Title>Monthly Report</Modal.Title>
-                    <div onClick={() => setReport(false)}><CloseOutlined /></div>
+                    <Button style={{ border: 'none'}} onClick={() => setReport(false)}><CloseOutlined /></Button>
                 </Modal.Header>
                 <Modal.Body>
                     {report?.salary?.length ? <div>

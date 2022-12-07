@@ -1,18 +1,16 @@
 import { Button, DatePicker, Input, notification, Select } from 'antd';
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { CloseOutlined } from '@mui/icons-material';
 import { addWorkerName } from '../ApiConn/Api';
 import moment from 'moment';
-import { useNavigate } from 'react-router-dom';
 export default function AddEmpModal(props) {
-    let navigate = useNavigate();
     const { Option } = Select;
     const [date, setDate] = useState("");
     const [name, setName] = useState("");
     const [process, setProcess] = useState("")
     const handleSubmit = () => {
-        addWorkerName(name,process).then((res) => {
+        addWorkerName(name, process).then((res) => {
             notification["success"]({
                 message: "Worker Added Successfully",
             })
@@ -50,32 +48,32 @@ export default function AddEmpModal(props) {
                 <div className="container">
                     <div className="row">
                         <div className="col-4">
-                        <span style={{margin:"2px"}}>Date:</span>
+                            <span style={{ margin: "2px" }}>Date:</span>
                         </div>
                         <div className="col-8">
-                            <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={onChange} style={{ width: '60%',margin:'2px' }} />
+                            <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={onChange} style={{ width: '60%', margin: '2px' }} />
                         </div>
                     </div>
                 </div>
                 <div className="container">
                     <div className="row">
                         <div className="col-4">
-                        <span style={{margin:"2px"}}>Name: </span>                        
+                            <span style={{ margin: "2px" }}>Name: </span>
                         </div>
                         <div className="col-8">
-                            <Input required onChange={(e) => setName(e.target.value)} style={{ width: '60%', margin:'2px'}} />                        </div>
+                            <Input required onChange={(e) => setName(e.target.value)} style={{ width: '60%', margin: '2px' }} />                        </div>
                     </div>
                 </div>
                 <div className="container">
                     <div className="row">
                         <div className="col-4" >
-                           <span style={{margin:"2px"}}>Process Name:</span> 
+                            <span style={{ margin: "2px" }}>Process Name:</span>
                         </div>
                         <div className="col-8">
 
                             <Select
                                 showSearch
-                                style={{ margin: "2px",width:"60%" }}
+                                style={{ margin: "2px", width: "60%" }}
                                 placeholder="Select Process"
                                 onChange={(value) => setProcess(value)}
                                 optionFilterProp="children"
