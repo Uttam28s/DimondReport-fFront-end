@@ -6,7 +6,7 @@ import { Navbar } from "./Navbar"
 import DiamondIndex from "./Diamond/Diamondindex";
 import BulkUpload from "./Diamond/Table/BulkUpload/BulkUpload"
 import MonthReportScreen from "./Diamond/MonthReportScreen";
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less'
 import TableNew from "./Diamond/Table/TableNew";
 
 function App() {
