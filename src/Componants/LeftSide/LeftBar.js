@@ -10,9 +10,6 @@ const LeftBar = (props) => {
   const [currentCode, setCurrentCode] = useState("");
   const [previousCode, setPreviousCode] = useState("");
   const [sumOfCode, setsumOfCode] = useState("");
-  const handleError = (e) => {
-    console.log("error", e);
-  };
 
   useEffect(() => {
     focusInput();
@@ -26,7 +23,6 @@ const LeftBar = (props) => {
   useEffect(() => {
     let total1 = 0,
       total2 = 0;
-    console.log("🚀 ~ file: LeftBar.js ~ line 41 ~ props.data.map ~ props", props)
 
     // props.data.map((d) => {
 
@@ -34,7 +30,6 @@ const LeftBar = (props) => {
     //   total2 = total2 +( Number(d.split(",").slice(-2)[1])||0);
     // });
     // setsumOfCode({ total1, total2 });
-    // console.log("🚀 ~ file: LeftBar.js ~ line 42 ~ useEffect ~ total1", total1,total2)
   }, [props.data.length]);
 
   const setQrCode = (data) => {
@@ -68,7 +63,6 @@ const LeftBar = (props) => {
   }
 
   const handleKeyDown = (event) => {
-    console.log("🚀 ~ file: LeftBar.js ~ line 71 ~ handleKeyDown ~ event.key", event.key)
     if (event.key === 'Enter') {
       focusAndSum()
     }
@@ -84,7 +78,6 @@ const LeftBar = (props) => {
           <CardContent sx={{ flex: "0.9 0 auto" }}>
             {/* <QrReader
               onResult={(result, error) => {
-                console.log("🚀 ~ file: LeftBar.js ~ line 60 ~ LeftBar ~ result", result,error)
                 if (!!result) {
                   setPreviousCode(currentCode);
                   setCurrentCode(result?.text);
@@ -94,7 +87,6 @@ const LeftBar = (props) => {
                 }
                 if (!!error) {
                  let b =  window.MediaStream.id
-                  console.log(error,"ghfgh",b);
                   let a  = String(error).includes("device not found") ? "Requested Device Not Found":"Scanning Code Not Sucessfull"
                   NotificationManager.error(a);
                 }

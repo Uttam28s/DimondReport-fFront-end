@@ -27,7 +27,6 @@ export default function AddUppadModal(props) {
     }, [props.show])
 
     const handleSubmit = () => {
-        console.log("All Value is ", empName, date, ammount)
         addUppad(empName, ammount, date).then((res) => {
             if(res?.data?.error){
                 notification["error"]({

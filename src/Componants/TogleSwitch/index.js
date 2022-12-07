@@ -18,7 +18,7 @@ const TogleSwitch = (props) => {
     }
   };
 
-  const onChange = (value) =>{ console.log("value", value); props.onChange(value)};
+  const onChange = (value) =>{ props.onChange(value)};
 
   return (
     <div>

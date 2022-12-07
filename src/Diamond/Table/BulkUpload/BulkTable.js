@@ -44,7 +44,6 @@ const BulkTable = (props) => {
                     <Input
                         value={record.jada}
                         onChange={(e) => {
-                            console.log("------------------", record)
                             onChangeHandler("jada", e.target.value, record.index)
                         }} />
                 )
@@ -77,10 +76,8 @@ const BulkTable = (props) => {
     ];
 
     const onClickhandler = () => {
-        console.log("Alll finnal data for ready to Upload", data)
         var today = new Date();
         let params = data.map((ele,index) =>{
-            console.log("----------------",ele)
             ele.workerid = ele._id
             ele.process = props.process
             ele.date = today

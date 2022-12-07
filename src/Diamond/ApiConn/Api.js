@@ -43,7 +43,6 @@ export const getWorkerListBulk = async (process) =>{
 export const addUppad = async (workerid,upad,month) => {
   month = month.slice(5, 7);
   const response = await axios.post(`${apiURL}/salary/upad?workerid=${workerid}&upad=${upad}&month=${month}`);
-  console.log("dddddddd", response);
   return response;
 };
 
@@ -62,7 +61,6 @@ export const GetMonthReport = async (params) =>{
 
   const response = await axios.get(`${apiURL}/salary/get?&workerid=${params['workerid']}&month=${params['month']}`);
 
-  console.log("dddddddd", response);
   return response;
 }
 

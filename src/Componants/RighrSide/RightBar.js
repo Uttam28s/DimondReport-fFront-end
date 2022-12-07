@@ -96,23 +96,13 @@ const RightBar = (props) => {
   }
 
   const setunCate = (allData, startRange, endRange) => {
-    console.log(
-      "🚀 ~ file: RightBar.js ~ line 65 ~ setunCate ~ startRange, endRange",
-      allData,
-      startRange,
-      endRange
-    );
     let total1 = 0,
       total2 = 0;
     let filteredList =
       allData.length &&
       allData.filter((data) => {
         let checkData = data.split(",").slice(-2).map(Number);
-        console.log(
-          "🚀 ~ file: RightBar.js ~ line 67 ~ filteredList ~ data",
-          data,
-          checkData
-        );
+
         if (
           (startRange &&
             endRange &&
@@ -161,10 +151,6 @@ const RightBar = (props) => {
         }
       });
       if (flag) {
-        console.log(
-          "🚀 ~ file: RightBar.js ~ line 117 ~ addCategories ~ newStartCode",
-          newStartCode
-        );
 
         cateArray.push({
           startRange: newRangeStart,
@@ -175,7 +161,6 @@ const RightBar = (props) => {
         NotificationManager.success("Added");
       } else {
         if (id) {
-          console.log("id", id);
           cateArray.push({
             startRange: id.split("-")[0],
             endRange: id.split("-")[1],
@@ -200,7 +185,6 @@ const RightBar = (props) => {
 
   return (
     <div className="right-bar-wrapper seprater">
-      {console.log("all", all)}
       <div className="top-bar-header">
         <NotificationContainer />
 

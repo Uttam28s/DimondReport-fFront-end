@@ -36,13 +36,11 @@ export default function MonthReport(props) {
 
 
     const handleChange = async () => {
-        console.log("Data Submitted")
         let params = {
             month: month,
             workerid: empName,
         }
         await GetMonthReport(params).then((res) => {
-            console.log("🚀 ~ file: MonthleyReport.js:46 ~ result ~ res", res)
             notification["success"]({
                 message: res?.data.message,
             })
@@ -64,9 +62,7 @@ export default function MonthReport(props) {
             month: month,
             workerid: empName,
         }
-        await ChangePaidStatus(params).then((res) => {
-            console.log("🚀 ~ file: MonthleyReport.js:62 ~ changePaidStatus ~ res", res)
-        })
+        await ChangePaidStatus(params)
     }
 
     const employeechange = (value) => {

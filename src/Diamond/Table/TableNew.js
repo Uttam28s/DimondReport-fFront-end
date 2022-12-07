@@ -99,7 +99,6 @@ const TableNew = (props) => {
     useEffect(() => {
         getWorkerList().then(x => {
             setEmpList(x.data.data)
-            console.log("Inside the get WorkerList", x.data.data)
         });
     }, [])
 

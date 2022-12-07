@@ -34,7 +34,6 @@ export default function AddEmpModal(props) {
     }, [props.show])
 
     const onChange = (date, dateString) => {
-        console.log(dateString);
         setDate(dateString)
     };
 

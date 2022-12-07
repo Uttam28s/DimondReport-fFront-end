@@ -45,21 +45,9 @@ const Index = () => {
 const  clear = () =>{
   setData('')
 }
-//  useEffect(() => {
-//    console.log("🚀 ~ file: Index.js ~ line 9 ~ Index ~ data", data)
-//   setTogle(!togle)
-//  }, [data])
  
-
-
-
   return (
       <div className="main-screen-wrapper">
-          {console.log(
-              "🚀 ~ file: Index.js ~ line 10 ~ Index ~ togle",
-              togle,
-              data
-          )}
           <LeftBar data={data} setdata={setdata} clear={clear} />
           <RightBar data={data} setdata={setdata} clear={clear} />
       </div>

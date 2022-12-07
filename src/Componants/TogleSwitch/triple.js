@@ -44,8 +44,7 @@ const defaultProps = {
       title: "right",
       value: "right",
     },
-  },
-  onChange: (value) => console.log("value:", value),
+  }
 };
 
 class TripleToggleSwitch extends React.Component {

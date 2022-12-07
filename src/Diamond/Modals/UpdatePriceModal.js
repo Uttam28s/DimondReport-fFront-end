@@ -12,7 +12,6 @@ export default function UpdatePriceModal(props) {
     const { Option } = Select;
 
     useEffect(() => {
-        console.log("Updatae")
     }, [extraZada])
 
     useEffect(() => {
@@ -45,7 +44,6 @@ export default function UpdatePriceModal(props) {
         updatePrice(params[0]).then(x => {
             updatePrice(params[1]).then(x => {
                 updatePrice(params[2]).then(x => {
-                    console.log("x is ", x)
                     notification["success"]({
                         message: 'Price Updated Successfully',
                     })

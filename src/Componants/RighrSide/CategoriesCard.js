@@ -41,15 +41,12 @@ const   CategoriesCard = ({
   }, [startRange, endRange]);
 
   useEffect(() => {
-      console.log('list0000000000000000000', list)
       const updatedList = setunCate(list,startRange,endRange)
-      console.log("🚀 ~ file: CategoriesCard.js ~ line 44 ~ useEffect ~ updatedList", updatedList)
     setRenderList(updatedList);
   }, [startRange, endRange,list?.length,togleBar]);
 
 
   useEffect(()=>{
-    console.log('asasasasasas' )
     setAnimation("animation-class")
   },[list?.length])
 
