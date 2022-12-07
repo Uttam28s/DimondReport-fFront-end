@@ -1,5 +1,5 @@
 import { Table } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 
 const columns = [
   {
@@ -86,7 +86,6 @@ const columns = [
 ];
 
 const TableAll = (props) => {
-  const [data, setData] = useState(props.data)
   return (
     <>
       <div className='semiTitle'>{props.title}</div>

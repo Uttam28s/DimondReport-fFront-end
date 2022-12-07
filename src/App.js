@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import routes from "./routes";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import Index from "./Componants/Index"
 import { Navbar } from "./Navbar"
 import DiamondIndex from "./Diamond/Diamondindex";
@@ -11,7 +10,8 @@ import TableNew from "./Diamond/Table/TableNew";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
+    <HashRouter>
       <Routes>
         <Route path={"/"} element={<Navbar />} />
         <Route path={"/diamond"} element={<DiamondIndex />} />
@@ -20,7 +20,9 @@ function App() {
         <Route path={"/diamond/empReport"} element={<TableNew />} />
         <Route path={"/qrcode"} element={<Index />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
+
+    </>
   );
 }
 

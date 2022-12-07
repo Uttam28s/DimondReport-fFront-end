@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import AddEmpModal from './Modals/AddEmpModal';
 import AddDataModal from './Modals/AddDataModal';
 import UpdatePriceModal from './Modals/UpdatePriceModal';

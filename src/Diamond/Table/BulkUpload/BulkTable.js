@@ -4,7 +4,6 @@ import { addBulkReport, getWorkerListBulk } from '../../ApiConn/Api';
 
 const BulkTable = (props) => {
     const [data, setData] = useState([])
-    const [totalpcs, setTotalPcs] = useState(0)
     const columns = [
         {
             title: 'Index',
@@ -77,7 +76,7 @@ const BulkTable = (props) => {
 
     const onClickhandler = () => {
         var today = new Date();
-        let params = data.map((ele,index) =>{
+        data.map((ele,index) =>{
             ele.workerid = ele._id
             ele.process = props.process
             ele.date = today
@@ -100,7 +99,6 @@ const BulkTable = (props) => {
         let newname = name
         data[id][newname] = value
         data[id]['total'] = Number(data[id]['extraJada']) + Number(data[id]['jada']) + Number(data[id]['patla'])
-        setTotalPcs(data[id]['total'])
     }
     return (
         <>

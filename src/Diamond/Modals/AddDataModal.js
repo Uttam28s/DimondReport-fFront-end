@@ -64,7 +64,7 @@ export default function AddDataModal(props) {
         <Modal show={props.show} handlecloseuppad={props.handlecloseData}>
             <Modal.Header>
                 <Modal.Title>Add New Data</Modal.Title>
-                <Button style={{ border: 'none'}}><CloseOutlined /></Button>
+                <div onClick={props.handleCloseData}><CloseOutlined /></div>
 
             </Modal.Header>
             <Modal.Body>
