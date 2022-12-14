@@ -1,4 +1,4 @@
-import { Button, DatePicker, Input, notification, Select } from 'antd';
+import { Button, DatePicker, Input, notification, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
@@ -13,6 +13,7 @@ export default function AddDataModal(props) {
     const [zada, setZada] = useState("")
     const [extraZada, setExtraZada] = useState("")
     const [empList, setEmpList] = useState([])
+    const [loader, setLoader] = useState(false)
     useEffect(() => {
         getWorkerList().then(x => {
             setEmpList(x.data.data)
@@ -28,7 +29,7 @@ export default function AddDataModal(props) {
         setExtraZada("")
     }, [props.show])
 
-    const handleChange = () => {
+    const handleChange = async () => {
         let params = {
             "workerid": empName,
             "process": process,
@@ -38,8 +39,8 @@ export default function AddDataModal(props) {
             "extraJada": extraZada,
             "total": Number(patla) + Number(zada) + Number(extraZada),
         }
-
-        addReport(params).then(
+        setLoader(true)
+        await addReport(params).then(
             notification["success"]({
                 message: 'Report Added Successfully'
             })
@@ -49,7 +50,7 @@ export default function AddDataModal(props) {
             })
         })  
         // window.location.reload(false)
-
+        setLoader(false)
         props.handleCloseData()
     }
 
@@ -162,7 +163,7 @@ export default function AddDataModal(props) {
                     Close
                 </Button>
                 <Button variant="primary" onClick={handleChange}>
-                    Add
+                    Add {loader ? <> &nbsp; <Spin size="small"/></> : "" }
                 </Button>
             </Modal.Footer>
         </Modal>

@@ -1,4 +1,4 @@
-import { Button, notification, Select } from 'antd';
+import { Button, notification, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
@@ -27,7 +27,7 @@ export default function MonthReport(props) {
     const [report, setReport] = useState();
     const [status, setStatus] = useState('pending');
     const [empList, setEmpList] = useState([])
-
+    const [loader, setLoader] = useState(false)
     useEffect(() => {
         getWorkerList().then(x => {
             setEmpList(x.data.data)
@@ -40,6 +40,7 @@ export default function MonthReport(props) {
             month: month,
             workerid: empName,
         }
+        setLoader(true)
         await GetMonthReport(params).then((res) => {
             notification["success"]({
                 message: res?.data.message,
@@ -52,7 +53,7 @@ export default function MonthReport(props) {
                 message: res?.response?.data?.message,
             })
         })
-
+        setLoader(false)
         props.handleCloseMonthReport()
     }
 
@@ -128,7 +129,7 @@ export default function MonthReport(props) {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleChange}>
-                        Report
+                        Report {loader ? <> &nbsp; <Spin size="small"/> </> : "" }
                     </Button>
                 </Modal.Footer>
             </Modal>

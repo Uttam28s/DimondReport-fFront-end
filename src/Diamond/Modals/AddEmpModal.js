@@ -1,4 +1,4 @@
-import { Button, DatePicker, Input, notification, Select } from 'antd';
+import { Button, DatePicker, Input, notification, Select, Spin } from 'antd';
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { CloseOutlined } from '@mui/icons-material';
@@ -9,19 +9,22 @@ export default function AddEmpModal(props) {
     const [date, setDate] = useState("");
     const [name, setName] = useState("");
     const [process, setProcess] = useState("")
+    const [loader, setLoader] = useState(false)
     const handleSubmit = () => {
+        setLoader(true)
         addWorkerName(name, process).then((res) => {
             notification["success"]({
                 message: "Worker Added Successfully",
             })
             window.location.reload(false);
         }
-        ).catch((res) => {
+        ).catch((err) => {
             notification["error"]({
                 message: "Name Already Exist",
             })
         }
         )
+        setLoader(false)
         setName("")
         setDate("")
         props.handleClose()
@@ -99,7 +102,7 @@ export default function AddEmpModal(props) {
                     Close
                 </Button>
                 <Button variant="primary" disabled={name == "" || date == "" || process === ""} onClick={handleSubmit} >
-                    Add
+                    Add {loader ? <> &nbsp; <Spin size="small"/> </> : "" }
                 </Button>
             </Modal.Footer>
         </Modal>

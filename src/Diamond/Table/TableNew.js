@@ -1,4 +1,4 @@
-import { Button, DatePicker, notification, Select, Table } from 'antd';
+import { Button, DatePicker, notification, Select, Spin, Table } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -95,6 +95,7 @@ const TableNew = (props) => {
         patlaTotal: 0,
         extraZadaTotal: 0
     })
+    const [loader,setLoader] = useState(false)
     const navigate = useNavigate();
     useEffect(() => {
         getWorkerList().then(x => {
@@ -137,6 +138,7 @@ const TableNew = (props) => {
             })
             return
         }
+        setLoader(true)
         getEmployeeReport(params).then(x => {
             const report = x.data
             if(report.length === 0){
@@ -158,6 +160,8 @@ const TableNew = (props) => {
                 setData(report)
             });
         });
+        setLoader(false)
+
     }
 
     return (
@@ -165,7 +169,6 @@ const TableNew = (props) => {
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <h4 style={{ margin: "10px" }}>Diamond</h4>
                 <Button onClick={() => navigate("/diamond")}>Back</Button>
-
             </nav>
             <div className='semiTitle'>Emp Record</div>
             <div className="p-2 bd-highlight" style={{ display: "flex" }}>
@@ -190,7 +193,7 @@ const TableNew = (props) => {
                     from: start,
                     to: end,
                     emp_id: employee
-                })}>search</button>
+                })}>search {loader ? <> &nbsp; <Spin size="small" color='white' /> </> : "" }</button>
             </div>
 
             <Table

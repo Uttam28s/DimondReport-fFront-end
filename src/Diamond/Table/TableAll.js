@@ -33,6 +33,12 @@ const columns = [
         key: '_id',
         width: 40,
       },
+      {
+        title: 'Price',
+        dataIndex: 'patlaPrice',
+        key: '_id',
+        width: 40,
+      },
     ],
   },
   {
@@ -45,12 +51,12 @@ const columns = [
         key: '_id',
         width: 40,
       },
-      // {
-      //   title: 'Price',
-      //   dataIndex: 'price',
-      //   key: '_id',
-      //   width: 40,
-      // }
+      {
+        title: 'Price',
+        dataIndex: 'jadaPrice',
+        key: '_id',
+        width: 40,
+      }
     ],
   },
   {
@@ -63,12 +69,12 @@ const columns = [
         key: '_id',
         width: 40,
       },
-      // {
-      //   title: 'Price',
-      //   dataIndex: 'price[]',
-      //   key: '_id',
-      //   width: 40,
-      // }
+      {
+        title: 'Price',
+        dataIndex: 'extraJadaPrice',
+        key: '_id',
+        width: 40,
+      }
     ],
   },
   {

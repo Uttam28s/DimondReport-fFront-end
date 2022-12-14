@@ -1,4 +1,4 @@
-import { Button, Input, notification, Select } from 'antd';
+import { Button, Input, notification, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
@@ -9,6 +9,7 @@ export default function UpdatePriceModal(props) {
     const [zada, setZada] = useState("")
     const [extraZada, setExtraZada] = useState("")
     const [process, setProcess] = useState("")
+    const [loader, setLoader] = useState(false)
     const { Option } = Select;
 
     useEffect(() => {
@@ -40,17 +41,21 @@ export default function UpdatePriceModal(props) {
                 "price": extraZada
             }
         ]
-
+        setLoader(true)
         updatePrice(params[0]).then(x => {
             updatePrice(params[1]).then(x => {
                 updatePrice(params[2]).then(x => {
                     notification["success"]({
                         message: 'Price Updated Successfully',
                     })
-
+                    setLoader(true)
                 });
             });
-        });
+        }).catch((err) => {
+            notification["error"]({
+                message: 'Something Went Wrong',
+            })
+        })
         setZada("")
         setExtraZada("")
         setPatla("")
@@ -140,7 +145,7 @@ export default function UpdatePriceModal(props) {
                     Close
                 </Button>
                 <Button variant="primary" disabled={process == "" || zada == "" || extraZada == "" || patla == ""} onClick={handleChange}>
-                    Update
+                    Update {loader ? <> &nbsp; <Spin size="small"/></> : "" }
                 </Button>
             </Modal.Footer>
         </Modal>

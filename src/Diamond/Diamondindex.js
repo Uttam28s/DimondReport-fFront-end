@@ -1,17 +1,28 @@
-import { Button, DatePicker } from 'antd';
+import { Button, DatePicker, notification, Spin } from 'antd';
 import React, { useEffect, useState } from 'react'
 import Header from './Header';
 import { getReport, getWorkerList, } from './ApiConn/Api'
 import TableAll from './Table/TableAll';
 import { findIndex } from 'lodash';
 import moment from 'moment';
+import styled from 'styled-components';
 
+
+const Loader = styled.div`
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
+`
 const DiamondIndex = () => {
     const [start, setStart] = useState()
     const [end, setEnd] = useState()
     const [tableShow, setTableShow] = useState(1)
     const [data, setData] = useState([])
     const [process, setProcess] = useState()
+    const [loader, setLoader] = useState(true)
     let params = {}
 
     useEffect(() => {
@@ -19,6 +30,8 @@ const DiamondIndex = () => {
             params = { process: "taliya", from: "", to: "" }
             setProcess('taliya')
         }
+        setLoader(true)
+        
         getReport(params).then(x => {
             const report = x.data.data
             getWorkerList().then(x => {
@@ -33,11 +46,19 @@ const DiamondIndex = () => {
                     }
                 }
                 setData(report)
+                setLoader(false)
+
             });
-        });
+        }).catch((err) => {
+            notification["error"]({
+                message: 'Something Went Wrong',
+            })
+        })
+
     }, [])
 
     const handleReport = (params) => {
+        setLoader(true)
         getReport(params).then(x => {
             const report = x.data.data
             getWorkerList().then(x => {
@@ -52,8 +73,13 @@ const DiamondIndex = () => {
                     }
                 }
                 setData(report)
+                setLoader(false)
             })
-        });
+        }).catch((err) => {
+            notification["error"]({
+                message: 'Something Went Wrong',
+            })
+        })
     }
     
     const onClickHandle = (a) => {
@@ -72,22 +98,6 @@ const DiamondIndex = () => {
         params['to'] = ""
         setProcess(params['process'])
         handleReport(params)
-        // getReport(params).then(x => {
-        //     const report = x.data.data
-        //     getWorkerList().then(x => {
-        //         let data = x.data.data
-        //         for (let j = 0; j < report.length; j++) {
-        //             for (let i = 0; i < data.length; i++) {
-        //                 if (report[j].workerid == data[i]._id) {
-        //                     report[j].index = j + 1
-        //                     report[j].name = data[i].name
-        //                     report[j].date = (report[j].date).slice(0,10)
-        //                 }
-        //             }
-        //         }
-        //         setData(report)
-        //     });
-        // });
         setTableShow(a)
     }
 
@@ -124,6 +134,10 @@ const DiamondIndex = () => {
                 }} style={{ margin: "10px" }} />
             </div>
             <Header />
+{            console.log("🚀 ~ file: Diamondindex.js:148 ~ DiamondIndex ~ loader", loader)
+}            {loader ?
+             <Loader > &nbsp; <Spin size="large"/></Loader>
+            :
             <div style={{ margin: "10px" }}>
                 {(tableShow == 1) ? <TableAll data={data} title="Taliya Data" /> : ""}
                 {(tableShow == 2) ? <TableAll data={data} title="Mathala Data" /> : ""}
@@ -132,6 +146,7 @@ const DiamondIndex = () => {
                 {(tableShow == 5) ? <TableAll data={data} title="Table Data" /> : ""}
                 
             </div>
+            }
 
         </>
     );

@@ -1,5 +1,7 @@
 import axios from 'axios'
-const apiURL = 'https://salary-report-api.onrender.com/api/diamond'
+// const apiURL = 'https://salary-report-api.onrender.com/api/diamond'
+const apiURL = 'http://localhost:3003/api/diamond'
+
 
 // to Add New Worker
 export const addWorkerName = async (name,process) => {
@@ -58,9 +60,7 @@ export const getEmployeeReport = async (params) => {
 }
 
 export const GetMonthReport = async (params) =>{
-
   const response = await axios.get(`${apiURL}/salary/get?&workerid=${params['workerid']}&month=${params['month']}`);
-
   return response;
 }
 

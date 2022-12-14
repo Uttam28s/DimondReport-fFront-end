@@ -40,7 +40,7 @@ const Header = () => {
         <div>
             <div className=" p-2 bd-highlight" style={{ textAlign: "end" }} >
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleShow}>Add Worker</button>
-                <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowAdd}>Add Report</button>
+                <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowAdd}>Add Data</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowPrice}>Update Price</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowUppad}>Uppad</button>
                 <button type="button" className="btn btn-secondary funcbtn" onClick={handleMonthReport}>Month Report</button>
