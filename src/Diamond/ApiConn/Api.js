@@ -1,5 +1,5 @@
 import axios from 'axios'
-const apiURL = 'http://localhost:3003/api/diamond'
+const apiURL = 'https://salary-report-api.onrender.com/api/diamond'
 
 // to Add New Worker
 export const addWorkerName = async (name,process) => {
