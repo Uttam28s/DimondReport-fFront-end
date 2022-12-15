@@ -57,7 +57,7 @@ export default function AddDataModal(props) {
     const employeechange = (value) => {
         setEmpName(value)
         const result = empList.filter((emp) => {
-            return emp._id == value;
+            return emp._id === value;
         });
         setProcess(result[0].process)
     }

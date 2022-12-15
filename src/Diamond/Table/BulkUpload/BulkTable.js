@@ -27,16 +27,11 @@ const BulkTable = (props) => {
       key: "index",
       width: 40,
       render: (text, record, index) => {
-        console.log("🚀 ~ file: BulkTable.js:35 ~ BulkTable ~ record", record);
         return (
           <Input
             type="number"
             onChange={(e) => {
               onChangeHandler("patla", e.target.value, record.index);
-              console.log(
-                "🚀 ~ file: BulkTable.js:32 ~ BulkTable ~  e.target.value",
-                e.target.value
-              );
             }}
           />
         );
@@ -78,7 +73,6 @@ const BulkTable = (props) => {
       key: "index",
       width: 40,
       render: (text, record, index) => {
-        console.log("🚀 ~ file: BulkTable.js:76 ~ BulkTable ~ record", record);
         return <span>{total}</span>;
       },
     },

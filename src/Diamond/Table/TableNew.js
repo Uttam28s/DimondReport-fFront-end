@@ -150,7 +150,7 @@ const TableNew = (props) => {
                 let data = x.data.data
                 for (let j = 0; j < report.length; j++) {
                     for (let i = 0; i < data.length; i++) {
-                        if (report[j].workerid == data[i]._id) {
+                        if (report[j].workerid === data[i]._id) {
                             report[j].index = j + 1
                             report[j].name = data[i].name
                             report[j].date = (report[j].date).slice(0,10)
@@ -203,7 +203,7 @@ const TableNew = (props) => {
                 size="middle"
             />
              <ComponentToPrint price={price} totalSalary={totalSalary} patlaPcs={patlaPcs} extraJadaPcs={extraJadaPcs} zadaPcs={zadaPcs} />
-             {data.length > 0 && <PrintComponenEmployee EmployeeName={empList?.find(d => d._id == employee)?.name} price={price} totalSalary={totalSalary} patlaPcs={patlaPcs} extraJadaPcs={extraJadaPcs} zadaPcs={zadaPcs} from={start} to={end} />}
+             {data.length > 0 && <PrintComponenEmployee EmployeeName={empList?.find(d => d._id === employee)?.name} price={price} totalSalary={totalSalary} patlaPcs={patlaPcs} extraJadaPcs={extraJadaPcs} zadaPcs={zadaPcs} from={start} to={end} />}
         </>
 
     )

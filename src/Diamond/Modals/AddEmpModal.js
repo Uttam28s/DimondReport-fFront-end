@@ -101,7 +101,7 @@ export default function AddEmpModal(props) {
                 <Button variant="secondary" onClick={props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" disabled={name == "" || date == "" || process === ""} onClick={handleSubmit} >
+                <Button variant="primary" disabled={name === "" || date === "" || process === ""} onClick={handleSubmit} >
                     Add {loader ? <> &nbsp; <Spin size="small"/> </> : "" }
                 </Button>
             </Modal.Footer>

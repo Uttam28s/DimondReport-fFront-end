@@ -108,10 +108,10 @@ export default function AddUppadModal(props) {
         </Button>
         <Button
           variant="primary"
-          disabled={empName == "" || date == "" || ammount == ""}
+          disabled={empName === "" || date === "" || ammount === ""}
           onClick={handleSubmit}
         >
-          Update {loader ? <> &nbsp; <Spin size="small"/> </> : "" }
+          Add {loader ? <> &nbsp; <Spin size="small"/> </> : "" }
         </Button>
       </Modal.Footer>
     </Modal>

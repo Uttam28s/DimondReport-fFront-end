@@ -144,7 +144,7 @@ export default function UpdatePriceModal(props) {
                 <Button variant="secondary" onClick={props.handleClosePrice}>
                     Close
                 </Button>
-                <Button variant="primary" disabled={process == "" || zada == "" || extraZada == "" || patla == ""} onClick={handleChange}>
+                <Button variant="primary" disabled={process === "" || zada === "" || extraZada === "" || patla === ""} onClick={handleChange}>
                     Update {loader ? <> &nbsp; <Spin size="small"/></> : "" }
                 </Button>
             </Modal.Footer>
