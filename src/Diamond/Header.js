@@ -6,9 +6,11 @@ import UpdatePriceModal from './Modals/UpdatePriceModal';
 import AddUppadModal from './Modals/AddUppadModal';
 import MonthReport from './Modals/MonthleyReport';
 import { useNavigate } from "react-router-dom";
+import styled from '@emotion/styled';
 
-
-
+const Button = styled.button`
+    width: fit-content;
+`
 const Header = () => {
     let navigate = useNavigate();
 
@@ -39,13 +41,15 @@ const Header = () => {
     return (
         <div>
             <div className=" p-2 bd-highlight" style={{ textAlign: "end" }} >
-                <button type="button" className="btn btn-secondary funcbtn" onClick={handleShow}>Add Worker</button>
-                <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowAdd}>Add Data</button>
-                <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowPrice}>Update Price</button>
-                <button type="button" className="btn btn-secondary funcbtn" onClick={handleShowUppad}>Uppad</button>
-                <button type="button" className="btn btn-secondary funcbtn" onClick={handleMonthReport}>Month Report</button>
-                <button type="button" className="btn btn-secondary funcbtn" onClick={handleBulkUpload}>Bulk Upload</button>
-                <button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./empReport")}}>Emp. Record</button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShow}>Add Worker</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShowAdd}>Add Data</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShowPrice}>Update Price</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShowUppad}>Uppad</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleMonthReport}>Month Report</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleBulkUpload}>Bulk Upload</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./empReport")}}>Emp. Record</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./monthwisereport")}}>Last Month Report</Button>
+                { (localStorage.getItem("role") === "SuperAdmin") ? <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./user")}}>Users</Button>: ""}
             </div>
             <AddEmpModal show={show} onHide={() => setShow(false)} handleClose={handleClose} />
             <AddDataModal show={dataAdd} onHide={() => setDataAdd(false)} handleCloseData={handleCloseData} />

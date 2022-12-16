@@ -91,7 +91,8 @@ const BulkTable = (props) => {
       notification["success"]({
         message: res?.data?.message,
       });
-    }).catch((err) => {
+      window.location.reload(false)
+    }).catch(() => {
         notification["error"]({
             message: "Somthing went Wrong",
           });
@@ -122,8 +123,7 @@ const BulkTable = (props) => {
         Submit{" "}
         {loader ? (
           <>
-            {" "}
-            &nbsp; <Spin size="small" />{" "}
+            &nbsp; <Spin size="small" />
           </>
         ) : (
           ""

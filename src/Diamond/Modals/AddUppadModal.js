@@ -13,7 +13,7 @@ export default function AddUppadModal(props) {
   const [empList, setEmpList] = useState([]);
   const [loader, setLoader] = useState(false)
   useEffect(() => {
-    getWorkerList().then((x) => {
+    getWorkerList(localStorage.getItem('AdminId')).then((x) => {
       setEmpList(x.data.data);
     });
   }, []);

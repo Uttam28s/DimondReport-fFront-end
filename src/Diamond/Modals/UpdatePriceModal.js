@@ -23,22 +23,25 @@ export default function UpdatePriceModal(props) {
     }, [props.show])
 
     const handleChange = () => {
-
+        let adminId = localStorage.getItem("AdminId")
         let params = [
             {
                 "process": process,
                 "subcategory": "patlaPrice",
-                "price": patla
+                "price": patla,
+                "adminId" : adminId
             },
             {
                 "process": process,
                 "subcategory": "jadaPrice",
-                "price": zada
+                "price": zada,
+                "adminId" : adminId
             },
             {
                 "process": process,
                 "subcategory": "extrajadaPrice",
-                "price": extraZada
+                "price": extraZada,
+                "adminId" : adminId
             }
         ]
         setLoader(true)
@@ -48,7 +51,7 @@ export default function UpdatePriceModal(props) {
                     notification["success"]({
                         message: 'Price Updated Successfully',
                     })
-                    setLoader(true)
+                    setLoader(false)
                 });
             });
         }).catch((err) => {

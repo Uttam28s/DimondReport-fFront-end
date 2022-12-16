@@ -1,8 +1,8 @@
-import { Button, DatePicker, notification, Select, Spin, Table } from 'antd';
+import { DatePicker, notification, Select, Spin, Table } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getEmployeeReport, getWorkerList } from '../ApiConn/Api';
+import {MainTitle} from '../Common/common';
 import PrintComponenEmployee, { ComponentToPrint } from './EmpReportPrint';
 
 const columns = [
@@ -96,9 +96,8 @@ const TableNew = (props) => {
         extraZadaTotal: 0
     })
     const [loader,setLoader] = useState(false)
-    const navigate = useNavigate();
     useEffect(() => {
-        getWorkerList().then(x => {
+        getWorkerList(localStorage.getItem('AdminId')).then(x => {
             setEmpList(x.data.data)
         });
     }, [])
@@ -146,7 +145,7 @@ const TableNew = (props) => {
                     message: 'No Data Found',
                 })
             }
-            getWorkerList().then(x => {
+            getWorkerList(localStorage.getItem('AdminId')).then(x => {
                 let data = x.data.data
                 for (let j = 0; j < report.length; j++) {
                     for (let i = 0; i < data.length; i++) {
@@ -166,10 +165,7 @@ const TableNew = (props) => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <h4 style={{ margin: "10px" }}>Diamond</h4>
-                <Button onClick={() => navigate("/diamond")}>Back</Button>
-            </nav>
+            <MainTitle />
             <div className='semiTitle'>Emp Record</div>
             <div className="p-2 bd-highlight" style={{ display: "flex" }}>
                 <DatePicker disabledDate={(current) => current.isAfter(moment())} onChange={(date, dateString) => { setStart(dateString) }} style={{ margin: "10px" }} />
