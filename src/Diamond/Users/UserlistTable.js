@@ -34,7 +34,7 @@ const UserlistTable = (props) => {
         width: "12%",
       },
       {
-        title: 'User',
+        title: 'Role',
         dataIndex: 'role',
         key: '_id',
         width: "12%",
@@ -53,7 +53,7 @@ const UserlistTable = (props) => {
           },
       },
       {
-        title: 'Flag',
+        title: 'Delete',
         dataIndex: 'flag',
         key: '_id',
         width: "10%",

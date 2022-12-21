@@ -1,6 +1,6 @@
 import { Button, notification, Select, Spin } from "antd";
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FetchMonthData } from "../../ApiConn/Api";
 import { MainTitle } from "../../Common/common";
@@ -36,6 +36,7 @@ const FinalTotalDiv = styled.div`
   width: 10%;
   border: 1px solid lightgrey;
   margin-bottom: 20px;
+  padding-left: 10px;
 `;
 
 const FinalTotal = [
@@ -68,6 +69,7 @@ const TotalCalculateDiv = styled.div`
   color: blue;
   width: 10%;
   border: 1px solid lightgrey;
+  padding-left: 10px;
 `;
 
 const Heading = styled.h3`

@@ -9,7 +9,6 @@ import TableNew from "./Diamond/Table/TableNew";
 import LastMonthReport from "./Diamond/Table/LastMonthReport/LastMonthReport";
 import Users from "./Diamond/Users/users";
 import Login from "./Diamond/Login/Login";
-import PageNotFound from "./Diamond/PageNotFound";
 
 function App() {
   const [ authLogin, setAuthLogin] = useState(false)
@@ -39,9 +38,8 @@ function App() {
             </>
            ) : ( 
              <>
-              <Route path={"/"} element={<Navigate to="/login" />} />
               <Route path={"/login"} element={<Login setAuthLogin={setAuthLogin} />} />
-             <Route path="*" element={<PageNotFound />} />
+             <Route path="*" element={<Navigate to="/login" />} />
             </>
            )} 
         </Routes>
