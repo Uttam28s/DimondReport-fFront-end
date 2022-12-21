@@ -42,6 +42,24 @@ const columns = [
     ],
   },
   {
+    title: 'Extra Patla',
+    fixed: 'center',
+    children: [
+      {
+        title: 'Pcs.',
+        dataIndex: 'extraPatla',
+        key: '_id',
+        width: 40,
+      },
+      {
+        title: 'Price',
+        dataIndex: 'extraPatlaPrice',
+        key: '_id',
+        width: 40,
+      }
+    ],
+  },
+  {
     title: 'Zada',
     fixed: 'center',
     children: [
@@ -77,6 +95,7 @@ const columns = [
       }
     ],
   },
+  
   {
     title: 'Total Pcs.',
     dataIndex: 'total',

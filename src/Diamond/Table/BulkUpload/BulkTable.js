@@ -38,6 +38,22 @@ const BulkTable = (props) => {
       },
     },
     {
+      title: "Extra Patla Pcs.",
+      dataIndex: "extraPatla",
+      key: "index",
+      width: 40,
+      render: (text, record, index) => {
+        return (
+          <Input
+            type="number"
+            onChange={(e) => {
+              onChangeHandler("extraPatla", e.target.value, record.index);
+            }}
+          />
+        );
+      },
+    },
+    {
       title: "Jada Pcs.",
       dataIndex: "jada",
       key: "index",
@@ -109,6 +125,7 @@ const BulkTable = (props) => {
     let newname = name;
     data[id][newname] = value;
     data[id]["total"] =
+      Number(data[id]["extraPatla"]) +
       Number(data[id]["extraJada"]) +
       Number(data[id]["jada"]) +
       Number(data[id]["patla"]);

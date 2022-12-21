@@ -24,10 +24,12 @@ const DiamondIndex = () => {
   let params = {};
 
   const getReportFunc = (params) => {
+    let id = localStorage.getItem("AdminId")
+    params["adminId"] = id
     getReport(params)
       .then((x) => {
         const report = x.data.data;
-        getWorkerList(localStorage.getItem('AdminId')).then((x) => {
+        getWorkerList(id).then((x) => {
             let data = x.data.data;
             for (let j = 0; j < report.length; j++) {
               for (let i = 0; i < data.length; i++) {
@@ -68,6 +70,7 @@ const DiamondIndex = () => {
     }
     getReportFunc(params)
   }, []);
+  
 
   const handleReport = (params) => {
     setLoader(true);

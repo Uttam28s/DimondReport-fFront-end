@@ -29,8 +29,9 @@ export default function MonthReport(props) {
     const [empList, setEmpList] = useState([])
     const [loader, setLoader] = useState(false)
     useEffect(() => {
-        getWorkerList(localStorage.getItem('AdminId')).then(x => {
-            setEmpList(x.data.data)
+        let id = localStorage.getItem("AdminId")
+        getWorkerList(id).then((x) => {
+          setEmpList(x.data.data);
         });
     }, [])
 

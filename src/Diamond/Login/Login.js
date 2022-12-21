@@ -18,26 +18,31 @@ const FormDiv = styled(Form)`
 export default function Login(props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
-  
-  const  onClickHandle = async () =>  {
-      let res = await LoginConfirm({ password : password, name : name})
-      if(res.data){ 
-        notification['success']({
-            message : res.success
-        })
-        props.setAuthLogin(true)
-        navigate('/diamond')
-        localStorage.setItem('authLogin',true)
-        localStorage.setItem('role', res?.data?.role)
-        localStorage.setItem('AdminId', res?.data?._id)
+  const navigate = useNavigate();
 
+  const onClickHandle = async () => {
+    let res = await LoginConfirm({ password: password, name: name });
+    if (res.data) {
+      localStorage.setItem("authLogin", true);
+      localStorage.setItem("role", res?.data?.role);
+      localStorage.setItem("AdminId", res?.data?._id);
+      notification["success"]({
+        message: res.success,
+      });
+
+      props.setAuthLogin(true);
+      let role = localStorage.getItem('role')
+      if(role === "SuperAdmin"){
+        navigate("/diamond/user");
       }else{
-        notification['error']({
-            message : res?.error
-        })
+        navigate("/diamond");
       }
-  }
+    } else {
+      notification["error"]({
+        message: res?.error,
+      });
+    }
+  };
 
   return (
     <div>
@@ -73,10 +78,7 @@ export default function Login(props) {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <Button
-                    className="btn btn-lg"
-                    type="submit"
-                  >
+                  <Button className="btn btn-lg" type="submit">
                     Login
                   </Button>
                 </div>

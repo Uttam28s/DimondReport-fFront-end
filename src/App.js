@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import Index from "./Componants/Index";
-import { Navbar } from "./Navbar";
 import DiamondIndex from "./Diamond/Diamondindex";
 import BulkUpload from "./Diamond/Table/BulkUpload/BulkUpload";
 import MonthReportScreen from "./Diamond/MonthReportScreen";
@@ -10,12 +9,12 @@ import TableNew from "./Diamond/Table/TableNew";
 import LastMonthReport from "./Diamond/Table/LastMonthReport/LastMonthReport";
 import Users from "./Diamond/Users/users";
 import Login from "./Diamond/Login/Login";
+import PageNotFound from "./Diamond/PageNotFound";
 
 function App() {
   const [ authLogin, setAuthLogin] = useState(false)
   useEffect(() => {
     let status = localStorage.getItem('authLogin')
-    console.log("🚀 ~ file: App.js:18 ~ useEffect ~ data", status)
     setAuthLogin(status || false)
   },[])
   return (
@@ -38,12 +37,13 @@ function App() {
               <Route path={"/diamond/user"} element={<Users />} />
               <Route path={"/qrcode"} element={<Index />} />
             </>
-          ) : (
-            <>
+           ) : ( 
+             <>
               <Route path={"/"} element={<Navigate to="/login" />} />
               <Route path={"/login"} element={<Login setAuthLogin={setAuthLogin} />} />
+             <Route path="*" element={<PageNotFound />} />
             </>
-          )}
+           )} 
         </Routes>
       </HashRouter>
     </>

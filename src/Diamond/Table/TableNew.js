@@ -97,8 +97,9 @@ const TableNew = (props) => {
     })
     const [loader,setLoader] = useState(false)
     useEffect(() => {
-        getWorkerList(localStorage.getItem('AdminId')).then(x => {
-            setEmpList(x.data.data)
+        let id = localStorage.getItem("AdminId")
+        getWorkerList(id).then((x) => {
+          setEmpList(x.data.data);
         });
     }, [])
 
@@ -145,7 +146,8 @@ const TableNew = (props) => {
                     message: 'No Data Found',
                 })
             }
-            getWorkerList(localStorage.getItem('AdminId')).then(x => {
+            let id = localStorage.getItem("AdminId")
+            getWorkerList(id).then(x => {
                 let data = x.data.data
                 for (let j = 0; j < report.length; j++) {
                     for (let i = 0; i < data.length; i++) {

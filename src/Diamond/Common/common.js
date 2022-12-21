@@ -12,7 +12,8 @@ const MainTitle = (props) => {
       )}
       {
         !props?.logoutHidden ?
-        <Button onClick={() => { 
+        <Button style={{ marginLeft: "10px" }} onClick={() => { 
+          
           localStorage.clear()
           navigate("/login") 
           window.location.reload(false)

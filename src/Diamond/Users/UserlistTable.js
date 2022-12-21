@@ -47,8 +47,8 @@ const UserlistTable = (props) => {
         render: (text, record, index) => {
             return (
               record.flag === true ? 
-              <ButtonforchangeFlag onClick={() => handlePaidButton(record?._id,false)}>True</ButtonforchangeFlag>
-              :<ButtonforchangeFlag onClick={() => handlePaidButton(record?._id,true)}>False</ButtonforchangeFlag>
+              <ButtonforchangeFlag disabled={record.role ==="SuperAdmin"} onClick={() => handlePaidButton(record?._id,false)}>True</ButtonforchangeFlag>
+              :<ButtonforchangeFlag disabled={record.role ==="SuperAdmin"} onClick={() => handlePaidButton(record?._id,true)}>False</ButtonforchangeFlag>
             );
           },
       },
@@ -59,7 +59,7 @@ const UserlistTable = (props) => {
         width: "10%",
         render: (text, record, index) => {
             return (
-                <Button  type='button' onClick={() => handleDelete(record._id)} >Delete</Button>
+                <Button disabled={record.role ==="SuperAdmin"} type='button' onClick={() => handleDelete(record._id)} >Delete</Button>
             );
           },
       }

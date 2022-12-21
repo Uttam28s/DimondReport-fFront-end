@@ -12,12 +12,15 @@ export default function AddDataModal(props) {
     const [patla, setPatla] = useState("")
     const [zada, setZada] = useState("")
     const [extraZada, setExtraZada] = useState("")
+    const [extraPatla, setExtraPatla] = useState("")
     const [empList, setEmpList] = useState([])
     const [loader, setLoader] = useState(false)
+    
     useEffect(() => {
-        getWorkerList(localStorage.getItem('AdminId')).then(x => {
-            setEmpList(x.data.data)
-        });
+        let id = localStorage.getItem("AdminId")
+        getWorkerList(id).then((x) => {
+          setEmpList(x.data.data);
+        }); 
     }, [])
 
     useEffect(() => {
@@ -27,17 +30,20 @@ export default function AddDataModal(props) {
         setPatla("")
         setZada("")
         setExtraZada("")
+        setExtraPatla("")
     }, [props.show])
 
     const handleChange = async () => {
         let params = {
             "workerid": empName,
+            "adminId" : localStorage.getItem("AdminId"),
             "process": process,
             "date": date,
             "patla": patla,
+            "extraPatla" : extraPatla,
             "jada": zada,
             "extraJada": extraZada,
-            "total": Number(patla) + Number(zada) + Number(extraZada),
+            "total": Number(patla) + Number(zada) + Number(extraZada) + Number(extraPatla),
         }
         setLoader(true)
         await addReport(params).then(
@@ -146,6 +152,10 @@ export default function AddDataModal(props) {
                         <div className='row '>
                             <div className='col-6'>  Patla : </div>
                             <div className='col-6'><Input type='number' onChange={(e) => setPatla(e.target.value)} /><br /></div>
+                        </div>
+                        <div className='row mt-3'>
+                            <div className='col-6'>     Extra-Patla  :</div>
+                            <div className='col-6'><Input type='number' onChange={(e) => setExtraPatla(e.target.value)} /><br /></div>
                         </div>
                         <div className='row mt-3'>
                             <div className='col-6'>   Zada :</div>

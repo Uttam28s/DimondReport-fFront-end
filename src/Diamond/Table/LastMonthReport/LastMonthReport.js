@@ -3,7 +3,8 @@ import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { FetchMonthData } from "../../ApiConn/Api";
-import {MainTitle} from "../../Common/common";
+import { MainTitle } from "../../Common/common";
+import AdminRecordTable from "./AdminRecordTable";
 import LastMonthReportTable from "./LastMonthReportTable";
 
 const Loader = styled.div`
@@ -88,8 +89,8 @@ const TotalCalculate = (props) => {
 };
 
 const PrintCell = styled.div`
-    width: 100px;
-    justify-content: flex-end;
+  width: 100px;
+  justify-content: flex-end;
 `;
 
 const Container = styled.div`
@@ -99,8 +100,6 @@ const Container = styled.div`
     }
   }
 `;
-
-
 
 const LastMonthReport = () => {
   const { Option } = Select;
@@ -113,7 +112,7 @@ const LastMonthReport = () => {
   const [month, setMonth] = useState(moment().month() - 1);
   const [total, setTotal] = useState("");
   const [showTables, setShowTables] = useState(true);
-
+  const [isAdmin, setIsAdmin] = useState(false);
   const Tables = [
     {
       data: taliyaData || [],
@@ -138,7 +137,15 @@ const LastMonthReport = () => {
   ];
 
   useEffect(() => {
+    let role = localStorage.getItem("role");
+    if (role === "SuperAdmin") {
+      setIsAdmin(true);
+    }
+  }, []);
+
+  useEffect(() => {
     setLoader(true);
+
     FetchMonthData(month)
       .then((res) => {
         setTaliyaData(res.TaliyaData);
@@ -175,71 +182,82 @@ const LastMonthReport = () => {
   return (
     <>
       <MainTitle />
-      <Heading>Employee {MonthName[month + 1]} Month Data</Heading>
-      <Container className="col-6 d-flex">
-        <PrintCell className="col-4">
-          <Select
-            showSearch
-            style={{ width: "100%" }}
-            placeholder="select month"
-            value={month}
-            onChange={(value) => setMonth(value)}
-            optionFilterProp="children"
-          >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((ele, index) => {
-              return (
-                <Option key={index} value={index}>
-                  {MonthName[ele]}
-                </Option>
-              );
-            })}
-          </Select>
-        </PrintCell>
-        <PrintCell className="col-2">
-          <Button onClick={printItems}>
-            Print
-          </Button>
-        </PrintCell>
-      </Container>
-
-      {loader ? (
-        <Loader>
-          {" "}
-          &nbsp; <Spin size="large" />
-        </Loader>
+      {isAdmin ? (
+        <>
+        <AdminRecordTable/> 
+        </>
       ) : (
         <>
-          {showTables ? (
-            <>
-              {Tables.map((ele) => {
-                if (ele.data.length !== 0) {
+          <Heading>Employee {MonthName[month + 1]} Month Data</Heading>
+          <Container className="col-6 d-flex">
+            <PrintCell className="col-4">
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                placeholder="select month"
+                value={month}
+                onChange={(value) => setMonth(value)}
+                optionFilterProp="children"
+              >
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((ele, index) => {
                   return (
-                    <>
-                      <LastMonthReportTable data={ele.data} title={ele.title} />
-                      <div className="d-flex p-10 ">
-                        <div style={{ width: "6%" }}></div>
-                        <div style={{ width: "12%" }}>Total : </div>
-                        {semiCalculate.map((i) => {
-                          return <TotalCalculate data={ele.data} title={i} />;
-                        })}
-                        <div style={{ width: "10%" }}></div>
-                      </div>
-                    </>
+                    <Option key={index} value={index}>
+                      {MonthName[ele]}
+                    </Option>
                   );
-                }
-              })}
-              <br />
-              <div className="d-flex p-10">
-                <div style={{ width: "6%" }}></div>
-                <div style={{ width: "12%" }}>Final Total : </div>
-                {FinalTotal.map((ele) => {
-                  return <FinalTotalDiv>{total[ele]}</FinalTotalDiv>;
                 })}
-                <div style={{ width: "10%" }}></div>
-              </div>
-            </>
+              </Select>
+            </PrintCell>
+            <PrintCell className="col-2">
+              <Button onClick={printItems}>Print</Button>
+            </PrintCell>
+          </Container>
+
+          {loader ? (
+            <Loader>
+              {" "}
+              &nbsp; <Spin size="large" />
+            </Loader>
           ) : (
-            <DataNoFoundBlock>No Data Found</DataNoFoundBlock>
+            <>
+              {showTables ? (
+                <>
+                  {Tables.map((ele) => {
+                    if (ele.data.length !== 0) {
+                      return (
+                        <>
+                          <LastMonthReportTable
+                            data={ele.data}
+                            title={ele.title}
+                          />
+                          <div className="d-flex p-10 ">
+                            <div style={{ width: "6%" }}></div>
+                            <div style={{ width: "12%" }}>Total : </div>
+                            {semiCalculate.map((i) => {
+                              return (
+                                <TotalCalculate data={ele.data} title={i} />
+                              );
+                            })}
+                            <div style={{ width: "10%" }}></div>
+                          </div>
+                        </>
+                      );
+                    }
+                  })}
+                  <br />
+                  <div className="d-flex p-10">
+                    <div style={{ width: "6%" }}></div>
+                    <div style={{ width: "12%" }}>Final Total : </div>
+                    {FinalTotal.map((ele) => {
+                      return <FinalTotalDiv>{total[ele]}</FinalTotalDiv>;
+                    })}
+                    <div style={{ width: "10%" }}></div>
+                  </div>
+                </>
+              ) : (
+                <DataNoFoundBlock>No Data Found</DataNoFoundBlock>
+              )}
+            </>
           )}
         </>
       )}
