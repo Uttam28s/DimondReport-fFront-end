@@ -15,7 +15,7 @@ const Users = () => {
     const handleClose = () => setShow(false);
   return (
     <>
-        <MainTitle />
+        <MainTitle hidden={true} />
         <AddNewUserBtnDiv>
             <Button onClick={handleShow}>Add New User</Button>
         </AddNewUserBtnDiv>
