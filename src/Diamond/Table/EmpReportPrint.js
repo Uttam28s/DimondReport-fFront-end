@@ -23,6 +23,7 @@ const Th = styled.th`
 
 export default function PrintComponenEmployee(props) {
     let componentRef = useRef();
+    console.log("🚀 ~ file: EmpReportPrint.js:27 ~ PrintComponenEmployee ~ props.totalPcs", props.totalPcs)
     return (
         <>
             <div id="print_component">
@@ -37,7 +38,7 @@ export default function PrintComponenEmployee(props) {
                 {/* component to be printed */}
 
                 <div style={{ display: "none" }}>
-                    <ComponentToPrint ref={(el) => (componentRef = el)} EmployeeName={ props.EmployeeName } price={props.price} totalSalary={props.totalSalary} patlaPcs={props.patlaPcs} extraJadaPcs={props.extraJadaPcs} zadaPcs={props.zadaPcs} print={true}  from={props.from} to={props.to} />
+                    <ComponentToPrint ref={(el) => (componentRef = el)} diamondTypeList={props.diamondTypeList} EmployeeName={ props.EmployeeName } totalPcs={props.totalPcs} price={props.price} totalSalary={props.totalSalary} patlaPcs={props.patlaPcs} extraJadaPcs={props.extraJadaPcs} zadaPcs={props.zadaPcs} print={true}  from={props.from} to={props.to} />
                 </div>
             </div>
         </>
@@ -45,8 +46,8 @@ export default function PrintComponenEmployee(props) {
 }
 class ComponentToPrint extends React.Component {
     render() {
-        const { price, extraJadaPcs, patlaPcs, totalSalary, zadaPcs, print,EmployeeName,from , to } = this.props
-
+        const { price,totalPcs, totalSalary, print,EmployeeName,from , to,diamondTypeList } = this.props
+        
         return (
             <>
 
@@ -71,21 +72,16 @@ class ComponentToPrint extends React.Component {
                             <Th style={{ width: "20%" }}>Pcs   </Th>
                             <Th style={{ width: "20%" }}>Price   </Th>
                         </Tr>
+                        {diamondTypeList.map((ele) => {
+                            return(
                         <Tr>
-                            <Td >Patla Pcs.  </Td>
-                            <Td>{patlaPcs}</Td>
-                            <Td> {price.patlaTotal}</Td>
+                            <Td >{ele} Pcs.  </Td>
+                            <Td>{totalPcs[`${ele}pcs`]}</Td>
+                            <Td> {price[`${ele}Price`]}</Td>
                         </Tr>
-                        <Tr>
-                            <Td>Zada Pcs.  </Td>
-                            <Td>{zadaPcs}</Td>
-                            <Td> {price.zadaTotal}</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>Extra Zada Pcs.  </Td>
-                            <Td>{extraJadaPcs}</Td>
-                            <Td> {price.extraZadaTotal}</Td>
-                        </Tr>
+
+                            )
+                        })}
                         <Tr>
                             <Td>Total Price </Td>
                             <Td></Td>

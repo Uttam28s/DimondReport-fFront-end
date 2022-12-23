@@ -40,7 +40,25 @@ const DiamondIndex = () => {
                 }
               }
             }
-            setData(report);
+            let pcs = {}
+            let price= {}
+            let arr =[]
+            report.map((ele) => {
+                Object.keys(ele.pcs).map((i) => {
+                    pcs[i] = ele.pcs[i]
+                    ele[i] = ele.pcs[i]
+                })
+                Object.keys(ele.price).map((i) => {
+                    price[i] = ele.price[i]
+                })
+                let obj = {
+                    ...ele,
+                    ...pcs,
+                    ...price
+                }
+                arr.push(obj)
+            })
+            setData(arr);
             setLoader(false);
           });
       })

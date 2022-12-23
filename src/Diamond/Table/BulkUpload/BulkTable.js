@@ -1,12 +1,16 @@
 import { Button, Input, notification, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { addBulkReport, getWorkerListBulk } from "../../ApiConn/Api";
+import { useDiamondTypeHook } from "../../Hooks/getDiamondType";
 
 const BulkTable = (props) => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [loader, setLoader] = useState(false);
-  const columns = [
+  const [columns, setColumns] = useState([])
+  const { diamondTypeList } = useDiamondTypeHook();
+
+  const leftColumns = [
     {
       title: "Index",
       dataIndex: "index",
@@ -20,69 +24,9 @@ const BulkTable = (props) => {
       key: "index",
       width: 100,
       fixed: "center",
-    },
-    {
-      title: "Patla Pcs.",
-      dataIndex: "patla",
-      key: "index",
-      width: 40,
-      render: (text, record, index) => {
-        return (
-          <Input
-            type="number"
-            onChange={(e) => {
-              onChangeHandler("patla", e.target.value, record.index);
-            }}
-          />
-        );
-      },
-    },
-    {
-      title: "Extra Patla Pcs.",
-      dataIndex: "extraPatla",
-      key: "index",
-      width: 40,
-      render: (text, record, index) => {
-        return (
-          <Input
-            type="number"
-            onChange={(e) => {
-              onChangeHandler("extraPatla", e.target.value, record.index);
-            }}
-          />
-        );
-      },
-    },
-    {
-      title: "Jada Pcs.",
-      dataIndex: "jada",
-      key: "index",
-      width: 40,
-      render: (text, record, index) => {
-        return (
-          <Input
-            onChange={(e) => {
-              onChangeHandler("jada", e.target.value, record.index);
-            }}
-          />
-        );
-      },
-    },
-    {
-      title: "Extra-Zada Pcs.",
-      dataIndex: "extraJada",
-      key: "index",
-      width: 40,
-      render: (text, record, index) => {
-        return (
-          <Input
-            onChange={(e) => {
-              onChangeHandler("extraJada", e.target.value, record.index);
-            }}
-          />
-        );
-      },
-    },
+    }
+  ]
+  const rightColumns = [
     {
       title: "Total Pcs.",
       dataIndex: "total",
@@ -96,6 +40,7 @@ const BulkTable = (props) => {
 
   const onClickhandler = () => {
     var today = new Date();
+    console.log("🚀 ~ file: BulkTable.js:49 ~ data.map ~ data", data)
     data.map((ele, index) => {
       ele.workerid = ele._id;
       ele.process = props.process;
@@ -107,7 +52,7 @@ const BulkTable = (props) => {
       notification["success"]({
         message: res?.data?.message,
       });
-      window.location.reload(false)
+      // window.location.reload(false)
     }).catch(() => {
         notification["error"]({
             message: "Somthing went Wrong",
@@ -119,16 +64,44 @@ const BulkTable = (props) => {
     getWorkerListBulk(props.process).then((x) => {
       setData(x.data.data);
     });
+  
   }, []);
+
+  useEffect(() => {
+    let arr =[]
+    diamondTypeList.map((ele) => {
+      arr.push(
+        {
+          title: `${ele}Pcs.`,
+          dataIndex: `${ele}`,
+          key: "index",
+          width: 40,
+          render: (text, record, index) => {
+            return (
+              <Input
+                type="number"
+                onChange={(e) => {
+                  onChangeHandler(`${ele}`, e.target.value, record.index);
+                }}
+              />
+            );
+          },
+        }
+      )
+    })
+    setColumns(leftColumns.concat(arr,rightColumns))
+  },[diamondTypeList])
 
   const onChangeHandler = (name, value, id) => {
     let newname = name;
+    console.log("🚀 ~ file: BulkTable.js:97 ~ onChangeHandler ~ newname", newname)
     data[id][newname] = value;
-    data[id]["total"] =
-      Number(data[id]["extraPatla"]) +
-      Number(data[id]["extraJada"]) +
-      Number(data[id]["jada"]) +
-      Number(data[id]["patla"]);
+    data[id]["total"] = 0
+    console.log("🚀 ~ file: BulkTable.js:102 ~ diamondTypeList.map ~ diamondTypeList", diamondTypeList)
+    diamondTypeList.map((ele) => {
+      data[id]["total"] = data[id]["total"] + Number(data[id][ele]) 
+    })
+    console.log("🚀 ~ file: BulkTable.js:102 ~ diamondTypeList.map ~ ", data[id]["total"])
     setTotal(data[id]["total"]);
   };
   return (

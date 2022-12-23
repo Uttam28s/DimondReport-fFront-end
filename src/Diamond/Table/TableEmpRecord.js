@@ -3,6 +3,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { getEmployeeReport, getWorkerList } from '../ApiConn/Api';
 import {MainTitle} from '../Common/common';
+import { useDiamondTypeHook } from '../Hooks/getDiamondType';
 import PrintComponenEmployee, { ComponentToPrint } from './EmpReportPrint';
 
 const columns = [
@@ -25,43 +26,9 @@ const columns = [
         width: 100,
         fixed: 'center',
     },
-    {
-        title: 'Patla',
-        fixed: 'center',
-        width: 130,
-        children: [
-            {
-                title: 'Pcs.',
-                dataIndex: 'patla',
-                key: '_id',
-                width: 40,
-            },
-        ],
-    },
-    {
-        title: 'Zada',
-        fixed: 'center',
-        children: [
-            {
-                title: 'Pcs.',
-                dataIndex: 'jada',
-                key: '_id',
-                width: 40,
-            },
-        ],
-    },
-    {
-        title: 'Extra Zada',
-        fixed: 'center',
-        children: [
-            {
-                title: 'Pcs.',
-                dataIndex: 'extraJada',
-                key: '_id',
-                width: 40,
-            },
-        ],
-    },
+];
+
+const total = [
     {
         title: 'Total Pcs.',
         dataIndex: 'total',
@@ -74,12 +41,11 @@ const columns = [
         key: '_id',
         width: 40,
     },
-];
+]
 
 
 
-
-const TableNew = (props) => {
+const TableEmpRecord = (props) => {
     const { Option } = Select;
     const [data, setData] = useState([])
     const [start, setStart] = useState()
@@ -87,15 +53,12 @@ const TableNew = (props) => {
     const [empList, setEmpList] = useState([])
     const [employee, setEmployee] = useState()
     const [totalSalary, setTotalSalary] = useState(0)
-    const [patlaPcs, setPatlaPcs] = useState(0)
-    const [extraJadaPcs, setExtraJadaPcs] = useState(0)
-    const [zadaPcs, setZadaPcs] = useState(0)
-    const [price, setPrice] = useState({
-        zadaTotal: 0,
-        patlaTotal: 0,
-        extraZadaTotal: 0
-    })
+    const [column, setColumns] = useState(0)
+    const [totalPcs, setTotalPcs] = useState({})
+    const [price, setPrice] = useState({})
     const [loader,setLoader] = useState(false)
+    const { diamondTypeList } = useDiamondTypeHook();
+
     useEffect(() => {
         let id = localStorage.getItem("AdminId")
         getWorkerList(id).then((x) => {
@@ -104,31 +67,54 @@ const TableNew = (props) => {
     }, [])
 
     useEffect(() => {
+        let arr = []
+        diamondTypeList.map((ele) => {
+            arr.push(
+                {
+                    title: ele,
+                    fixed: 'center',
+                    width: 130,
+                    children: [
+                        {
+                            title: 'Pcs.',
+                            dataIndex: `${ele}`,
+                            key: '_id',
+                            width: 40,
+                        },
+                    ],
+                }
+            )
+        })
+        setColumns(columns.concat(arr,total))
+    },[diamondTypeList])
+
+    useEffect(() => {
         let salary = 0
-        let patlaPcs = 0
-        let zadaPcs = 0
-        let extraJadaPcs = 0
+        let obj = {}
+        diamondTypeList.map((ele) => {
+            obj[`${ele}pcs`] = 0
+        })
         let pricePcs = {}
+        diamondTypeList.map((type) => {
+            data.map((ele) => {
+                obj[`${type}pcs`] = obj[`${type}pcs`] + Number(ele.pcs[type])
+            })
+        })
+        console.log("🚀 ~ file: TableEmpRecord.js:102 ~ data.map ~ obj", obj)
+        diamondTypeList.map((ele) => {
+            pricePcs[`${ele}Price`] = 0
+        })
+        diamondTypeList.map((type) => {
+            data.map((ele) => {
+                pricePcs[`${type}Price`] = pricePcs[`${type}Price`] + ele[type] * ele[`${type}Price`]  
+            })
+        })
         data.map((ele) => {
             salary = salary + ele.dailywork
-            patlaPcs = patlaPcs + ele.patla
-            extraJadaPcs = extraJadaPcs + ele.extraJada
-            zadaPcs = zadaPcs + ele.jada
-            pricePcs = {
-                zadaTotal: zadaPcs * ele.price[0].jadaPrice,
-                patlaTotal: patlaPcs * ele.price[0].patlaPrice,
-                extraZadaTotal: extraJadaPcs * ele.price[0].extrajadaPrice
-            }
         })
         setTotalSalary(salary)
-        setExtraJadaPcs(patlaPcs)
-        setPatlaPcs(patlaPcs)
-        setZadaPcs(zadaPcs)
-        setPrice(price => ({
-            ...price,
-            ...pricePcs
-        })
-        )
+        setTotalPcs(obj)
+        setPrice(pricePcs)
     }, [data])
 
     const getData = (params) => {
@@ -158,7 +144,27 @@ const TableNew = (props) => {
                         }
                     }
                 }
-                setData(report)
+                console.log("🚀 ~ file: TableEmpRecord.js:149 ~ getWorkerList ~ report", report)
+                let pcs = {}
+                let price= {}
+                let arr =[]
+                report.map((ele) => {
+                    Object.keys(ele.pcs).map((i) => {
+                        pcs[i] = ele.pcs[i]
+                        ele[i] = ele.pcs[i]
+                    })
+                    Object.keys(ele.price).map((i) => {
+                        price[i] = ele.price[i]
+                    })
+                    let obj = {
+                        ...ele,
+                        ...pcs,
+                        ...price
+                    }
+                    arr.push(obj)
+                })
+                setData(arr);
+                // setData(report)
             });
         });
         setLoader(false)
@@ -195,13 +201,13 @@ const TableNew = (props) => {
             </div>
 
             <Table
-                columns={columns}
+                columns={column}
                 dataSource={data}
                 bordered
                 size="middle"
             />
-             <ComponentToPrint price={price} totalSalary={totalSalary} patlaPcs={patlaPcs} extraJadaPcs={extraJadaPcs} zadaPcs={zadaPcs} />
-             {data.length > 0 && <PrintComponenEmployee EmployeeName={empList?.find(d => d._id === employee)?.name} price={price} totalSalary={totalSalary} patlaPcs={patlaPcs} extraJadaPcs={extraJadaPcs} zadaPcs={zadaPcs} from={start} to={end} />}
+             <ComponentToPrint diamondTypeList={diamondTypeList} price={price} totalSalary={totalSalary} totalPcs={totalPcs} />
+             {data.length > 0 && <PrintComponenEmployee diamondTypeList={diamondTypeList} totalPcs={totalPcs} EmployeeName={empList?.find(d => d._id === employee)?.name} price={price} totalSalary={totalSalary} from={start} to={end} />}
         </>
 
     )
@@ -209,4 +215,4 @@ const TableNew = (props) => {
 
 
 
-export default TableNew;
+export default TableEmpRecord;

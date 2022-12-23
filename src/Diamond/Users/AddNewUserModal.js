@@ -1,22 +1,51 @@
-import { Button,Input,Spin } from 'antd';
+import { Button,Input,notification,Spin } from 'antd';
 import React, { useState} from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { CloseOutlined } from '@mui/icons-material';
 import { AddUser } from '../ApiConn/Api';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddNewUserModal(props) {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("")
     const [loader,setLoader] = useState(false)
-    const handleOnSubmit = async () => {
-        let data = {
-            name : name,
-            password : password,
-        }
-        setLoader(true)
-        await AddUser(data)
-        setLoader(false)
+    const [error, setError] = useState({})
+    const navigate = useNavigate
 
+    const validate = () => {
+        let temp ={}
+        if(name === ""){
+            temp['name'] = "Name not should be Empty"
+        }
+        if(password === "" || password.length < 8){
+            temp['password'] = "Password must be 8 character long"
+        }
+        setError(temp)
+        if(Object.keys(temp).length === 0){
+            return true
+        } 
+        return false
+    }
+    const handleOnSubmit = async () => {
+        let isValid = validate()
+        if(isValid){
+            let data = {
+                name : name,
+                password : password,
+            }
+            setLoader(true)
+            await AddUser(data).then((res) => {
+                notification["success"]({
+                    message : "User Created Successfully"
+                })
+            })
+            setLoader(false)
+            props.handleClose()
+            setError({})
+            window.location.reload(false)
+            navigate('/diamond/user')
+
+        }
     }
     return (
         <Modal show={props.show} handleclose={props.handleclose}>
@@ -31,7 +60,8 @@ export default function AddNewUserModal(props) {
                             <span style={{ margin: "2px" }}>Name</span>
                         </div>
                         <div className="col-8">
-                            <Input required onChange={(e) => setName(e.target.value)} style={{ width: '60%', margin: '2px' }} />                        
+                            <Input required onChange={(e) => setName(e.target.value)} style={{ width: '60%', margin: '2px' }} />
+                            <p style={{ color:'red', fontSize:"13px"}}>{error?.name}</p>                        
                         </div>
                     </div>
                 </div>
@@ -42,7 +72,9 @@ export default function AddNewUserModal(props) {
                         </div>
                         <div className="col-8">
                             <Input type='password' required onChange={(e) => setPassword(e.target.value)} style={{ width: '60%', margin: '2px' }} />                        
-                        </div>
+                            <p style={{ color:'red', fontSize:"13px"}}>{error?.password}</p>                        
+{                            console.log("🚀 ~ file: AddNewUserModal.js:77 ~ AddNewUserModal ~ error", error)
+}                        </div>
                     </div>
                 </div>
             </Modal.Body>

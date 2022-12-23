@@ -8,7 +8,10 @@ const ButtonforchangeFlag = styled(Button)`
   color : red;
 `
 const handlePaidButton = async (_id,status) => {
-  await updateFlag({ id : _id, status :status})
+  if(window.confirm("Are You sure want to change the status")){
+    await updateFlag({ id : _id, status :status})
+    window.location.reload(false)
+  }
 }
 const UserlistTable = (props) => {
   const [data,setData] = useState([])

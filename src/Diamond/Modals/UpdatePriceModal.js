@@ -5,85 +5,37 @@ import Modal from "react-bootstrap/Modal";
 import { getPriceList, updatePrice } from "../ApiConn/Api";
 
 export default function UpdatePriceModal(props) {
-  const [patla, setPatla] = useState("");
-  const [zada, setZada] = useState("");
-  const [extraZada, setExtraZada] = useState("");
-  const [extraPatla, setExtraPatla] = useState("");
   const [process, setProcess] = useState("");
   const [loader, setLoader] = useState(false);
+  const [data, setData] = useState({});
+  const [diamondType, setDiamondType] = useState([]);
   const { Option } = Select;
 
   useEffect(() => {
-    setPatla("");
-    setZada("");
-    setExtraZada("");
-    setExtraPatla("");
-    setProcess("");
+    setData({})
   }, [props.show]);
 
   const handleChange = () => {
-    let adminId = localStorage.getItem("AdminId");
-    let params = [
-      {
-        process: process,
-        subcategory: "patlaPrice",
-        price: patla,
-        adminId: adminId,
-      },
-      {
-        process: process,
-        subcategory: "extraPatlaPrice",
-        price: extraPatla,
-        adminId: adminId,
-      },
-      {
-        process: process,
-        subcategory: "jadaPrice",
-        price: zada,
-        adminId: adminId,
-      },
-      {
-        process: process,
-        subcategory: "extrajadaPrice",
-        price: extraZada,
-        adminId: adminId,
-      },
-    ];
+    let adminId = localStorage.getItem("AdminId");    
     setLoader(true);
-    updatePrice(params[0])
-      .then((x) => {
-        updatePrice(params[1]).then((x) => {
-          updatePrice(params[2]).then((x) => {
-            updatePrice(params[3]).then((x) => {
-              notification["success"]({
-                message: "Price Updated Successfully",
-              });
-              setLoader(false);
-            });
-          });
-        });
-      })
-      .catch((err) => {
-        notification["error"]({
-          message: "Something Went Wrong",
-        });
-      });
-    setZada("");
-    setExtraZada("");
-    setPatla("");
-    setExtraPatla("");
-    setProcess("");
+    updatePrice(data,process,adminId).then((res) => {
+      console.log("🚀 ~ file: UpdatePriceModal.js:58 ~ updatePrice ~ res", res)
+    })
+    setLoader(false);
+    setData({})
     props.handleClosePrice();
   };
 
   const handleProcess = async (value) => {
     setProcess(value);
-    await getPriceList(value).then((d) => {
-      let da = d.data.pricelist;
-      setExtraZada(da["extrajadaPrice"]);
-      setExtraPatla(da["extraPatlaPrice"]);
-      setZada(da["jadaPrice"]);
-      setPatla(da["patlaPrice"]);
+    await getPriceList(value).then((res) => {
+      let obj = res.reduce(function (result, item) {
+        var key = Object.keys(item)[0]; //first property: a, b, c
+        result[key] = item[key];
+        return result;
+      }, {});
+      setData(obj);
+      setDiamondType(Object.keys(obj));
     });
   };
   return (
@@ -125,44 +77,24 @@ export default function UpdatePriceModal(props) {
             </div>
           </div>
         </div>
-        <div className="container mt-3">
-          <div className="row">
-            <div className="col-4">Patla:</div>
-            <div className="col-8">
-              <Input value={patla} onChange={(e) => setPatla(e.target.value)} />
+        {diamondType.map((ele) => {
+          return (
+            <div className="container mt-3">
+              <div className="row">
+                <div className="col-4">{ele}</div>
+                <div className="col-8">
+                  <Input
+                    value={data[ele]}
+                    onChange={(e) =>
+                      setData({ ...data, [ele]: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="container mt-3">
-          <div className="row">
-            <div className="col-4">Extra Patla:</div>
-            <div className="col-8">
-              <Input
-                value={extraPatla}
-                onChange={(e) => setExtraPatla(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="container mt-3">
-          <div className="row">
-            <div className="col-4">Zada:</div>
-            <div className="col-8">
-              <Input value={zada} onChange={(e) => setZada(e.target.value)} />
-            </div>
-          </div>
-        </div>
-        <div className="container mt-3">
-          <div className="row">
-            <div className="col-4">Extra Zada:</div>
-            <div className="col-8">
-              <Input
-                value={extraZada}
-                onChange={(e) => setExtraZada(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
+          );
+        })}
+        
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.handleClosePrice}>
@@ -170,9 +102,9 @@ export default function UpdatePriceModal(props) {
         </Button>
         <Button
           variant="primary"
-          disabled={
-            process === "" || zada === "" || extraZada === "" || patla === ""
-          }
+          // disabled={
+          //   process === "" || zada === "" || extraZada === "" || patla === ""
+          // }
           onClick={handleChange}
         >
           Update{" "}

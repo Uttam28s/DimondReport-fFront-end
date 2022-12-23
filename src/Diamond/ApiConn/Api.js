@@ -1,112 +1,145 @@
-import axios from 'axios'
+import axios from "axios";
 // const apiURL = 'https://salary-report-api.onrender.com/api/diamond'
-const apiURL = 'http://localhost:3003/api/diamond'
+const apiURL = "http://localhost:3003/api/diamond";
 
 // to Add New Worker
-export const addWorkerName = async (name,process) => {
-  const adminId = localStorage.getItem('AdminId')
-  const response = await axios.get(`${apiURL}/settings/addworker?name=${name}&process=${process}&adminId=${adminId}`);
+export const addWorkerName = async (name, process) => {
+  const adminId = localStorage.getItem("AdminId");
+  const response = await axios.get(
+    `${apiURL}/settings/addworker?name=${name}&process=${process}&adminId=${adminId}`
+  );
   return response;
 };
 
 // For Update the Price
-export const updatePrice = async (params) => {
-  const adminId = localStorage.getItem('AdminId')
-  const response = await axios.get(`${apiURL}/settings/addprice?process=${params['process']}&subcategory=${params['subcategory']}&price=${params['price']}&adminId=${adminId}`);
+export const updatePrice = async (data, process, adminId) => {
+  const response = await axios.put(
+    `${apiURL}/settings/addprice?process=${process}&adminId=${adminId}`,
+    data
+  );
   return response;
 };
 
 // get the PriceList
 export const getPriceList = async (value) => {
-  const adminId = localStorage.getItem('AdminId')
-  return await axios.get(`${apiURL}/settings/getprice?value=${value}&adminId=${adminId}`);
-}
+  const adminId = localStorage.getItem("AdminId");
+  const response = await axios.get(
+    `${apiURL}/settings/getprice?value=${value}&adminId=${adminId}`
+  );
+  return response.data.pricelist;
+};
 
 // to add the report data
-export const addReport = async (param) => {
-  const response = await axios.post(`${apiURL}/report/add`,param);
+export const addReport = async (params,data) => {
+  const response = await axios.post(`${apiURL}/report/add`, {params,data});
   return response;
 };
 
-export const addBulkReport = async (param,process) => {
-  const adminId = localStorage.getItem('AdminId')
-  const response = await axios.post(`${apiURL}/report/addbulkreport?process=${process}&adminId=${adminId}`,param);
+export const addBulkReport = async (param, process) => {
+  const adminId = localStorage.getItem("AdminId");
+  const response = await axios.post(
+    `${apiURL}/report/addbulkreport?process=${process}&adminId=${adminId}`,
+    param
+  );
   return response;
 };
 
 // get worker list
-export const getWorkerList = async (id) =>{
-  const adminId = localStorage.getItem('AdminId')
+export const getWorkerList = async (id) => {
+  const adminId = localStorage.getItem("AdminId");
   return await axios.get(`${apiURL}/settings/getworker?adminId=${adminId}`);
-}
+};
 
 // get workerlist for bulk with empty data
-export const getWorkerListBulk = async (process) =>{
-  const adminId = localStorage.getItem('AdminId')
-  return await axios.get(`${apiURL}/settings/getworkerbulk?process=${process}&adminId=${adminId}`);
-}
+export const getWorkerListBulk = async (process) => {
+  const adminId = localStorage.getItem("AdminId");
+  return await axios.get(
+    `${apiURL}/settings/getworkerbulk?process=${process}&adminId=${adminId}`
+  );
+};
 
-// Add Uppad 
-export const addUppad = async (workerid,upad,month) => {
+// Add Uppad
+export const addUppad = async (workerid, upad, month) => {
   month = month.slice(5, 7);
-  const response = await axios.post(`${apiURL}/salary/upad?workerid=${workerid}&upad=${upad}&month=${month}`);
+  const response = await axios.post(
+    `${apiURL}/salary/upad?workerid=${workerid}&upad=${upad}&month=${month}`
+  );
   return response;
 };
 
 // get Report Data
-export const getReport = async (params) =>{
-  const response = await axios.get(`${apiURL}/report/get?process=${params['process']}&from=${params['from']}&to=${params['to']}&adminId=${params['adminId']}`);
+export const getReport = async (params) => {
+  const response = await axios.get(
+    `${apiURL}/report/get?process=${params["process"]}&from=${params["from"]}&to=${params["to"]}&adminId=${params["adminId"]}`
+  );
   return response;
-}
+};
 
 export const getEmployeeReport = async (params) => {
-  const response = await axios.get(`${apiURL}/employee/report?emp_id=${params['emp_id']}&from=${params['from']}&to=${params['to']}`)
+  const response = await axios.get(
+    `${apiURL}/employee/report?emp_id=${params["emp_id"]}&from=${params["from"]}&to=${params["to"]}`
+  );
   return response.data;
-}
+};
 
-export const GetMonthReport = async (params) =>{
-  const response = await axios.get(`${apiURL}/salary/get?&workerid=${params['workerid']}&month=${params['month']}`);
+export const GetMonthReport = async (params) => {
+  const response = await axios.get(
+    `${apiURL}/salary/get?&workerid=${params["workerid"]}&month=${params["month"]}`
+  );
   return response;
-}
+};
 
 export const ChangePaidStatus = async (params) => {
-  const response = await axios.put(`${apiURL}/salary/paidStatus?&workerid=${params['workerid']}&month=${params['month']}`);
+  const response = await axios.put(
+    `${apiURL}/salary/paidStatus?&workerid=${params["workerid"]}&month=${params["month"]}`
+  );
   return response;
-}
+};
 
 export const FetchMonthData = async (month) => {
-  let adminId = localStorage.getItem('AdminId')
-  const response = await axios.get(`${apiURL}/salary/monthwise?&month=${month}&adminId=${adminId}`);
+  let adminId = localStorage.getItem("AdminId");
+  const response = await axios.get(
+    `${apiURL}/salary/monthwise?&month=${month}&adminId=${adminId}`
+  );
   return response.data.data;
-}
+};
 
 export const AddUser = async (params) => {
-  const response = await axios.post(`${apiURL}/user/add`,params);
+  const response = await axios.post(`${apiURL}/user/add`, params);
   return response.data.data;
-}
+};
 
 export const getUsers = async (params) => {
   const response = await axios.get(`${apiURL}/user/getusers`);
   return response.data;
-}
+};
 
 export const DeleteUser = async (id) => {
   const response = await axios.delete(`${apiURL}/user/deleteuser?&id=${id}`);
   return response.data;
-}
+};
 
-export const LoginConfirm = async(data) => {
-  const response = await axios.post(`${apiURL}/user/checkLogin`,data);
+export const LoginConfirm = async (data) => {
+  const response = await axios.post(`${apiURL}/user/checkLogin`, data);
   return response.data;
-}
+};
 
-export const updateFlag = async(data) => {
-  const response = await axios.put(`${apiURL}/user/updateFlag`,data);
+export const updateFlag = async (data) => {
+  const response = await axios.put(`${apiURL}/user/updateFlag`, data);
   return response.data;
-}
+};
 
-
-export const mainReport = async() => {
+export const mainReport = async () => {
   const response = await axios.get(`${apiURL}/report/mainReport`);
+  return response.data;
+};
+
+export const addType = async (data) => {
+  const response = await axios.post(`${apiURL}/user/addType`, data);
+  return response.data;
+};
+
+export const getDiamondTypeList = async (adminId) => {
+  const response = await axios.get(`${apiURL}/user/diamondTypeList?adminId=${adminId}`);
   return response.data;
 }

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FetchMonthData } from "../../ApiConn/Api";
 import { MainTitle } from "../../Common/common";
+import { useDiamondTypeHook } from "../../Hooks/getDiamondType";
 import AdminRecordTable from "./AdminRecordTable";
 import LastMonthReportTable from "./LastMonthReportTable";
 
@@ -39,25 +40,7 @@ const FinalTotalDiv = styled.div`
   padding-left: 10px;
 `;
 
-const FinalTotal = [
-  "totalextrajadapcs",
-  "totaljadapcs",
-  "totalextrajadapcs",
-  "totaltotal",
-  "totaluppad",
-  "totaljama",
-  "totalsalary",
-];
 
-const semiCalculate = [
-  "patlapcs",
-  "jadapcs",
-  "extrajadapcs",
-  "total",
-  "uppad",
-  "jama",
-  "salary",
-];
 
 const DataNoFoundBlock = styled.div`
   align-items: center;
@@ -77,18 +60,6 @@ const Heading = styled.h3`
   text-align: center;
   color: grey;
 `;
-const TotalCalculate = (props) => {
-  const [total, setTotal] = useState(0);
-  useEffect(() => {
-    let n = 0;
-    let data = props.title;
-    props.data.map((ele) => {
-      n = n + ele[data];
-    });
-    setTotal(n);
-  }, [props]);
-  return <TotalCalculateDiv>{total}</TotalCalculateDiv>;
-};
 
 const PrintCell = styled.div`
   width: 100px;
@@ -103,6 +74,19 @@ const Container = styled.div`
   }
 `;
 
+const TotalCalculate = (props) => {
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    let n = 0;
+    let title = props.title;
+    props.data.map((ele) => {
+      n = n + ele[title];
+    });
+    setTotal(n);
+  }, [props]);
+  return <TotalCalculateDiv>{total}</TotalCalculateDiv>;
+};
+
 const LastMonthReport = () => {
   const { Option } = Select;
   const [taliyaData, setTaliyaData] = useState([]);
@@ -111,10 +95,14 @@ const LastMonthReport = () => {
   const [russianData, setRussianData] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [month, setMonth] = useState(moment().month() - 1);
+  const [month, setMonth] = useState(moment().month());
   const [total, setTotal] = useState("");
+  const [totalField, setTotalField] = useState([]);
   const [showTables, setShowTables] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [finalTotal, setFinalTotal] = useState([]);
+  const { diamondTypeList } = useDiamondTypeHook();
+
   const Tables = [
     {
       data: taliyaData || [],
@@ -144,6 +132,22 @@ const LastMonthReport = () => {
       setIsAdmin(true);
     }
   }, []);
+
+  useEffect(() => {
+    let rightside = ["total", "uppad", "jama", "salary"];
+    let arr = [];
+    let finalArray = [];
+    diamondTypeList.map((ele) => {
+      arr.push(`${ele}pcs`);
+    });
+    setTotalField(arr.concat(rightside));
+    let arr1 = arr.concat(rightside);
+    arr1.map((ele) => {
+      finalArray.push(`total${ele}`);
+    });
+
+    setFinalTotal(finalArray);
+  }, [diamondTypeList]);
 
   useEffect(() => {
     setLoader(true);
@@ -232,15 +236,15 @@ const LastMonthReport = () => {
                             data={ele.data}
                             title={ele.title}
                           />
-                          <div className="d-flex p-10 ">
+                          <div className="d-flex p-10 m-10">
                             <div style={{ width: "6%" }}></div>
-                            <div style={{ width: "12%" }}>Total : </div>
-                            {semiCalculate.map((i) => {
+                            <div style={{ width: "14%" }}>Total : </div>
+                            {totalField.map((i) => {
                               return (
                                 <TotalCalculate data={ele.data} title={i} />
                               );
                             })}
-                            <div style={{ width: "10%" }}></div>
+                          <div style={{ width: "10%" }}></div>
                           </div>
                         </>
                       );
@@ -250,7 +254,7 @@ const LastMonthReport = () => {
                   <div className="d-flex p-10">
                     <div style={{ width: "6%" }}></div>
                     <div style={{ width: "12%" }}>Final Total : </div>
-                    {FinalTotal.map((ele) => {
+                    {finalTotal.map((ele) => {
                       return <FinalTotalDiv>{total[ele]}</FinalTotalDiv>;
                     })}
                     <div style={{ width: "10%" }}></div>

@@ -4,20 +4,19 @@ import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
 import { addReport, getWorkerList } from '../ApiConn/Api'
 import moment from 'moment';
+import { useDiamondTypeHook } from '../Hooks/getDiamondType';
 export default function AddDataModal(props) {
     const { Option } = Select;
     const [empName, setEmpName] = useState("")
     const [process, setProcess] = useState("")
     const [date, setDate] = useState();
-    const [patla, setPatla] = useState("")
-    const [zada, setZada] = useState("")
-    const [extraZada, setExtraZada] = useState("")
-    const [extraPatla, setExtraPatla] = useState("")
     const [empList, setEmpList] = useState([])
     const [loader, setLoader] = useState(false)
+    const [data, setData] = useState({})
+    const { diamondTypeList } = useDiamondTypeHook();
     
     useEffect(() => {
-        let id = localStorage.getItem("AdminId")
+        let id = localStorage.getItem("AdminId") 
         getWorkerList(id).then((x) => {
           setEmpList(x.data.data);
         }); 
@@ -27,26 +26,23 @@ export default function AddDataModal(props) {
         setEmpName("")
         setProcess("")
         setDate("")
-        setPatla("")
-        setZada("")
-        setExtraZada("")
-        setExtraPatla("")
+        setData({})
     }, [props.show])
 
     const handleChange = async () => {
+        let total = 0
+        Object.keys(data).map((ele) => {
+            total = total + Number(data[ele])
+        })
         let params = {
             "workerid": empName,
             "adminId" : localStorage.getItem("AdminId"),
             "process": process,
             "date": date,
-            "patla": patla,
-            "extraPatla" : extraPatla,
-            "jada": zada,
-            "extraJada": extraZada,
-            "total": Number(patla) + Number(zada) + Number(extraZada) + Number(extraPatla),
+            "total": total,
         }
         setLoader(true)
-        await addReport(params).then(
+        await addReport(params,data).then(
             notification["success"]({
                 message: 'Report Added Successfully'
             })
@@ -149,22 +145,16 @@ export default function AddDataModal(props) {
                 <hr />
                 <div className="container">
                     <div style={{ fontSize: "12px" }}>
-                        <div className='row '>
-                            <div className='col-6'>  Patla : </div>
-                            <div className='col-6'><Input type='number' onChange={(e) => setPatla(e.target.value)} /><br /></div>
-                        </div>
-                        <div className='row mt-3'>
-                            <div className='col-6'>     Extra-Patla  :</div>
-                            <div className='col-6'><Input type='number' onChange={(e) => setExtraPatla(e.target.value)} /><br /></div>
-                        </div>
-                        <div className='row mt-3'>
-                            <div className='col-6'>   Zada :</div>
-                            <div className='col-6'><Input type='number' onChange={(e) => setZada(e.target.value)} /><br /></div>
-                        </div>
-                        <div className='row mt-3'>
-                            <div className='col-6'>     Extra-Zada  :</div>
-                            <div className='col-6'><Input type='number' onChange={(e) => setExtraZada(e.target.value)} /><br /></div>
-                        </div>
+                        {
+                            diamondTypeList.map((ele) => {
+                                return (
+                                    <div className='row mt-3'>
+                                        <div className='col-6'>  {ele} : </div>
+                                        <div className='col-6'><Input type='number' onChange={(e) => setData({...data,[ele]: e.target.value})} /><br /></div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
 

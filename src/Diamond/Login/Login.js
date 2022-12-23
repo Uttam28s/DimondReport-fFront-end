@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MainTitle } from "../Common/common";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -19,7 +19,9 @@ export default function Login(props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  useEffect(() => {
+    localStorage.clear()
+  },[])
   const onClickHandle = async () => {
     let res = await LoginConfirm({ password: password, name: name });
     if (res.data) {

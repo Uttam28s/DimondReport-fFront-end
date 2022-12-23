@@ -7,6 +7,7 @@ import AddUppadModal from './Modals/AddUppadModal';
 import MonthReport from './Modals/MonthleyReport';
 import { useNavigate } from "react-router-dom";
 import styled from '@emotion/styled';
+import AddType from './Modals/AddType';
 
 const Button = styled.button`
     width: fit-content;
@@ -34,6 +35,10 @@ const Header = () => {
     const handleMonthReport = () => setshowMonth(true);
     const handleCloseMonthReport  = () => setshowMonth(false);
 
+    const [showType, setShowType] = useState(false);
+    const handleAddType = () => setShowType(true);
+    const handleCloseAddType  = () => setShowType(false);
+
     const handleBulkUpload = () => {
         navigate("./bulkUpload")
     }
@@ -49,6 +54,8 @@ const Header = () => {
                 <Button type="button" className="btn btn-secondary funcbtn" onClick={handleBulkUpload}>Bulk Upload</Button>
                 <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./empReport")}}>Emp. Record</Button>
                 <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./monthwisereport")}}>Last Month Report</Button>
+                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleAddType}>Add type</Button>
+
                 { (localStorage.getItem("role") === "SuperAdmin") ? <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./user")}}>Users</Button>: ""}
             </div>
             <AddEmpModal show={show} onHide={() => setShow(false)} handleClose={handleClose} />
@@ -56,6 +63,7 @@ const Header = () => {
             <UpdatePriceModal show={showPrice} onHide={() => setPriceUpd(false)} handleClosePrice={handleClosePrice} />
             <AddUppadModal show={showUppad} onHide={() => setUppadUpd(false)} handleCloseUppad ={handleCloseUppad } />
             <MonthReport show={showMonth} onHide={() => setshowMonth(false)} handleCloseMonthReport ={handleCloseMonthReport } />
+            <AddType show={showType} onHide={() => setShowType(false)} handleCloseAddType ={handleCloseAddType } />
 
         </div>
     )

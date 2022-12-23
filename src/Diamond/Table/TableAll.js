@@ -1,5 +1,6 @@
 import { Table } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDiamondTypeHook } from '../Hooks/getDiamondType';
 
 const columns = [
   {
@@ -22,80 +23,10 @@ const columns = [
     width: 100,
     fixed: 'center',
   },
-  {
-    title: 'Patla',
-    fixed: 'center',
-    width: 130,
-    children: [
-      {
-        title: 'Pcs.',
-        dataIndex: 'patla',
-        key: '_id',
-        width: 40,
-      },
-      {
-        title: 'Price',
-        dataIndex: 'patlaPrice',
-        key: '_id',
-        width: 40,
-      },
-    ],
-  },
-  {
-    title: 'Extra Patla',
-    fixed: 'center',
-    children: [
-      {
-        title: 'Pcs.',
-        dataIndex: 'extraPatla',
-        key: '_id',
-        width: 40,
-      },
-      {
-        title: 'Price',
-        dataIndex: 'extraPatlaPrice',
-        key: '_id',
-        width: 40,
-      }
-    ],
-  },
-  {
-    title: 'Zada',
-    fixed: 'center',
-    children: [
-      {
-        title: 'Pcs.',
-        dataIndex: 'jada',
-        key: '_id',
-        width: 40,
-      },
-      {
-        title: 'Price',
-        dataIndex: 'jadaPrice',
-        key: '_id',
-        width: 40,
-      }
-    ],
-  },
-  {
-    title: 'Extra Zada',
-    fixed: 'center',
-    children: [
-      {
-        title: 'Pcs.',
-        dataIndex: 'extraJada',
-        key: '_id',
-        width: 40,
-      },
-      {
-        title: 'Price',
-        dataIndex: 'extraJadaPrice',
-        key: '_id',
-        width: 40,
-      }
-    ],
-  },
-  
+
+];
+
+const total = [
   {
     title: 'Total Pcs.',
     dataIndex: 'total',
@@ -108,14 +39,44 @@ const columns = [
     key: '_id',
     width: 40,
   }
-];
+]
 
 const TableAll = (props) => {
+  const { diamondTypeList } = useDiamondTypeHook();
+  const [ column ,setColumns] = useState([])
+  useEffect(() => {
+    let obj = []
+    diamondTypeList.map((ele) => {
+      obj.push(
+        {
+          title: ele,
+          fixed: 'center',
+          width: 130,
+          children: [
+            {
+              title: 'Pcs.',
+              dataIndex: ele,
+              key: '_id',
+              width: 40,
+            },
+            {
+              title: 'Price',
+              dataIndex:`${ele}Price`,
+              key: '_id',
+              width: 40,
+            },
+          ],
+        }
+      )
+    })
+    setColumns(columns.concat(obj,total))
+  },[diamondTypeList])
+  console.log("🚀 ~ file: TableAll.js:80 ~ TableAll ~ props.data", props.data)
   return (
     <>
       <div className='semiTitle'>{props.title}</div>
       <Table
-        columns={columns}
+        columns={column}
         dataSource={props.data}
         bordered
         size="middle"
