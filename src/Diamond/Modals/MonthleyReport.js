@@ -1,9 +1,10 @@
 import { Button, notification, Select, Spin } from 'antd';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
-import { ChangePaidStatus, GetMonthReport, getWorkerList } from '../ApiConn/Api'
+import { ChangePaidStatus, GetMonthReport } from '../ApiConn/Api'
 import PrintComponent from './PrintComponent';
+import { useWorkerHook } from '../Hooks/getWorker';
 
 const MonthName = {
     1: 'January',
@@ -26,15 +27,8 @@ export default function MonthReport(props) {
     const [month, setMonth] = useState('');
     const [report, setReport] = useState();
     const [status, setStatus] = useState('pending');
-    const [empList, setEmpList] = useState([])
     const [loader, setLoader] = useState(false)
-    useEffect(() => {
-        let id = localStorage.getItem("AdminId")
-        getWorkerList(id).then((x) => {
-          setEmpList(x.data.data);
-        });
-    }, [])
-
+    const { empList } = useWorkerHook(); 
 
     const handleChange = async () => {
         let params = {
@@ -69,7 +63,7 @@ export default function MonthReport(props) {
 
     const employeechange = (value) => {
         setEmpName(value)
-        empList.filter((emp) => {
+        empList?.filter((emp) => {
             return emp._id === value;
         });
     }
@@ -95,7 +89,7 @@ export default function MonthReport(props) {
                                         onChange={(value) => employeechange(value)}
                                         optionFilterProp="children"
                                     >
-                                        {empList.map((ele, index) => {
+                                        {empList?.map((ele, index) => {
                                             return <Option key={index} value={ele._id}>{ele.name}</Option>
                                         })}
                                     </Select>

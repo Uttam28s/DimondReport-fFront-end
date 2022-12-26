@@ -1,26 +1,32 @@
-import { Button, Input, Spin } from "antd";
+import { Button, Input, notification, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { CloseOutlined } from "@mui/icons-material";
 import { addType } from "../ApiConn/Api";
+import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 
 const AddType = (props) => {
   const [type, setType] = useState("");
   const [loader, setLoader] = useState(false)
-  useEffect(() => {
-    let id = localStorage.getItem("AdminId")
-  }, []);
+  const { diamondTypeList } = useDiamondTypeHook();
 
   useEffect(() => {
     setType("")
   }, [props.show]);
 
   const handleSubmit = () => {
+    if(diamondTypeList?.includes(type.toLowerCase())){
+      notification["error"]({
+        message:"Already Having this type",
+      });    
+      return
+    }
     setLoader(true)
     let adminId = localStorage.getItem("AdminId")
     addType({type : type,adminId : adminId}).then((res) => {
-      console.log("🚀 ~ file: AddType.js:21 ~ addType ~ res", res)
-      
+      notification["success"]({
+        message:"Added Successfully",
+      }); 
     })
     setLoader(false)
     props.handleCloseAddType();

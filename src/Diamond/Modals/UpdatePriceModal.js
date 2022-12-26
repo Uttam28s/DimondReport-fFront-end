@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { CloseOutlined } from "@mui/icons-material";
 import Modal from "react-bootstrap/Modal";
 import { getPriceList, updatePrice } from "../ApiConn/Api";
+import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 
 export default function UpdatePriceModal(props) {
   const [process, setProcess] = useState("");
@@ -10,7 +11,7 @@ export default function UpdatePriceModal(props) {
   const [data, setData] = useState({});
   const [diamondType, setDiamondType] = useState([]);
   const { Option } = Select;
-
+ const { diamondTypeList } = useDiamondTypeHook
   useEffect(() => {
     setData({})
   }, [props.show]);
@@ -19,7 +20,9 @@ export default function UpdatePriceModal(props) {
     let adminId = localStorage.getItem("AdminId");    
     setLoader(true);
     updatePrice(data,process,adminId).then((res) => {
-      console.log("🚀 ~ file: UpdatePriceModal.js:58 ~ updatePrice ~ res", res)
+      notification["success"]({
+        message: "Price Updated Successully" || "",
+      });
     })
     setLoader(false);
     setData({})
@@ -102,9 +105,9 @@ export default function UpdatePriceModal(props) {
         </Button>
         <Button
           variant="primary"
-          // disabled={
-          //   process === "" || zada === "" || extraZada === "" || patla === ""
-          // }
+          disabled={
+            process === ""
+          }
           onClick={handleChange}
         >
           Update{" "}

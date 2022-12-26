@@ -5,15 +5,14 @@ import { useNavigate } from "react-router-dom";
 const MainTitle = (props) => {
   const navigate = useNavigate();
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <h4 style={{ margin: "10px" }}>Diamond</h4>
+    <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor : "#6c757d"}}>
+      <h4 style={{ margin: "10px",color:"white" }}>Diamond</h4>
       {!props?.hidden && (
         <Button onClick={() => navigate("/diamond")}>Back</Button>
       )}
       {
         !props?.logoutHidden ?
-        <Button style={{ marginLeft: "10px" }} onClick={() => { 
-          
+        <Button type="button" style={{ marginLeft: "10px" }} onClick={() => {           
           localStorage.clear()
           navigate("/login") 
           window.location.reload(false)

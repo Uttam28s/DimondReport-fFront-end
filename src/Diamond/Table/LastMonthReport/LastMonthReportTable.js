@@ -3,7 +3,6 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ChangePaidStatus } from "../../ApiConn/Api";
-import { dummyData } from "../../Common/common";
 import { useDiamondTypeHook } from "../../Hooks/getDiamondType";
 
 
@@ -23,13 +22,13 @@ const handlePaidButton = async (workerid) => {
         notification["success"]({
             message: 'Status Updated Successfully'
         })
-        window.location.reload(false)
     }).catch((err) => {
         notification["error"]({
             message: "Something Went Wrong"
         })   
     })
 }
+
 
 const leftSideColumns = [
   {
@@ -39,7 +38,8 @@ const leftSideColumns = [
       width: '5%',
       fixed: 'center',
       render: (text, record, index) => {
-          return index + 1
+          return <span>{record?.workerName === "Total" ? "" : index + 1}</span>
+
         },
     },
     {
@@ -47,6 +47,9 @@ const leftSideColumns = [
       dataIndex: 'workerName',
       key: '_id',
       width: "12%",
+      render: (text, record, index) => {
+        return <span>{record?.workerName === "Total" ? <b style={{ color: "red"}}>{record?.workerName}</b> : record?.workerName}</span>
+      },
     },
 ];
 
@@ -56,24 +59,36 @@ const rightSideColumns = [
     dataIndex: 'total',
     key: '_id',
     width: "10%",
+    render: (text, record, index) => {
+      return <span>{record?.workerName === "Total" ? <b style={{ color: "red"}}>{record?.total}</b> : record?.total}</span>
+    },
   },
   {
     title: 'Uppad',
     dataIndex: 'uppad',
     key: '_id',
     width: "10%",
+    render: (text, record, index) => {
+      return <span>{record?.workerName === "Total" ? <b style={{ color: "red"}}>{record?.uppad}</b> : record?.uppad}</span>
+    },
   },
   {
     title: 'Jama',
     dataIndex: 'jama',
     key: '_id',
     width: "10%",
+    render: (text, record, index) => {
+      return <span>{record?.workerName === "Total" ? <b style={{ color: "red"}}>{record?.jama}</b> : record?.jama}</span>
+    },
   },
   {
     title: 'Total',
     dataIndex: 'salary',
     key: '_id',
     width: "10%",
+    render: (text, record, index) => {
+      return <span>{record?.workerName === "Total" ? <b style={{ color: "red"}}>{record?.salary}</b> : record?.salary}</span>
+    },
   },
   {
     title: 'Status',
@@ -82,6 +97,7 @@ const rightSideColumns = [
     width: "10%",
     render: (text, record, index) => {
         return (
+          record?.workerName === "Total" ? "" :
             (record.status === 'paid') ? 
             <PaidDiv>Paid</PaidDiv>
             :
@@ -95,13 +111,16 @@ const LastMonthReportTable = (props) => {
   const [columns, setColumns] = useState([])
   useEffect(() => {
     let arr = []
-    diamondTypeList.map((ele) => {
+    diamondTypeList?.map((ele) => {
       arr.push(
         {
           title: `${ele} Pcs` ,
           dataIndex: `${ele}pcs`,
           key: '_id',
           width: "10%",
+          render: (text, record, index) => {
+            return <span>{record?.workerName === "Total" ? <b style={{ color: "red"}}>{record?.[`${ele}pcs`]}</b> : record?.[`${ele}pcs`]}</span>
+          },
         },
       )
     })
@@ -115,7 +134,6 @@ const LastMonthReportTable = (props) => {
       <Table
         style={{ margin: "10px" }}
         columns={columns}
-        // showHeader={empty ? false : true}
         dataSource={props.data}
         bordered
         size="middle"

@@ -17,10 +17,14 @@ export const useDiamondTypeHook = () => {
     }
   }
 
+  const reFetchType = () => {
+    getList()
+  }
+
   useEffect(() => {
     getList()
   },[])
 
-  return { diamondTypeList, loader };
+  return { diamondTypeList, loader, reFetchType };
 };
 

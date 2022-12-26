@@ -11,16 +11,15 @@ const AddNewUserBtnDiv = styled.div`
 ` 
 const Users = () => {
     const [show, setShow] = useState(false);
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
+
   return (
     <>
         <MainTitle hidden={true} />
         <AddNewUserBtnDiv>
-            <Button onClick={handleShow}>Add New User</Button>
+            <Button onClick={() =>setShow(true)}>Add New User</Button>
         </AddNewUserBtnDiv>
-        <AddNewUserModal show={show} onHide={() => setShow(false)} handleClose={handleClose} />
-        <UserlistTable />
+        {show && <AddNewUserModal show={show}  setShow={setShow} />}
+        <UserlistTable reFetch={show} />
     </>
   )
 }

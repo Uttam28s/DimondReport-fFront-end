@@ -46,7 +46,7 @@ const TableAll = (props) => {
   const [ column ,setColumns] = useState([])
   useEffect(() => {
     let obj = []
-    diamondTypeList.map((ele) => {
+    diamondTypeList?.map((ele) => {
       obj.push(
         {
           title: ele,
@@ -71,7 +71,6 @@ const TableAll = (props) => {
     })
     setColumns(columns.concat(obj,total))
   },[diamondTypeList])
-  console.log("🚀 ~ file: TableAll.js:80 ~ TableAll ~ props.data", props.data)
   return (
     <>
       <div className='semiTitle'>{props.title}</div>

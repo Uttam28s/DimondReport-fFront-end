@@ -6,6 +6,7 @@ import TableAll from "./Table/TableAll";
 import moment from "moment";
 import styled from "styled-components";
 import {list, MainTitle} from "./Common/common";
+import { useWorkerHook } from "./Hooks/getWorker";
 
 const Loader = styled.div`
   width: 50px;
@@ -21,6 +22,8 @@ const DiamondIndex = () => {
   const [data, setData] = useState([]);
   const [process, setProcess] = useState();
   const [loader, setLoader] = useState(true);
+  const { empList } = useWorkerHook();
+
   let params = {};
 
   const getReportFunc = (params) => {
@@ -29,13 +32,11 @@ const DiamondIndex = () => {
     getReport(params)
       .then((x) => {
         const report = x.data.data;
-        getWorkerList(id).then((x) => {
-            let data = x.data.data;
             for (let j = 0; j < report.length; j++) {
-              for (let i = 0; i < data.length; i++) {
-                if (report[j].workerid === data[i]._id) {
+              for (let i = 0; i < empList?.length; i++) {
+                if (report[j].workerid === empList?.[i]._id) {
                   report[j].index = j + 1;
-                  report[j].name = data[i].name;
+                  report[j].name = empList?.[i].name;
                   report[j].date = report[j].date.slice(0, 10);
                 }
               }
@@ -60,7 +61,6 @@ const DiamondIndex = () => {
             })
             setData(arr);
             setLoader(false);
-          });
       })
       .catch((err) => {
         notification["error"]({
@@ -87,7 +87,7 @@ const DiamondIndex = () => {
       setTableShow(ele[0].id);
     }
     getReportFunc(params)
-  }, []);
+  }, [empList]);
   
 
   const handleReport = (params) => {
@@ -134,7 +134,7 @@ const DiamondIndex = () => {
             return (
               <li key={index} style={{ display: "inline-block" }}>
                 <Button
-                  style={{ margin: "2px", width: "80px" }}
+                  style={{ margin: "2px", width: "80px", backgroundColor :"#756666",color:"white" }}
                   disabled={process === ele.process}
                   onClick={() => {
                     onClickHandle(ele.id);
@@ -168,7 +168,7 @@ const DiamondIndex = () => {
           style={{ margin: "10px" }}
         />
       </div>
-      <Header />
+      <Header onDataSubmit={onClickHandle} />
       {loader ? (
         <Loader>
           {" "}

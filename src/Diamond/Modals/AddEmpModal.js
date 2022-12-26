@@ -10,6 +10,7 @@ export default function AddEmpModal(props) {
     const [name, setName] = useState("");
     const [process, setProcess] = useState("")
     const [loader, setLoader] = useState(false)
+
     const handleSubmit = () => {
         setLoader(true)
         let adminId = localStorage.getItem("AdminId")
@@ -17,7 +18,6 @@ export default function AddEmpModal(props) {
             notification["success"]({
                 message: "Worker Added Successfully",
             })
-            window.location.reload(false);
         }
         ).catch((err) => {
             notification["error"]({

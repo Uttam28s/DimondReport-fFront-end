@@ -2,25 +2,21 @@ import { Button, DatePicker, Input, notification, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { CloseOutlined } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
-import { addReport, getWorkerList } from '../ApiConn/Api'
+import { addReport } from '../ApiConn/Api'
 import moment from 'moment';
 import { useDiamondTypeHook } from '../Hooks/getDiamondType';
+import { useWorkerHook } from '../Hooks/getWorker';
 export default function AddDataModal(props) {
     const { Option } = Select;
     const [empName, setEmpName] = useState("")
     const [process, setProcess] = useState("")
     const [date, setDate] = useState();
-    const [empList, setEmpList] = useState([])
     const [loader, setLoader] = useState(false)
     const [data, setData] = useState({})
     const { diamondTypeList } = useDiamondTypeHook();
-    
-    useEffect(() => {
-        let id = localStorage.getItem("AdminId") 
-        getWorkerList(id).then((x) => {
-          setEmpList(x.data.data);
-        }); 
-    }, [])
+    const { empList } = useWorkerHook(); 
+
+    const setProcessId = [{ process: "taliya",id:1 },{ process: "mathala",id:2 } ,{ process: "pel",id:3 },{ process: "russian",id:4 },{ process: "table",id:5 }]
 
     useEffect(() => {
         setEmpName("")
@@ -52,14 +48,21 @@ export default function AddDataModal(props) {
             })
         })  
         localStorage.setItem("process",params['process'])
-        window.location.reload(false)
+        props.onDataSubmit()
+        let id = 0
+        setProcessId.map((ele) => {
+            if(ele.process === params['process']){
+                id = ele.id
+            }
+        })
+        props.onDataSubmit(id)
         setLoader(false)
         props.handleCloseData()
     }
 
     const employeechange = (value) => {
         setEmpName(value)
-        const result = empList.filter((emp) => {
+        const result = empList?.filter((emp) => {
             return emp._id === value;
         });
         setProcess(result[0].process)
@@ -86,7 +89,7 @@ export default function AddDataModal(props) {
                                     onChange={(value) => employeechange(value)}
                                     optionFilterProp="children"
                                 >
-                                    {empList.map((ele, index) => {
+                                    {empList?.map((ele, index) => {
                                         return <Option key={index} value={ele._id}>{ele.name}</Option>
                                     })}
                                 </Select>
@@ -146,7 +149,7 @@ export default function AddDataModal(props) {
                 <div className="container">
                     <div style={{ fontSize: "12px" }}>
                         {
-                            diamondTypeList.map((ele) => {
+                            diamondTypeList?.map((ele) => {
                                 return (
                                     <div className='row mt-3'>
                                         <div className='col-6'>  {ele} : </div>

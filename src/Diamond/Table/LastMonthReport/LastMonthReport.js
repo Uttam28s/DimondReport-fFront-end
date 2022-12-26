@@ -1,4 +1,4 @@
-import { Button, notification, Select, Spin } from "antd";
+import { Button, notification, Select, Spin, Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -32,27 +32,11 @@ const MonthName = {
   12: "December",
 };
 
-const FinalTotalDiv = styled.div`
-  color: red;
-  width: 10%;
-  border: 1px solid lightgrey;
-  margin-bottom: 20px;
-  padding-left: 10px;
-`;
-
-
-
 const DataNoFoundBlock = styled.div`
   align-items: center;
   display: flex;
   height: 50vh;
   justify-content: center;
-`;
-const TotalCalculateDiv = styled.div`
-  color: blue;
-  width: 10%;
-  border: 1px solid lightgrey;
-  padding-left: 10px;
 `;
 
 const Heading = styled.h3`
@@ -74,18 +58,10 @@ const Container = styled.div`
   }
 `;
 
-const TotalCalculate = (props) => {
-  const [total, setTotal] = useState(0);
-  useEffect(() => {
-    let n = 0;
-    let title = props.title;
-    props.data.map((ele) => {
-      n = n + ele[title];
-    });
-    setTotal(n);
-  }, [props]);
-  return <TotalCalculateDiv>{total}</TotalCalculateDiv>;
-};
+const FinalTotalField = styled.div`
+  color: blue;
+  font-size: 2vh
+`
 
 const LastMonthReport = () => {
   const { Option } = Select;
@@ -100,9 +76,8 @@ const LastMonthReport = () => {
   const [totalField, setTotalField] = useState([]);
   const [showTables, setShowTables] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [finalTotal, setFinalTotal] = useState([]);
   const { diamondTypeList } = useDiamondTypeHook();
-
+  const [ finalTotalField, setFinalTotalField] = useState([])
   const Tables = [
     {
       data: taliyaData || [],
@@ -126,6 +101,7 @@ const LastMonthReport = () => {
     },
   ];
 
+
   useEffect(() => {
     let role = localStorage.getItem("role");
     if (role === "SuperAdmin") {
@@ -136,35 +112,130 @@ const LastMonthReport = () => {
   useEffect(() => {
     let rightside = ["total", "uppad", "jama", "salary"];
     let arr = [];
-    let finalArray = [];
-    diamondTypeList.map((ele) => {
+    diamondTypeList?.map((ele) => {
       arr.push(`${ele}pcs`);
     });
     setTotalField(arr.concat(rightside));
-    let arr1 = arr.concat(rightside);
-    arr1.map((ele) => {
-      finalArray.push(`total${ele}`);
-    });
 
-    setFinalTotal(finalArray);
-  }, [diamondTypeList]);
+    const finalTotalL = [
+      {
+        title: 'Title',
+        key: '_id',
+        width: "17%",
+        render: (text, record, index) => {
+          return <FinalTotalField className="text-center">Final Total</FinalTotalField>
+        },
+      },
+    ];
+
+    const finalTotalR = [
+      {
+        title: 'Salary',
+        dataIndex: 'total',
+        key: '_id',
+        width: "10%",
+        render: (text, record, index) => {
+          return <FinalTotalField>{record?.totaltotal}</FinalTotalField>
+        },
+      },
+      {
+        title: 'Uppad',
+        dataIndex: 'totaluppad',
+        key: '_id',
+        width: "10%",
+        render: (text, record, index) => {
+          return <FinalTotalField>{record?.totaluppad}</FinalTotalField>
+        },
+      },
+      {
+        title: 'Jama',
+        dataIndex: 'totaljama',
+        key: '_id',
+        width: "10%",
+        render: (text, record, index) => {
+          return <FinalTotalField>{record?.totaljama}</FinalTotalField>
+        },
+      },
+      {
+        title: 'Total',
+        dataIndex: 'salary',
+        key: '_id',
+        width: "10%",
+        render: (text, record, index) => {
+          return <FinalTotalField>{record?.totalsalary}</FinalTotalField>
+        },
+      },
+      {
+        title: 'Total',
+        dataIndex: 'salary',
+        key: '_id',
+        width: "10%",
+        render: (text, record, index) => {
+          return ""
+        },
+      },
+    ]
+    let finalTotalC = []
+    diamondTypeList?.map((ele) => {
+      finalTotalC.push(
+        {
+          title: `total${ele} Pcs` ,
+          dataIndex: `total${ele}pcs`,
+          key: '_id',
+          width: "10%",
+          
+          render: (text, record, index) => {
+            return <FinalTotalField>{record?.[`total${ele}pcs`]}</FinalTotalField>
+          },
+        },
+      )
+    })
+    setFinalTotalField(finalTotalL.concat(finalTotalC,finalTotalR));
+
+  }, []);
+
+  const TotalCalculate = (data,title) => {
+    let obj = {}
+    totalField.map((ele) => {
+      obj[ele] = 0
+    })
+    totalField.map((key) => {
+      data.map((ele) => {
+        obj[key] = obj[key] + ele[key]  
+      })
+    })
+    obj['workerName'] = "Total"
+    data.push(obj)
+    return data
+  };
 
   useEffect(() => {
     setLoader(true);
 
     FetchMonthData(month)
       .then((res) => {
-        setTaliyaData(res.TaliyaData);
-        setMathalaData(res.MathalaData);
-        setPelData(res.PelData);
-        setRussianData(res.RussianData);
-        setTableData(res.TableData);
+      if(res?.MathalaData){
+        setTaliyaData(TotalCalculate(res?.MathalaData,"Mathala Employee Report"));
+      }
+      if(res?.TaliyaData){
+        setMathalaData(TotalCalculate(res?.TaliyaData,"Mathala Employee Report"));
+      }
+      if(res?.PelData){
+        setPelData(TotalCalculate(res?.PelData,"Mathala Employee Report"));
+      }
+      if(res?.RussianData){
+        setRussianData(TotalCalculate(res?.RussianData,"Mathala Employee Report"));
+      }
+      if(res?.TableData){
+        setTableData(TotalCalculate(res?.TableData,"Mathala Employee Report"));
+      }
+
         if (
-          res.TaliyaData.length === 0 &&
-          res.MathalaData.length === 0 &&
-          res.PelData.length === 0 &&
-          res.RussianData.length === 0 &&
-          res.TableData.length === 0
+          res.TaliyaData.length === 1 &&
+          res.MathalaData.length === 1 &&
+          res.PelData.length === 1 &&
+          res.RussianData.length === 1 &&
+          res.TableData.length === 1
         ) {
           setShowTables(false);
         } else {
@@ -179,7 +250,7 @@ const LastMonthReport = () => {
         });
         setLoader(false);
       });
-  }, [month]);
+  }, [month,totalField]);
 
   const printItems = () => {
     window.print();
@@ -229,36 +300,27 @@ const LastMonthReport = () => {
               {showTables ? (
                 <>
                   {Tables.map((ele) => {
-                    if (ele.data.length !== 0) {
+                    if (ele.data.length !== 1) {
                       return (
                         <>
                           <LastMonthReportTable
                             data={ele.data}
                             title={ele.title}
                           />
-                          <div className="d-flex p-10 m-10">
-                            <div style={{ width: "6%" }}></div>
-                            <div style={{ width: "14%" }}>Total : </div>
-                            {totalField.map((i) => {
-                              return (
-                                <TotalCalculate data={ele.data} title={i} />
-                              );
-                            })}
-                          <div style={{ width: "10%" }}></div>
-                          </div>
                         </>
                       );
                     }
                   })}
                   <br />
-                  <div className="d-flex p-10">
-                    <div style={{ width: "6%" }}></div>
-                    <div style={{ width: "12%" }}>Final Total : </div>
-                    {finalTotal.map((ele) => {
-                      return <FinalTotalDiv>{total[ele]}</FinalTotalDiv>;
-                    })}
-                    <div style={{ width: "10%" }}></div>
-                  </div>
+                    <Table
+                      style={{ margin: "10px" }}
+                      columns={finalTotalField}
+                      showHeader={false}
+                      dataSource={[total]}
+                      bordered
+                      size="middle"
+                      pagination={false}
+                    />
                 </>
               ) : (
                 <DataNoFoundBlock>No Data Found</DataNoFoundBlock>
@@ -272,3 +334,6 @@ const LastMonthReport = () => {
 };
 
 export default LastMonthReport;
+
+
+

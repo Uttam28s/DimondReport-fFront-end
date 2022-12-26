@@ -3,26 +3,28 @@ import { MainTitle } from "../Common/common";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import styled from "styled-components";
-import { Input, notification } from "antd";
+import { Input, notification, Spin } from "antd";
 import { LoginConfirm } from "../ApiConn/Api";
 import { useNavigate } from "react-router-dom";
 
-const FormDiv = styled(Form)`
-  width: 50%;
-  height: 50%;
+const Loader = styled.div`
+  width: 50px;
+  height: 50px;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -50px 0 0 -50px;
+  margin: -25px 0 0 -25px;
 `;
 export default function Login(props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [loader, setLoader] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
     localStorage.clear()
   },[])
   const onClickHandle = async () => {
+    setLoader(true)
     let res = await LoginConfirm({ password: password, name: name });
     if (res.data) {
       localStorage.setItem("authLogin", true);
@@ -43,12 +45,19 @@ export default function Login(props) {
       notification["error"]({
         message: res?.error,
       });
-    }
+    } 
+    setLoader(false)
+
   };
 
   return (
     <div>
       <MainTitle hidden={true} logoutHidden={true} />
+      {loader ? (
+        <Loader>
+          {" "}
+          &nbsp; <Spin size="large" />
+        </Loader>) :
       <Form className="container py-5 h-100" onSubmit={onClickHandle}>
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -80,7 +89,7 @@ export default function Login(props) {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <Button className="btn btn-lg" type="submit">
+                  <Button className="btn btn-lg bg-secondary" type="submit">
                     Login
                   </Button>
                 </div>
@@ -88,7 +97,7 @@ export default function Login(props) {
             </div>
           </div>
         </div>
-      </Form>
+      </Form>}
     </div>
   );
 }

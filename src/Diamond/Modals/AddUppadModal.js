@@ -2,22 +2,17 @@ import { Button, DatePicker, InputNumber, notification, Select, Spin } from "ant
 import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { CloseOutlined } from "@mui/icons-material";
-import { addUppad, getWorkerList } from "../ApiConn/Api";
+import { addUppad } from "../ApiConn/Api";
 import moment from "moment";
+import { useWorkerHook } from "../Hooks/getWorker";
 
 export default function AddUppadModal(props) {
   const { Option } = Select;
   const [empName, setEmpName] = useState("");
   const [date, setDate] = useState("");
   const [ammount, setAmmount] = useState("");
-  const [empList, setEmpList] = useState([]);
   const [loader, setLoader] = useState(false)
-  useEffect(() => {
-    let id = localStorage.getItem("AdminId")
-    getWorkerList(id).then((x) => {
-      setEmpList(x.data.data);
-    });
-  }, []);
+  const { empList } = useWorkerHook(); 
 
   useEffect(() => {
     setDate("");
@@ -62,12 +57,8 @@ export default function AddUppadModal(props) {
                   placeholder="Search Employee"
                   onChange={(value) => setEmpName(value)}
                   optionFilterProp="children"
-                  // filterOption={(input, option) => option.children.includes(input)}
-                  // filterSort={(optionA, optionB) =>
-                  //     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                  // }
                 >
-                  {empList.map((ele, index) => {
+                  {empList?.map((ele, index) => {
                     return (
                       <Option key={index} value={ele._id}>
                         {ele.name}

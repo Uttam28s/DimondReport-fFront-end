@@ -6,13 +6,11 @@ import UpdatePriceModal from './Modals/UpdatePriceModal';
 import AddUppadModal from './Modals/AddUppadModal';
 import MonthReport from './Modals/MonthleyReport';
 import { useNavigate } from "react-router-dom";
-import styled from '@emotion/styled';
 import AddType from './Modals/AddType';
+import { SecondaryButton } from './Common/button';
 
-const Button = styled.button`
-    width: fit-content;
-`
-const Header = () => {
+
+const Header = (props) => {
     let navigate = useNavigate();
 
     const [show, setShow] = useState(false);
@@ -46,24 +44,23 @@ const Header = () => {
     return (
         <div>
             <div className=" p-2 bd-highlight" style={{ textAlign: "end" }} >
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShow}>Add Worker</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShowAdd}>Add Data</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShowPrice}>Update Price</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleShowUppad}>Uppad</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleMonthReport}>Month Report</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleBulkUpload}>Bulk Upload</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./empReport")}}>Emp. Record</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./monthwisereport")}}>Last Month Report</Button>
-                <Button type="button" className="btn btn-secondary funcbtn" onClick={handleAddType}>Add type</Button>
-
-                { (localStorage.getItem("role") === "SuperAdmin") ? <Button type="button" className="btn btn-secondary funcbtn" onClick={() => {navigate("./user")}}>Users</Button>: ""}
+                <SecondaryButton onClick={handleShow} title="Add Worker" />
+                <SecondaryButton onClick={handleShowAdd} title="Add Data" />
+                <SecondaryButton onClick={handleShowPrice} title="Update Price" />
+                <SecondaryButton onClick={handleShowUppad} title="Uppad" />
+                <SecondaryButton onClick={handleMonthReport} title="Month Report" />
+                <SecondaryButton onClick={handleBulkUpload} title="Bulk Upload" />
+                <SecondaryButton onClick={() => {navigate("./empReport")}} title="Emp. Record" />
+                <SecondaryButton onClick={() => {navigate("./monthwisereport")}} title="Last Month Report" />
+                <SecondaryButton onClick={handleAddType} title="Add Type" />
+                { (localStorage.getItem("role") === "SuperAdmin") ? <SecondaryButton onClick={() => {navigate("./user")}}title="Users" /> : ""}
             </div>
             <AddEmpModal show={show} onHide={() => setShow(false)} handleClose={handleClose} />
-            <AddDataModal show={dataAdd} onHide={() => setDataAdd(false)} handleCloseData={handleCloseData} />
-            <UpdatePriceModal show={showPrice} onHide={() => setPriceUpd(false)} handleClosePrice={handleClosePrice} />
-            <AddUppadModal show={showUppad} onHide={() => setUppadUpd(false)} handleCloseUppad ={handleCloseUppad } />
-            <MonthReport show={showMonth} onHide={() => setshowMonth(false)} handleCloseMonthReport ={handleCloseMonthReport } />
-            <AddType show={showType} onHide={() => setShowType(false)} handleCloseAddType ={handleCloseAddType } />
+            { dataAdd && <AddDataModal show={dataAdd} onDataSubmit={props.onDataSubmit} onHide={() => setDataAdd(false)} handleCloseData={handleCloseData} />}
+            { showPrice && <UpdatePriceModal show={showPrice}  onHide={() => setPriceUpd(false)} handleClosePrice={handleClosePrice} />}
+            { showUppad && <AddUppadModal show={showUppad} onHide={() => setUppadUpd(false)} handleCloseUppad ={handleCloseUppad } /> }
+              <MonthReport show={showMonth} onHide={()=> setshowMonth(false)} handleCloseMonthReport ={handleCloseMonthReport } />
+            { showType && <AddType show={showType} onHide={() => setShowType(false)} handleCloseAddType ={handleCloseAddType } />}
 
         </div>
     )
