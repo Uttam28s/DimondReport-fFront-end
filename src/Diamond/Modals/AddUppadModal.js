@@ -1,4 +1,11 @@
-import { Button, DatePicker, InputNumber, notification, Select, Spin } from "antd";
+import {
+  Button,
+  DatePicker,
+  InputNumber,
+  notification,
+  Select,
+  Spin,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { CloseOutlined } from "@mui/icons-material";
@@ -11,8 +18,8 @@ export default function AddUppadModal(props) {
   const [empName, setEmpName] = useState("");
   const [date, setDate] = useState("");
   const [ammount, setAmmount] = useState("");
-  const [loader, setLoader] = useState(false)
-  const { empList } = useWorkerHook(); 
+  const [loader, setLoader] = useState(false);
+  const { empList } = useWorkerHook();
 
   useEffect(() => {
     setDate("");
@@ -21,7 +28,7 @@ export default function AddUppadModal(props) {
   }, [props.show]);
 
   const handleSubmit = () => {
-    setLoader(true)
+    setLoader(true);
     addUppad(empName, ammount, date).then((res) => {
       if (res?.data?.error) {
         notification["error"]({
@@ -32,8 +39,8 @@ export default function AddUppadModal(props) {
           message: "Uppad Added Successfully",
         });
       }
-    })
-    setLoader(false)
+    });
+    setLoader(false);
     props.handleCloseUppad();
   };
 
@@ -103,7 +110,15 @@ export default function AddUppadModal(props) {
           disabled={empName === "" || date === "" || ammount === ""}
           onClick={handleSubmit}
         >
-          Add {loader ? <> &nbsp; <Spin size="small"/> </> : "" }
+          Add{" "}
+          {loader ? (
+            <>
+              {" "}
+              &nbsp; <Spin size="small" />{" "}
+            </>
+          ) : (
+            ""
+          )}
         </Button>
       </Modal.Footer>
     </Modal>

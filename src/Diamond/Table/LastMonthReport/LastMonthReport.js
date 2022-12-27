@@ -60,8 +60,8 @@ const Container = styled.div`
 
 const FinalTotalField = styled.div`
   color: blue;
-  font-size: 2vh
-`
+  font-size: 2vh;
+`;
 
 const LastMonthReport = () => {
   const { Option } = Select;
@@ -76,8 +76,9 @@ const LastMonthReport = () => {
   const [totalField, setTotalField] = useState([]);
   const [showTables, setShowTables] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [reFetch = {}, setRefetch] = useState(false);
   const { diamondTypeList } = useDiamondTypeHook();
-  const [ finalTotalField, setFinalTotalField] = useState([])
+  const [finalTotalField, setFinalTotalField] = useState([]);
   const Tables = [
     {
       data: taliyaData || [],
@@ -101,7 +102,6 @@ const LastMonthReport = () => {
     },
   ];
 
-
   useEffect(() => {
     let role = localStorage.getItem("role");
     if (role === "SuperAdmin") {
@@ -119,94 +119,99 @@ const LastMonthReport = () => {
 
     const finalTotalL = [
       {
-        title: 'Title',
-        key: '_id',
+        title: "Title",
+        key: "_id",
         width: "17%",
         render: (text, record, index) => {
-          return <FinalTotalField className="text-center">Final Total</FinalTotalField>
+          return (
+            <FinalTotalField className="text-center">
+              Final Total
+            </FinalTotalField>
+          );
         },
       },
     ];
 
     const finalTotalR = [
       {
-        title: 'Salary',
-        dataIndex: 'total',
-        key: '_id',
+        title: "Salary",
+        dataIndex: "total",
+        key: "_id",
         width: "10%",
         render: (text, record, index) => {
-          return <FinalTotalField>{record?.totaltotal}</FinalTotalField>
+          return <FinalTotalField>{record?.totaltotal}</FinalTotalField>;
         },
       },
       {
-        title: 'Uppad',
-        dataIndex: 'totaluppad',
-        key: '_id',
+        title: "Uppad",
+        dataIndex: "totaluppad",
+        key: "_id",
         width: "10%",
         render: (text, record, index) => {
-          return <FinalTotalField>{record?.totaluppad}</FinalTotalField>
+          return <FinalTotalField>{record?.totaluppad}</FinalTotalField>;
         },
       },
       {
-        title: 'Jama',
-        dataIndex: 'totaljama',
-        key: '_id',
+        title: "Jama",
+        dataIndex: "totaljama",
+        key: "_id",
         width: "10%",
         render: (text, record, index) => {
-          return <FinalTotalField>{record?.totaljama}</FinalTotalField>
+          return <FinalTotalField>{record?.totaljama}</FinalTotalField>;
         },
       },
       {
-        title: 'Total',
-        dataIndex: 'salary',
-        key: '_id',
+        title: "Total",
+        dataIndex: "salary",
+        key: "_id",
         width: "10%",
         render: (text, record, index) => {
-          return <FinalTotalField>{record?.totalsalary}</FinalTotalField>
+          return <FinalTotalField>{record?.totalsalary}</FinalTotalField>;
         },
       },
       {
-        title: 'Total',
-        dataIndex: 'salary',
-        key: '_id',
+        title: "Total",
+        dataIndex: "salary",
+        key: "_id",
         width: "10%",
         render: (text, record, index) => {
-          return ""
+          return "";
         },
       },
-    ]
-    let finalTotalC = []
+    ];
+    let finalTotalC = [];
     diamondTypeList?.map((ele) => {
-      finalTotalC.push(
-        {
-          title: `total${ele} Pcs` ,
-          dataIndex: `total${ele}pcs`,
-          key: '_id',
-          width: "10%",
-          
-          render: (text, record, index) => {
-            return <FinalTotalField>{record?.[`total${ele}pcs`]}</FinalTotalField>
-          },
+      finalTotalC.push({
+        title: `total${ele} Pcs`,
+        dataIndex: `total${ele}pcs`,
+        key: "_id",
+        width: "10%",
+
+        render: (text, record, index) => {
+          return (
+            <FinalTotalField>
+              {record?.[`total${ele}pcs`] || "0"}
+            </FinalTotalField>
+          );
         },
-      )
-    })
-    setFinalTotalField(finalTotalL.concat(finalTotalC,finalTotalR));
+      });
+    });
+    setFinalTotalField(finalTotalL.concat(finalTotalC, finalTotalR));
+  }, [diamondTypeList]);
 
-  }, []);
-
-  const TotalCalculate = (data,title) => {
-    let obj = {}
+  const TotalCalculate = (data, title) => {
+    let obj = {};
     totalField.map((ele) => {
-      obj[ele] = 0
-    })
+      obj[ele] = 0;
+    });
     totalField.map((key) => {
       data.map((ele) => {
-        obj[key] = obj[key] + ele[key]  
-      })
-    })
-    obj['workerName'] = "Total"
-    data.push(obj)
-    return data
+        obj[key] = obj[key] + ele[key];
+      });
+    });
+    obj["workerName"] = "Total";
+    data.push(obj);
+    return data;
   };
 
   useEffect(() => {
@@ -214,21 +219,29 @@ const LastMonthReport = () => {
 
     FetchMonthData(month)
       .then((res) => {
-      if(res?.MathalaData){
-        setTaliyaData(TotalCalculate(res?.MathalaData,"Mathala Employee Report"));
-      }
-      if(res?.TaliyaData){
-        setMathalaData(TotalCalculate(res?.TaliyaData,"Mathala Employee Report"));
-      }
-      if(res?.PelData){
-        setPelData(TotalCalculate(res?.PelData,"Mathala Employee Report"));
-      }
-      if(res?.RussianData){
-        setRussianData(TotalCalculate(res?.RussianData,"Mathala Employee Report"));
-      }
-      if(res?.TableData){
-        setTableData(TotalCalculate(res?.TableData,"Mathala Employee Report"));
-      }
+        if (res?.MathalaData) {
+          setTaliyaData(
+            TotalCalculate(res?.MathalaData, "Mathala Employee Report")
+          );
+        }
+        if (res?.TaliyaData) {
+          setMathalaData(
+            TotalCalculate(res?.TaliyaData, "Mathala Employee Report")
+          );
+        }
+        if (res?.PelData) {
+          setPelData(TotalCalculate(res?.PelData, "Mathala Employee Report"));
+        }
+        if (res?.RussianData) {
+          setRussianData(
+            TotalCalculate(res?.RussianData, "Mathala Employee Report")
+          );
+        }
+        if (res?.TableData) {
+          setTableData(
+            TotalCalculate(res?.TableData, "Mathala Employee Report")
+          );
+        }
 
         if (
           res.TaliyaData.length === 1 &&
@@ -250,18 +263,17 @@ const LastMonthReport = () => {
         });
         setLoader(false);
       });
-  }, [month,totalField]);
+  }, [month, totalField, reFetch]);
 
   const printItems = () => {
     window.print();
-    window.location.reload(false);
   };
   return (
     <>
       <MainTitle />
       {isAdmin ? (
         <>
-        <AdminRecordTable/> 
+          <AdminRecordTable />
         </>
       ) : (
         <>
@@ -306,21 +318,23 @@ const LastMonthReport = () => {
                           <LastMonthReportTable
                             data={ele.data}
                             title={ele.title}
+                            setRefetch={setRefetch}
+                            reFetch={reFetch}
                           />
                         </>
                       );
                     }
                   })}
                   <br />
-                    <Table
-                      style={{ margin: "10px" }}
-                      columns={finalTotalField}
-                      showHeader={false}
-                      dataSource={[total]}
-                      bordered
-                      size="middle"
-                      pagination={false}
-                    />
+                  <Table
+                    style={{ margin: "10px" }}
+                    columns={finalTotalField}
+                    showHeader={false}
+                    dataSource={[total]}
+                    bordered
+                    size="middle"
+                    pagination={false}
+                  />
                 </>
               ) : (
                 <DataNoFoundBlock>No Data Found</DataNoFoundBlock>
@@ -334,6 +348,3 @@ const LastMonthReport = () => {
 };
 
 export default LastMonthReport;
-
-
-

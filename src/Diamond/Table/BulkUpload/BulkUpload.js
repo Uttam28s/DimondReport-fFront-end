@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import React, { useState } from "react";
-import {list, MainTitle} from "../../Common/common";
+import { list, MainTitle } from "../../Common/common";
 import BulkTable from "./BulkTable";
 
 const BulkUpload = () => {
@@ -13,10 +13,7 @@ const BulkUpload = () => {
   return (
     <>
       <MainTitle />
-      <div
-        style={{ margin: "10px" }}
-        className="d-flex justify-content-end"
-      >
+      <div style={{ margin: "10px" }} className="d-flex justify-content-end">
         <div style={{ margin: "10px", textAlign: "end" }}>
           <ul style={{ display: "inline-block" }} className="navbar-nav">
             {list.map((ele, index) => {

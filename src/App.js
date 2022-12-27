@@ -3,7 +3,6 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import Index from "./Componants/Index";
 import DiamondIndex from "./Diamond/Diamondindex";
 import BulkUpload from "./Diamond/Table/BulkUpload/BulkUpload";
-import MonthReportScreen from "./Diamond/MonthReportScreen";
 import "antd/dist/antd.less";
 import TableEmpRecord from "./Diamond/Table/TableEmpRecord";
 import LastMonthReport from "./Diamond/Table/LastMonthReport/LastMonthReport";
@@ -27,16 +26,9 @@ function App() {
               )}
 
               <Route path={"/diamond"} element={<DiamondIndex />} />
-              <Route
-                path={"/diamond/monthreport"}
-                element={<MonthReportScreen />}
-              />
               <Route path={"/diamond/bulkUpload"} element={<BulkUpload />} />
               <Route path={"/diamond/empReport"} element={<TableEmpRecord />} />
-              <Route
-                path={"/diamond/monthwisereport"}
-                element={<LastMonthReport />}
-              />
+              <Route path={"/diamond/monthwisereport"} element={<LastMonthReport />} />
               <Route path={"/diamond/user"} element={<Users />} />
               <Route path={"/qrcode"} element={<Index />} />
             </>

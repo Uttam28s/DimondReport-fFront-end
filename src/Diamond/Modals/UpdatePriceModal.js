@@ -4,6 +4,7 @@ import { CloseOutlined } from "@mui/icons-material";
 import Modal from "react-bootstrap/Modal";
 import { getPriceList, updatePrice } from "../ApiConn/Api";
 import { useDiamondTypeHook } from "../Hooks/getDiamondType";
+import { list } from "../Common/common";
 
 export default function UpdatePriceModal(props) {
   const [process, setProcess] = useState("");
@@ -11,21 +12,21 @@ export default function UpdatePriceModal(props) {
   const [data, setData] = useState({});
   const [diamondType, setDiamondType] = useState([]);
   const { Option } = Select;
- const { diamondTypeList } = useDiamondTypeHook
+  const { diamondTypeList } = useDiamondTypeHook;
   useEffect(() => {
-    setData({})
+    setData({});
   }, [props.show]);
 
   const handleChange = () => {
-    let adminId = localStorage.getItem("AdminId");    
+    let adminId = localStorage.getItem("AdminId");
     setLoader(true);
-    updatePrice(data,process,adminId).then((res) => {
+    updatePrice(data, process, adminId).then((res) => {
       notification["success"]({
         message: "Price Updated Successully" || "",
       });
-    })
+    });
     setLoader(false);
-    setData({})
+    setData({});
     props.handleClosePrice();
   };
 
@@ -71,11 +72,9 @@ export default function UpdatePriceModal(props) {
                     .localeCompare(optionB.children.toLowerCase())
                 }
               >
-                <Option value="taliya">Taliya</Option>
-                <Option value="mathala">Mathala</Option>
-                <Option value="pel">Pel</Option>
-                <Option value="russian">Russian</Option>
-                <Option value="table">Table</Option>
+                {list.map((ele) => {
+                  return <Option value={ele?.process}>{ele?.title}</Option>;
+                })}
               </Select>
             </div>
           </div>
@@ -97,7 +96,6 @@ export default function UpdatePriceModal(props) {
             </div>
           );
         })}
-        
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.handleClosePrice}>
@@ -105,9 +103,7 @@ export default function UpdatePriceModal(props) {
         </Button>
         <Button
           variant="primary"
-          disabled={
-            process === ""
-          }
+          disabled={process === ""}
           onClick={handleChange}
         >
           Update{" "}

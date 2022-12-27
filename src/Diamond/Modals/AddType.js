@@ -7,28 +7,28 @@ import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 
 const AddType = (props) => {
   const [type, setType] = useState("");
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
   const { diamondTypeList } = useDiamondTypeHook();
 
   useEffect(() => {
-    setType("")
+    setType("");
   }, [props.show]);
 
   const handleSubmit = () => {
-    if(diamondTypeList?.includes(type.toLowerCase())){
+    if (diamondTypeList?.includes(type.toLowerCase())) {
       notification["error"]({
-        message:"Already Having this type",
-      });    
-      return
+        message: "Already Having this type",
+      });
+      return;
     }
-    setLoader(true)
-    let adminId = localStorage.getItem("AdminId")
-    addType({type : type,adminId : adminId}).then((res) => {
+    setLoader(true);
+    let adminId = localStorage.getItem("AdminId");
+    addType({ type: type.toLowerCase(), adminId: adminId }).then((res) => {
       notification["success"]({
-        message:"Added Successfully",
-      }); 
-    })
-    setLoader(false)
+        message: "Added Successfully",
+      });
+    });
+    setLoader(false);
     props.handleCloseAddType();
   };
 
@@ -46,27 +46,34 @@ const AddType = (props) => {
             <div className="row">
               <div className="col-4">Type : </div>
               <div className="col-8">
-              <Input required onChange={(e) => setType(e.target.value)} style={{ width: '60%', margin: '2px' }} />
+                <Input
+                  required
+                  onChange={(e) => setType(e.target.value)}
+                  style={{ width: "60%", margin: "2px" }}
+                />
               </div>
             </div>
           </div>
-          
         </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.handleCloseAddType}>
           Close
         </Button>
-        <Button
-          variant="primary"
-          disabled={type === ""}
-          onClick={handleSubmit}
-        >
-          Add {loader ? <> &nbsp; <Spin size="small"/> </> : "" }
+        <Button variant="primary" disabled={type === ""} onClick={handleSubmit}>
+          Add{" "}
+          {loader ? (
+            <>
+              {" "}
+              &nbsp; <Spin size="small" />{" "}
+            </>
+          ) : (
+            ""
+          )}
         </Button>
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
-export default AddType
+export default AddType;

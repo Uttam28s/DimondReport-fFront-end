@@ -5,21 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { ChangePaidStatus, GetMonthReport } from '../ApiConn/Api'
 import PrintComponent from './PrintComponent';
 import { useWorkerHook } from '../Hooks/getWorker';
-
-const MonthName = {
-    1: 'January',
-    2: 'February',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'September',
-    10: 'October',
-    11: 'November',
-    12: 'December',
-}
+import { MonthName } from '../Common/common';
 
 export default function MonthReport(props) {
     const { Option } = Select;
@@ -40,7 +26,7 @@ export default function MonthReport(props) {
             notification["success"]({
                 message: res?.data.message,
             })
-            setStatus(res.data.data.salary[0].status)
+            setStatus(res?.data?.data?.salary[0]?.status)
             res.status && setReport(res.data.data)
         }).catch((res) => {
             props.handleCloseMonthReport()
@@ -49,7 +35,6 @@ export default function MonthReport(props) {
             })
         })
         setLoader(false)
-        props.handleCloseMonthReport()
     }
 
 

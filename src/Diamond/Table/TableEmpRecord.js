@@ -71,6 +71,9 @@ const TableEmpRecord = (props) => {
             dataIndex: `${ele}`,
             key: "_id",
             width: 40,
+            render: (text, record, index) => {
+              return <span>{record?.[`${ele}`] || "0"}</span>;
+            },
           },
         ],
       });
@@ -81,22 +84,18 @@ const TableEmpRecord = (props) => {
   useEffect(() => {
     let salary = 0;
     let pcsObj = {};
+    let pricePcs = {};
     diamondTypeList.map((ele) => {
       pcsObj[`${ele}pcs`] = 0;
-    });
-    let pricePcs = {};
-    diamondTypeList.map((type) => {
-      data.map((ele) => {
-        pcsObj[`${type}pcs`] = pcsObj[`${type}pcs`] + Number(ele.pcs[type]);
-      });
-    });
-    diamondTypeList.map((ele) => {
       pricePcs[`${ele}Price`] = 0;
     });
     diamondTypeList.map((type) => {
       data.map((ele) => {
+        pcsObj[`${type}pcs`] =
+          pcsObj?.[`${type}pcs`] + Number(ele?.pcs[type] || 0);
         pricePcs[`${type}Price`] =
-          pricePcs[`${type}Price`] + ele[type] * ele[`${type}Price`];
+          pricePcs?.[`${type}Price`] +
+          (ele?.[type] || 0) * (ele?.price?.[`${type}Price`] || 0);
       });
     });
     data.map((ele) => {

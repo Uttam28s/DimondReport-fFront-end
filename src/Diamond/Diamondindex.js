@@ -5,7 +5,7 @@ import { getReport, getWorkerList } from "./ApiConn/Api";
 import TableAll from "./Table/TableAll";
 import moment from "moment";
 import styled from "styled-components";
-import {list, MainTitle} from "./Common/common";
+import { list, MainTitle } from "./Common/common";
 import { useWorkerHook } from "./Hooks/getWorker";
 
 const Loader = styled.div`
@@ -27,47 +27,46 @@ const DiamondIndex = () => {
   let params = {};
 
   const getReportFunc = (params) => {
-    let id = localStorage.getItem("AdminId")
-    params["adminId"] = id
+    let id = localStorage.getItem("AdminId");
+    params["adminId"] = id;
     getReport(params)
       .then((x) => {
         const report = x.data.data;
-            for (let j = 0; j < report.length; j++) {
-              for (let i = 0; i < empList?.length; i++) {
-                if (report[j].workerid === empList?.[i]._id) {
-                  report[j].index = j + 1;
-                  report[j].name = empList?.[i].name;
-                  report[j].date = report[j].date.slice(0, 10);
-                }
-              }
+        for (let j = 0; j < report.length; j++) {
+          for (let i = 0; i < empList?.length; i++) {
+            if (report[j].workerid === empList?.[i]._id) {
+              report[j].index = j + 1;
+              report[j].name = empList?.[i].name;
+              report[j].date = report[j].date.slice(0, 10);
             }
-            let pcs = {}
-            let price= {}
-            let arr =[]
-            report.map((ele) => {
-                Object.keys(ele.pcs).map((i) => {
-                    pcs[i] = ele.pcs[i]
-                    ele[i] = ele.pcs[i]
-                })
-                Object.keys(ele.price).map((i) => {
-                    price[i] = ele.price[i]
-                })
-                let obj = {
-                    ...ele,
-                    ...pcs,
-                    ...price
-                }
-                arr.push(obj)
-            })
-            setData(arr);
-            setLoader(false);
+          }
+        }
+        let pcs = {};
+        let price = {};
+        let arr = [];
+        report.map((ele) => {
+          Object.keys(ele.pcs).map((i) => {
+            pcs[i] = ele.pcs[i];
+            ele[i] = ele.pcs[i];
+          });
+          Object.keys(ele.price).map((i) => {
+            price[i] = ele.price[i];
+          });
+          let obj = {
+            ...ele,
+            ...pcs,
+            ...price,
+          };
+          arr.push(obj);
+        });
+        setData(arr);
+        setLoader(false);
       })
       .catch((err) => {
         notification["error"]({
           message: "Something Went Wrong",
         });
       });
-    
   };
 
   useEffect(() => {
@@ -86,44 +85,47 @@ const DiamondIndex = () => {
       });
       setTableShow(ele[0].id);
     }
-    getReportFunc(params)
+    getReportFunc(params);
   }, [empList]);
-  
 
   const handleReport = (params) => {
     setLoader(true);
-    getReportFunc(params)
+    getReportFunc(params);
   };
 
   const onClickHandle = (a) => {
-    switch(a){
-        case 1:
-            params = { process: "taliya" };
-            break;
-        case 2:
-            params = { process: "mathala" };
-            break;
-        case 3:
-            params = { process: "pel" };
-            break;
-        case 4:
-            params = { process: "russian" };
-            break;
-        case 5:
-            params = { process: "table" };
-            break;
-        default:
-            break;
+    if (!a) {
+      a = tableShow;
+    }
+    switch (a) {
+      case 1:
+        params = { process: "taliya" };
+        break;
+      case 2:
+        params = { process: "mathala" };
+        break;
+      case 3:
+        params = { process: "pel" };
+        break;
+      case 4:
+        params = { process: "russian" };
+        break;
+      case 5:
+        params = { process: "table" };
+        break;
+      default:
+        break;
     }
 
     params["from"] = "";
     params["to"] = "";
     setProcess(params["process"]);
     localStorage.setItem("process", params["process"]);
-    handleReport(params);
+    if (params["process"]) {
+      handleReport(params);
+    }
     setTableShow(a);
   };
-
 
   return (
     <>
@@ -134,7 +136,12 @@ const DiamondIndex = () => {
             return (
               <li key={index} style={{ display: "inline-block" }}>
                 <Button
-                  style={{ margin: "2px", width: "80px", backgroundColor :"#756666",color:"white" }}
+                  style={{
+                    margin: "2px",
+                    width: "80px",
+                    backgroundColor: "#756666",
+                    color: "white",
+                  }}
                   disabled={process === ele.process}
                   onClick={() => {
                     onClickHandle(ele.id);

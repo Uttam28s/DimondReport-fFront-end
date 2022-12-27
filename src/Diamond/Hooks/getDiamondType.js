@@ -5,26 +5,24 @@ export const useDiamondTypeHook = () => {
   const [diamondTypeList, setDiamondTypeList] = useState([]);
   const [loader, setLoader] = useState(false);
   const getList = () => {
-    try{
-        let id = localStorage.getItem("AdminId")
-        getDiamondTypeList(id).then((x) => {
-          setDiamondTypeList(x.data);
-        });
-        setLoader(false)
+    try {
+      let id = localStorage.getItem("AdminId");
+      getDiamondTypeList(id).then((x) => {
+        setDiamondTypeList(x.data);
+      });
+      setLoader(false);
+    } catch (error) {
+      setLoader(false);
     }
-    catch(error){
-        setLoader(false)
-    }
-  }
+  };
 
   const reFetchType = () => {
-    getList()
-  }
+    getList();
+  };
 
   useEffect(() => {
-    getList()
-  },[])
+    getList();
+  }, []);
 
   return { diamondTypeList, loader, reFetchType };
 };
-

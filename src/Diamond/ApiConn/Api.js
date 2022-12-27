@@ -1,6 +1,6 @@
 import axios from "axios";
-// const apiURL = 'https://salary-report-api.onrender.com/api/diamond'
-const apiURL = "http://localhost:3003/api/diamond";
+const apiURL = "https://salary-report-api.onrender.com/api/diamond";
+// const apiURL = "http://localhost:3003/api/diamond";
 
 // to Add New Worker
 export const addWorkerName = async (name, process) => {
@@ -30,8 +30,8 @@ export const getPriceList = async (value) => {
 };
 
 // to add the report data
-export const addReport = async (params,data) => {
-  const response = await axios.post(`${apiURL}/report/add`, {params,data});
+export const addReport = async (params, data) => {
+  const response = await axios.post(`${apiURL}/report/add`, { params, data });
   return response;
 };
 
@@ -140,6 +140,8 @@ export const addType = async (data) => {
 };
 
 export const getDiamondTypeList = async (adminId) => {
-  const response = await axios.get(`${apiURL}/user/diamondTypeList?adminId=${adminId}`);
+  const response = await axios.get(
+    `${apiURL}/user/diamondTypeList?adminId=${adminId}`
+  );
   return response.data;
-}
+};

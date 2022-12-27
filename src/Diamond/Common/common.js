@@ -5,53 +5,73 @@ import { useNavigate } from "react-router-dom";
 const MainTitle = (props) => {
   const navigate = useNavigate();
   return (
-    <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor : "#6c757d"}}>
-      <h4 style={{ margin: "10px",color:"white" }}>Diamond</h4>
+    <nav
+      className="navbar navbar-expand-lg navbar-light"
+      style={{ backgroundColor: "#6c757d" }}
+    >
+      <h4 style={{ margin: "10px", color: "white" }}>Diamond</h4>
       {!props?.hidden && (
         <Button onClick={() => navigate("/diamond")}>Back</Button>
       )}
-      {
-        !props?.logoutHidden ?
-        <Button type="button" style={{ marginLeft: "10px" }} onClick={() => {           
-          localStorage.clear()
-          navigate("/login") 
-          window.location.reload(false)
-        }
-        }>Logout</Button> : ""
-      }
-
+      {!props?.logoutHidden ? (
+        <Button
+          type="button"
+          style={{ marginLeft: "10px" }}
+          onClick={() => {
+            localStorage.clear();
+            navigate("/login");
+            window.location.reload(false);
+          }}
+        >
+          Logout
+        </Button>
+      ) : (
+        ""
+      )}
     </nav>
   );
 };
 
 const list = [
-  { id: 1, type: "Talyu", process: "taliya" },
-  { id: 2, type: "Mathalu", process: "mathala" },
-  { id: 3, type: "Pel", process: "pel" },
-  { id: 4, type: "Russian", process: "russian" },
-  { id: 5, type: "Table", process: "table" },
+  { id: 1, type: "Talyu", process: "taliya", title: "Taliya" },
+  { id: 2, type: "Mathalu", process: "mathala", title: "Mathala" },
+  { id: 3, type: "Pel", process: "pel", title: "Pel" },
+  { id: 4, type: "Russian", process: "russian", title: "Russian" },
+  { id: 5, type: "Table", process: "table", title: "Table" },
 ];
 
-
-const dummyUserData= [
-    {
-        name: "Manoj",
-        password : "12345678",
-        role : "Admin",
-        flag : "true"
-    },
-    {
-        name: "Suresh",
-        password : "12345678",
-        role : "Admin",
-        flag : "true"
-    },
-    {
-        name: "Ramesh",
-        password : "12345678",
-        role : "Admin",
-        flag : "true"
-    },
-
-]
-export { list, MainTitle, dummyUserData };
+const MonthName = {
+  1: 'January',
+  2: 'February',
+  3: 'March',
+  4: 'April',
+  5: 'May',
+  6: 'June',
+  7: 'July',
+  8: 'August',
+  9: 'September',
+  10: 'October',
+  11: 'November',
+  12: 'December',
+}
+const dummyUserData = [
+  {
+    name: "Manoj",
+    password: "12345678",
+    role: "Admin",
+    flag: "true",
+  },
+  {
+    name: "Suresh",
+    password: "12345678",
+    role: "Admin",
+    flag: "true",
+  },
+  {
+    name: "Ramesh",
+    password: "12345678",
+    role: "Admin",
+    flag: "true",
+  },
+];
+export { list, MainTitle, dummyUserData, MonthName };
