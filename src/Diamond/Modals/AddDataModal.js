@@ -49,7 +49,6 @@ export default function AddDataModal(props) {
         });
       });
     localStorage.setItem("process", params["process"]);
-    props.onDataSubmit();
     let id = 0;
     list.map((ele) => {
       if (ele.process === params["process"]) {

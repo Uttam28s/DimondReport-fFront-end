@@ -13,7 +13,6 @@ const PendingButton = styled(Button)`
   color: red;
 `;
 const LastMonthReportTable = (props) => {
-  const { diamondTypeList } = useDiamondTypeHook();
   const [columns, setColumns] = useState([]);
   const leftSideColumns = [
     {
@@ -134,7 +133,7 @@ const LastMonthReportTable = (props) => {
   ];
   useEffect(() => {
     let arr = [];
-    diamondTypeList?.map((ele) => {
+    props?.diamondTypeList?.map((ele) => {
       arr.push({
         title: `${ele} Pcs`,
         dataIndex: `${ele}pcs`,
@@ -154,7 +153,7 @@ const LastMonthReportTable = (props) => {
       });
     });
     setColumns(leftSideColumns.concat(arr, rightSideColumns));
-  }, [diamondTypeList]);
+  }, [props.diamondTypeList]);
 
   const handlePaidButton = async (workerid) => {
     let params = {
@@ -172,7 +171,6 @@ const LastMonthReportTable = (props) => {
           message: "Something Went Wrong",
         });
       });
-    props?.setRefetch(!props?.reFetch);
   };
   return (
     <>

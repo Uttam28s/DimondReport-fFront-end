@@ -263,7 +263,7 @@ const LastMonthReport = () => {
         });
         setLoader(false);
       });
-  }, [month, totalField, reFetch]);
+  }, [month,totalField]);
 
   const printItems = () => {
     window.print();
@@ -318,8 +318,7 @@ const LastMonthReport = () => {
                           <LastMonthReportTable
                             data={ele.data}
                             title={ele.title}
-                            setRefetch={setRefetch}
-                            reFetch={reFetch}
+                            diamondTypeList={diamondTypeList}
                           />
                         </>
                       );

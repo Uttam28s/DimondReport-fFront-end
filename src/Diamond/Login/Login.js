@@ -54,12 +54,6 @@ export default function Login(props) {
   return (
     <div>
       <MainTitle hidden={true} logoutHidden={true} />
-      {loader ? (
-        <Loader>
-          {" "}
-          &nbsp; <Spin size="large" />
-        </Loader>
-      ) : (
         <Form className="container py-5 h-100" onSubmit={onClickHandle}>
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -91,8 +85,15 @@ export default function Login(props) {
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
-                    <Button className="btn btn-lg bg-secondary" type="submit">
+                    <Button className="btn btn-lg bg-light text-dark border-secondary" disabled={name === "" || password=== ""} type="submit">
                       Login
+                      {loader ? (
+                        <>
+                          &nbsp;<Spin size="small" />{" "}
+                        </>
+                      ) : (
+                        ""
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -100,7 +101,6 @@ export default function Login(props) {
             </div>
           </div>
         </Form>
-      )}
     </div>
   );
 }

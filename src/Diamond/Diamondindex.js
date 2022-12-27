@@ -22,21 +22,21 @@ const DiamondIndex = () => {
   const [data, setData] = useState([]);
   const [process, setProcess] = useState();
   const [loader, setLoader] = useState(true);
-  const { empList } = useWorkerHook();
 
   let params = {};
 
-  const getReportFunc = (params) => {
+  const getReportFunc = async (params) => {
     let id = localStorage.getItem("AdminId");
     params["adminId"] = id;
+    let res = await getWorkerList()
     getReport(params)
       .then((x) => {
         const report = x.data.data;
         for (let j = 0; j < report.length; j++) {
-          for (let i = 0; i < empList?.length; i++) {
-            if (report[j].workerid === empList?.[i]._id) {
+          for (let i = 0; i < res?.data?.data?.length; i++) {
+            if (report[j].workerid === res?.data?.data?.[i]._id) {
               report[j].index = j + 1;
-              report[j].name = empList?.[i].name;
+              report[j].name = res?.data?.data?.[i].name;
               report[j].date = report[j].date.slice(0, 10);
             }
           }
@@ -86,7 +86,7 @@ const DiamondIndex = () => {
       setTableShow(ele[0].id);
     }
     getReportFunc(params);
-  }, [empList]);
+  }, []);
 
   const handleReport = (params) => {
     setLoader(true);
