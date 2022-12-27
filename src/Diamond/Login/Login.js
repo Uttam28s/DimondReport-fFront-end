@@ -25,13 +25,13 @@ export default function Login(props) {
   }, []);
   const onClickHandle = async () => {
     setLoader(true);
-    let res = await LoginConfirm({ password: password, name: name }).then(
-      (res) => {
+    await LoginConfirm({ password: password, name: name })
+      .then((res) => {
         localStorage.setItem("authLogin", true);
         localStorage.setItem("role", res?.data?.role);
         localStorage.setItem("AdminId", res?.data?._id);
         notification["success"]({
-          message: res.success,
+          message: res?.message,
         });
 
         props.setAuthLogin(true);
@@ -41,14 +41,14 @@ export default function Login(props) {
         } else {
           navigate("/diamond");
         }
-      }
-    );
-    if (res?.error) {
-      notification["error"]({
-        message: res?.error,
+        setLoader(false);
+      })
+      .catch((e) => {
+        notification["error"]({
+          message: e?.response?.data?.message,
+        });
+        setLoader(false);
       });
-    }
-    setLoader(false);
   };
 
   return (
