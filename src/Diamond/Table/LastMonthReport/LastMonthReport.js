@@ -76,7 +76,6 @@ const LastMonthReport = () => {
   const [totalField, setTotalField] = useState([]);
   const [showTables, setShowTables] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [reFetch = {}, setRefetch] = useState(false);
   const { diamondTypeList } = useDiamondTypeHook();
   const [finalTotalField, setFinalTotalField] = useState([]);
   const Tables = [

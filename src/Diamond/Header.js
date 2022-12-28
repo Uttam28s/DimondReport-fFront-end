@@ -59,7 +59,7 @@ const Header = (props) => {
           onClick={() => {
             navigate("./monthwisereport");
           }}
-          title="Last Month Report"
+          title="Month's Total"
         />
         <SecondaryButton onClick={handleAddType} title="Add Type" />
         {localStorage.getItem("role") === "SuperAdmin" ? (
