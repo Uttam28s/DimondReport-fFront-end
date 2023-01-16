@@ -1,12 +1,15 @@
-import { Button, Table } from "antd";
+import { Button, notification, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { DeleteUser, getUsers, updateFlag } from "../ApiConn/Api";
+import { DeleteUser, getUsers, LoginConfirm, updateFlag } from "../ApiConn/Api";
 
 const ButtonforchangeFlag = styled(Button)`
   color: red;
 `;
 const UserlistTable = (props) => {
+  const navigate = useNavigate();
+  const [loader, setLoader] = useState(false);
   const [data, setData] = useState([]);
   const [reload, setReload] = useState(false);
   const handlePaidButton = async (_id, status) => {
@@ -22,6 +25,35 @@ const UserlistTable = (props) => {
         setReload(!reload);
       });
     }
+  };
+
+  const handleLogIn = async (name, password) => {
+    setLoader(true);
+    await LoginConfirm({ password: password, name: name })
+      .then((res) => {
+        localStorage.setItem("authLogin", true);
+        localStorage.setItem("role", res?.data?.role);
+        localStorage.setItem("AdminId", res?.data?._id);
+        notification["success"]({
+          message: res?.message,
+        });
+
+        // props.setAuthLogin(true);
+        let role = localStorage.getItem("role");
+        if (role === "SuperAdmin") {
+          navigate("/diamond/user");
+        } else {
+          navigate("/diamond");
+        }
+        setLoader(false);
+      })
+      .catch((e) => {
+        console.log("🚀 ~ file: UserlistTable.js:51 ~ handleLogIn ~ e", e)
+        notification["error"]({
+          message: e?.response?.data?.message,
+        });
+        setLoader(false);
+      });
   };
   const columns = [
     {
@@ -82,6 +114,31 @@ const UserlistTable = (props) => {
             onClick={() => handleDelete(record._id)}
           >
             Delete
+          </Button>
+        );
+      },
+    },
+    {
+      title: "LogIn",
+      dataIndex: "flag",
+      key: "_id",
+      width: "10%",
+      render: (text, record, index) => {
+        return (
+          <Button
+            disabled={record.role === "SuperAdmin"}
+            type="button"
+            onClick={() => handleLogIn(record.name,record.password)}
+          >
+            LogIn
+            {loader ? (
+              <>
+                &nbsp;
+                <Spin size="small" />{" "}
+              </>
+            ) : (
+              ""
+            )}
           </Button>
         );
       },

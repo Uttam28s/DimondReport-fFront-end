@@ -72,7 +72,7 @@ export default function Login(props) {
                       <Input
                         type="text"
                         placeholder="Enter the Name"
-                        className="form-control form-control-lg"
+                        className="form-control form-control-lg login-input"
                         onChange={(e) => setName(e.target.value)}
                       />
                     </div>
@@ -81,7 +81,7 @@ export default function Login(props) {
                       <Input
                         type="password"
                         placeholder="Enter the Password"
-                        className="form-control form-control-lg"
+                        className="form-control form-control-lg login-input"
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>

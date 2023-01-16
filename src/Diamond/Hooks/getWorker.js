@@ -12,6 +12,8 @@ export const useWorkerHook = () => {
       let id = localStorage.getItem("AdminId");
       getWorkerList(id).then((x) => {
         setEmpList(x.data.data);
+        // localStorage.setItem("EmpList",x.data.data);
+
       });
       setLoader(false);
     } catch (error) {

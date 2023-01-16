@@ -2,15 +2,18 @@ import { Button, Input, notification, Select, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { CloseOutlined } from "@mui/icons-material";
 import Modal from "react-bootstrap/Modal";
-import { getPriceList, updatePrice } from "../ApiConn/Api";
+import { addType, getPriceList, updatePrice } from "../ApiConn/Api";
 import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 import { list } from "../Common/common";
+import AddType from "./AddType";
 
 export default function UpdatePriceModal(props) {
   const [process, setProcess] = useState("");
   const [loader, setLoader] = useState(false);
   const [data, setData] = useState({});
   const [diamondType, setDiamondType] = useState([]);
+  const [type, setType] = useState("");
+  const [addType,setAddType] = useState()
   const { Option } = Select;
   const { diamondTypeList } = useDiamondTypeHook;
   useEffect(() => {
@@ -42,6 +45,23 @@ export default function UpdatePriceModal(props) {
       setDiamondType(Object.keys(obj));
     });
   };
+
+  const handleSubmit = () => {
+    if (diamondTypeList?.includes(type.toLowerCase())) {
+      notification["error"]({
+        message: "Already Having this type",
+      });
+      return;
+    }
+    setLoader(true);
+    let adminId = localStorage.getItem("AdminId");
+    addType({ type: type.toLowerCase(), adminId: adminId }).then((res) => {
+      notification["success"]({
+        message: "Added Successfully",
+      });
+    });
+    setLoader(false);
+  };
   return (
     <Modal show={props.show}>
       <Modal.Header>
@@ -53,8 +73,35 @@ export default function UpdatePriceModal(props) {
       <Modal.Body>
         <div className="container">
           <div className="row">
+            <div className="col-4">Type : </div>
+            <div className="col-6">
+              <Input
+                required
+                onChange={(e) => setType(e.target.value)}
+                style={{ width: "100%", margin: "2px" }}
+              />
+            </div>
+            <div className="col-2">
+              <Button
+                variant="primary"
+                disabled={type === ""}
+                onClick={handleSubmit}
+              >
+                Add{" "}
+                {loader ? (
+                  <>
+                    {" "}
+                    &nbsp; <Spin size="small" />{" "}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Button>
+            </div>
+          </div>
+          <div className="row">
             <div className="col-4">Process:</div>
-            <div className="col-8">
+            <div className="col-6">
               <Select
                 showSearch
                 style={{ width: "100%" }}
@@ -77,6 +124,9 @@ export default function UpdatePriceModal(props) {
                 })}
               </Select>
             </div>
+            {/* <div className="col-2">
+              <Button onClick={() => setAddType(!addType)}>+</Button>
+            </div> */}
           </div>
         </div>
         {diamondType.map((ele) => {

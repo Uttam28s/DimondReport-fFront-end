@@ -9,6 +9,8 @@ const MainTitle = (props) => {
       className="navbar navbar-expand-lg navbar-light"
       style={{ backgroundColor: "#6c757d" }}
     >
+      <Button onClick={() => navigate("/qrcode")}>QrCode</Button>
+
       <h4 style={{ margin: "10px", color: "white" }}>Diamond</h4>
       {!props?.hidden && (
         <Button onClick={() => navigate("/diamond")}>Back</Button>
@@ -33,11 +35,11 @@ const MainTitle = (props) => {
 };
 
 const list = [
-  { id: 1, type: "Talyu", process: "taliya", title: "Taliya" },
-  { id: 2, type: "Mathalu", process: "mathala", title: "Mathala" },
-  { id: 3, type: "Pel", process: "pel", title: "Pel" },
-  { id: 4, type: "Russian", process: "russian", title: "Russian" },
   { id: 5, type: "Table", process: "table", title: "Table" },
+  { id: 4, type: "Russian", process: "russian", title: "Russian" },
+  { id: 1, type: "Talyu", process: "taliya", title: "Taliya" },
+  { id: 3, type: "Pel", process: "pel", title: "Pel" },
+  { id: 2, type: "Mathalu", process: "mathala", title: "Mathala" },
 ];
 
 const MonthName = {

@@ -6,7 +6,7 @@ import UpdatePriceModal from "./Modals/UpdatePriceModal";
 import AddUppadModal from "./Modals/AddUppadModal";
 import MonthReport from "./Modals/MonthleyReport";
 import { useNavigate } from "react-router-dom";
-import AddType from "./Modals/AddType";
+// import AddType from "./Modals/AddType";
 import { SecondaryButton } from "./Common/button";
 
 const Header = (props) => {
@@ -32,9 +32,9 @@ const Header = (props) => {
   const handleMonthReport = () => setshowMonth(true);
   const handleCloseMonthReport = () => setshowMonth(false);
 
-  const [showType, setShowType] = useState(false);
-  const handleAddType = () => setShowType(true);
-  const handleCloseAddType = () => setShowType(false);
+  // const [showType, setShowType] = useState(false);
+  // const handleAddType = () => setShowType(true);
+  // const handleCloseAddType = () => setShowType(false);
 
   const handleBulkUpload = () => {
     navigate("./bulkUpload");
@@ -43,12 +43,12 @@ const Header = (props) => {
   return (
     <div>
       <div className=" p-2 bd-highlight" style={{ textAlign: "end" }}>
-        <SecondaryButton onClick={handleShow} title="Add Worker" />
-        <SecondaryButton onClick={handleShowAdd} title="Add Data" />
+        {/* <SecondaryButton onClick={handleAddType} title="Add Type" /> */}
         <SecondaryButton onClick={handleShowPrice} title="Update Price" />
+        <SecondaryButton onClick={handleShowAdd} title="Add Data" />
+        <SecondaryButton onClick={handleBulkUpload} title="Bulk Upload" />
         <SecondaryButton onClick={handleShowUppad} title="Uppad" />
         <SecondaryButton onClick={handleMonthReport} title="Month Report" />
-        <SecondaryButton onClick={handleBulkUpload} title="Bulk Upload" />
         <SecondaryButton
           onClick={() => {
             navigate("./empReport");
@@ -61,7 +61,7 @@ const Header = (props) => {
           }}
           title="Month's Total"
         />
-        <SecondaryButton onClick={handleAddType} title="Add Type" />
+        <SecondaryButton onClick={handleShow} title="Add Worker" />
         {localStorage.getItem("role") === "SuperAdmin" ? (
           <SecondaryButton
             onClick={() => {
@@ -107,13 +107,13 @@ const Header = (props) => {
           handleCloseMonthReport={handleCloseMonthReport}
         />
       )}
-      {showType && (
+      {/* {showType && (
         <AddType
           show={showType}
           onHide={() => setShowType(false)}
           handleCloseAddType={handleCloseAddType}
         />
-      )}
+      )} */}
     </div>
   );
 };

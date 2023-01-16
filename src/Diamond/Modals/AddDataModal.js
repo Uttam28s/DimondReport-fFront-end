@@ -2,7 +2,7 @@ import { Button, DatePicker, Input, notification, Select, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { CloseOutlined } from "@mui/icons-material";
 import Modal from "react-bootstrap/Modal";
-import { addReport } from "../ApiConn/Api";
+import { addReport, getSingleReport, updateReport } from "../ApiConn/Api";
 import moment from "moment";
 import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 import { useWorkerHook } from "../Hooks/getWorker";
@@ -24,6 +24,23 @@ export default function AddDataModal(props) {
     setData({});
   }, [props.show]);
 
+  useEffect(() => {
+    if (props.id) {
+      getSingleReport(props.id).then((res) => {
+        let data = res.data.data;
+        console.log("🚀 ~ file: AddDataModal.js:31 ~ getSingleReport ~ data", data)
+        list.map((ele) => {
+          if(ele.process === data.process){
+            setProcess(ele.title)
+          }
+        })
+        // setDate(new Date(data.date.slice(0, 10)))
+        setData(data.pcs)
+        employeechange(data.workerid);
+      });
+    }
+  }, [props]);
+
   const handleChange = async () => {
     let total = 0;
     Object.keys(data).map((ele) => {
@@ -35,19 +52,33 @@ export default function AddDataModal(props) {
       process: process,
       date: date,
       total: total,
+      id : props?.id
     };
     setLoader(true);
-    await addReport(params, data)
-      .then(
+
+    if(props?.id){
+      await updateReport(params,data).then(
         notification["success"]({
           message: "Report Added Successfully",
         })
-      )
-      .catch(() => {
+      ).catch(
         notification["error"]({
           message: "Something Went Wrong",
+        })
+      )
+    }else{
+      await addReport(params, data)
+        .then(
+          notification["success"]({
+            message: "Report Added Successfully",
+          })
+        )
+        .catch(() => {
+          notification["error"]({
+            message: "Something Went Wrong",
+          });
         });
-      });
+    }
     localStorage.setItem("process", params["process"]);
     let id = 0;
     list.map((ele) => {
@@ -63,6 +94,7 @@ export default function AddDataModal(props) {
   const employeechange = (value) => {
     setEmpName(value);
     const result = empList?.filter((emp) => {
+      console.log("🚀 ~ file: AddDataModal.js:76 ~ result ~ emp._id === value", emp._id === value)
       return emp._id === value;
     });
     setProcess(result[0].process);
@@ -87,6 +119,8 @@ export default function AddDataModal(props) {
                   placeholder="Search Employee"
                   onChange={(value) => employeechange(value)}
                   optionFilterProp="children"
+                  value={empName}
+
                 >
                   {empList?.map((ele, index) => {
                     return (
@@ -134,11 +168,9 @@ export default function AddDataModal(props) {
                     .localeCompare(optionB.children.toLowerCase())
                 }
               >
-                {
-                    list.map((ele) => {
-                        return <Option value={ele?.process}>{ele?.title}</Option>
-                    })
-                }
+                {list.map((ele) => {
+                  return <Option value={ele?.process}>{ele?.title}</Option>;
+                })}
               </Select>
             </div>
           </div>
@@ -160,6 +192,7 @@ export default function AddDataModal(props) {
                   <div className="col-6">
                     <Input
                       type="number"
+                      value={data?.[ele]}
                       onChange={(e) =>
                         setData({ ...data, [ele]: e.target.value })
                       }

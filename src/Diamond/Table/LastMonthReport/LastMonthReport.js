@@ -218,13 +218,14 @@ const LastMonthReport = () => {
 
     FetchMonthData(month)
       .then((res) => {
+        console.log("🚀 ~ file: LastMonthReport.js:221 ~ .then ~ res", res)
         if (res?.MathalaData) {
-          setTaliyaData(
+          setMathalaData(
             TotalCalculate(res?.MathalaData, "Mathala Employee Report")
           );
         }
         if (res?.TaliyaData) {
-          setMathalaData(
+          setTaliyaData(
             TotalCalculate(res?.TaliyaData, "Mathala Employee Report")
           );
         }

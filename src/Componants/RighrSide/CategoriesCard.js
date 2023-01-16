@@ -225,6 +225,9 @@ const   CategoriesCard = ({
                           {renderList.total2?.toFixed(4)}
                       </div>
                   </div>
+                  <div className="span-wrap"> 
+                      {(renderList.total2?.toFixed(4)/renderList.total1?.toFixed(4)).toFixed(2)} %
+                  </div>
               </div>
           </div>
           {children}

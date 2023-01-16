@@ -21,3 +21,43 @@
         margin: 10px;
         width:125px
 }
+
+.processButton{
+        margin: 2px;
+        width: 80px;
+        color: white;
+        background-image: linear-gradient(135deg, #f34079 40%, #fc894d);
+        // border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+}
+        
+
+.ant-btn[disabled] {
+        color: #f34079
+}
+
+.login-input { 
+        width: 100%;
+        height: 5vh;
+        color: black;
+        background-color: #f2e2e2;
+}
+
+.ant-picker {
+        border: 1px solid #000000;
+}
+
+.ant-select {
+        border: 1px solid #000000;      
+}
+
+.ant-input-number {
+        border: 1px solid #000000;          
+}
+
+.ant-input {
+        border: 1px solid #000000;          
+}

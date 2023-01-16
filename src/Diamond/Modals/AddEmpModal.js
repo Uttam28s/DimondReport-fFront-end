@@ -5,6 +5,7 @@ import { CloseOutlined } from "@mui/icons-material";
 import { addWorkerName } from "../ApiConn/Api";
 import moment from "moment";
 import { list } from "../Common/common";
+import {ModalHeader, ModalFooter} from "../Common/modal";
 export default function AddEmpModal(props) {
   const { Option } = Select;
   const [date, setDate] = useState("");
@@ -44,12 +45,7 @@ export default function AddEmpModal(props) {
 
   return (
     <Modal show={props.show} handleclose={props.handleclose}>
-      <Modal.Header>
-        <Modal.Title>Add New Employee</Modal.Title>
-        <div onClick={props.handleClose}>
-          <CloseOutlined />
-        </div>
-      </Modal.Header>
+      <ModalHeader title="Add New Employee" onClick={props.handleClose} />
       <Modal.Body>
         <div className="container">
           <div className="row">
@@ -110,26 +106,13 @@ export default function AddEmpModal(props) {
           </div>
         </div>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
-          Close
-        </Button>
-        <Button
-          variant="primary"
-          disabled={name === "" || date === "" || process === ""}
-          onClick={handleSubmit}
-        >
-          Add{" "}
-          {loader ? (
-            <>
-              {" "}
-              &nbsp; <Spin size="small" />{" "}
-            </>
-          ) : (
-            ""
-          )}
-        </Button>
-      </Modal.Footer>
+      <ModalFooter 
+        disabled={name === "" || date === "" || process === ""}  
+        onClick={handleSubmit} 
+        loader={loader} 
+        handleClose={props.handleClose} 
+        title="Add" 
+      />
     </Modal>
   );
 }

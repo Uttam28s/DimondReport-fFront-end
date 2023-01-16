@@ -16,7 +16,7 @@ function App() {
     setAuthLogin(status || false);
   }, []);
   return (
-    <>
+    <div>
       <HashRouter>
         <Routes>
           {authLogin ? (
@@ -43,7 +43,7 @@ function App() {
           )}
         </Routes>
       </HashRouter>
-    </>
+    </div>
   );
 }
 

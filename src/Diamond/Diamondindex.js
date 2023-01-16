@@ -7,6 +7,7 @@ import moment from "moment";
 import styled from "styled-components";
 import { list, MainTitle } from "./Common/common";
 import { useWorkerHook } from "./Hooks/getWorker";
+import { useParams } from "react-router-dom";
 
 const Loader = styled.div`
   width: 50px;
@@ -22,6 +23,7 @@ const DiamondIndex = () => {
   const [data, setData] = useState([]);
   const [process, setProcess] = useState();
   const [loader, setLoader] = useState(true);
+  let { id } = useParams();
 
   let params = {};
 
@@ -83,7 +85,7 @@ const DiamondIndex = () => {
           return ele.id;
         }
       });
-      setTableShow(ele[0].id);
+      setTableShow(ele[0]?.id);
     }
     getReportFunc(params);
   }, []);
@@ -136,12 +138,7 @@ const DiamondIndex = () => {
             return (
               <li key={index} style={{ display: "inline-block" }}>
                 <Button
-                  style={{
-                    margin: "2px",
-                    width: "80px",
-                    backgroundColor: "#756666",
-                    color: "white",
-                  }}
+                  className="processButton"
                   disabled={process === ele.process}
                   onClick={() => {
                     onClickHandle(ele.id);
@@ -175,7 +172,7 @@ const DiamondIndex = () => {
           style={{ margin: "10px" }}
         />
       </div>
-      <Header onDataSubmit={onClickHandle} />
+      <Header onDataSubmit={onClickHandle} id={id}/>
       {loader ? (
         <Loader>
           {" "}
@@ -183,11 +180,11 @@ const DiamondIndex = () => {
         </Loader>
       ) : (
         <div style={{ margin: "10px" }}>
+          {tableShow === 5 ? <TableAll data={data} title="Table Data" /> : ""}
           {tableShow === 1 ? <TableAll data={data} title="Taliya Data" /> : ""}
           {tableShow === 2 ? <TableAll data={data} title="Mathala Data" /> : ""}
-          {tableShow === 3 ? <TableAll data={data} title="Pel Data" /> : ""}
           {tableShow === 4 ? <TableAll data={data} title="Russian Data" /> : ""}
-          {tableShow === 5 ? <TableAll data={data} title="Table Data" /> : ""}
+          {tableShow === 3 ? <TableAll data={data} title="Pel Data" /> : ""}
         </div>
       )}
     </>

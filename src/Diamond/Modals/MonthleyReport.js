@@ -126,9 +126,10 @@ export default function MonthReport(props) {
                         <div className='row'>   <div className='col-4'>Salary</div></div>
                         <hr />
                         {report?.salary?.map(data => {
+                            console.log("🚀 ~ file: MonthleyReport.js:132 ~ MonthReport ~ MonthName[data.month]", data)
                             return (
                                 <>
-                                    <div className='row'>  <div className='col-8'>Month</div><div className='col-4'>: {MonthName[data.month]}</div></div>
+                                    <div className='row'>  <div className='col-8'>Month</div><div className='col-4'>: {MonthName[data.month + 1]}</div></div>
                                     <div className='row'>    <div className='col-8'>Upad</div><div className='col-4'>: {data.upad || 0}</div></div>
                                     <div className='row'>    <div className='col-8'>This Month Earned</div><div className='col-4'>: {data.total}</div></div>
                                     {data.jama ? <div className='row'>    <div className='col-8'> Previous Month Jama</div><div className='col-4'>: {data.jama}</div></div> : ''}
