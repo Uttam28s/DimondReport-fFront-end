@@ -1,6 +1,6 @@
 import axios from "axios";
-// const apiURL = "https://salary-report-api.onrender.com/api/diamond";
-const apiURL = "http://localhost:3003/api/diamond";
+const apiURL = "https://salary-report-api.onrender.com/api/diamond";
+// const apiURL = "http://localhost:3003/api/diamond";
 
 // to Add New Worker
 export const addWorkerName = async (name, process) => {
@@ -36,7 +36,6 @@ export const addReport = async (params, data) => {
 };
 
 export const deleteReport = async (id) => {
-  console.log("🚀 ~ file: Api.js:39 ~ deleteReport ~ id", id)
   const response = await axios.delete(`${apiURL}/report/delete?id=${id}`);
   return response;
 };
@@ -53,7 +52,9 @@ export const addBulkReport = async (param, process) => {
 // get worker list
 export const getWorkerList = async (id) => {
   const adminId = localStorage.getItem("AdminId");
-  return await axios.get(`${apiURL}/settings/getworker?adminId=${adminId}`);
+  let data = await axios.get(`${apiURL}/settings/getworker?adminId=${adminId}`);
+  localStorage.setItem("EmpList",JSON.stringify(data.data.data));
+  return data
 };
 
 // get workerlist for bulk with empty data
@@ -90,7 +91,7 @@ export const getEmployeeReport = async (params) => {
 
 export const GetMonthReport = async (params) => {
   const response = await axios.get(
-    `${apiURL}/salary/get?&workerid=${params["workerid"]}&month=${params["month"]}`
+    `${apiURL}/salary/get?&workerid=${params["workerid"]}&month=${params["month"]}&year=${params["year"]}`
   );
   return response;
 };
@@ -102,10 +103,10 @@ export const ChangePaidStatus = async (params) => {
   return response;
 };
 
-export const FetchMonthData = async (month) => {
+export const FetchMonthData = async (month,year) => {
   let adminId = localStorage.getItem("AdminId");
   const response = await axios.get(
-    `${apiURL}/salary/monthwise?&month=${month}&adminId=${adminId}`
+    `${apiURL}/salary/monthwise?&month=${month}&year=${year}&adminId=${adminId}`
   );
   return response.data.data;
 };
@@ -149,6 +150,8 @@ export const getDiamondTypeList = async (adminId) => {
   const response = await axios.get(
     `${apiURL}/user/diamondTypeList?adminId=${adminId}`
   );
+  localStorage.setItem("typeList",JSON.stringify(response?.data?.data));
+
   return response.data;
 };
 

@@ -2,12 +2,26 @@ import { Button, Input, notification, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { addBulkReport, getWorkerListBulk } from "../../ApiConn/Api";
 import { useDiamondTypeHook } from "../../Hooks/getDiamondType";
+import styled from "styled-components";
+import { typeList } from "antd/lib/message";
+
+
+const Loader = styled.div`
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+`;
 
 const BulkTable = (props) => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [columns, setColumns] = useState([]);
   const { diamondTypeList } = useDiamondTypeHook();
+  const [tableLoader, setTableLoader] = useState(false)
+  const [typeList,setTypeList] = useState([])
 
   const onClickhandler = () => {
     var today = new Date();
@@ -33,8 +47,13 @@ const BulkTable = (props) => {
   };
 
   useEffect(() => {
+    setTableLoader(true)
+    let typeLst = localStorage.getItem("typeList")
+    setTypeList(JSON.parse(typeLst))
     getWorkerListBulk(props.process).then((x) => {
       setData([...x.data.data]);
+      setTableLoader(false)
+
     });
   }, []);
 
@@ -56,7 +75,13 @@ const BulkTable = (props) => {
         fixed: "center",
       },
     ];
-    diamondTypeList?.map((ele) => {
+    let list = []
+    if(diamondTypeList?.length === 0){
+      list = typeList
+    }else{
+      list = diamondTypeList
+    }
+    list?.map((ele) => {
       arr.push({
         title: `${ele}Pcs.`,
         dataIndex: `${ele}`,
@@ -88,13 +113,13 @@ const BulkTable = (props) => {
       },
     ];
     setColumns(leftColumns.concat(arr, rightColumns));
-  }, [diamondTypeList, data]);
+  }, [diamondTypeList, data, typeList]);
 
   const onChangeHandler = (name, value, id) => {
     let newname = name;
     data[id][newname] = value;
     data[id]["total"] = 0;
-    diamondTypeList?.map((ele) => {
+    typeList?.map((ele) => {
       data[id]["total"] = data[id]["total"] + Number(data[id][ele]);
     });
     setData([...data]);
@@ -104,6 +129,7 @@ const BulkTable = (props) => {
       <Button
         style={{ float: "right", margin: "10px" }}
         onClick={onClickhandler}
+        disabled={loader}
       >
         Submit{" "}
         {loader ? (
@@ -116,13 +142,19 @@ const BulkTable = (props) => {
       </Button>
 
       <div className="semiTitle">{props.title}</div>
+      {tableLoader ? (
+        <Loader>
+          {" "}
+          &nbsp; <Spin size="large" />
+        </Loader>
+      ) : (
       <Table
         style={{ margin: "10px" }}
         columns={columns}
         dataSource={data}
         bordered
         size="middle"
-      />
+      />)}
     </>
   );
 };

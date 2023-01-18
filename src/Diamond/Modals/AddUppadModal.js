@@ -19,6 +19,7 @@ export default function AddUppadModal(props) {
   const [date, setDate] = useState("");
   const [ammount, setAmmount] = useState("");
   const [loader, setLoader] = useState(false);
+  const [employeeList, setEmployeeList] = useState([])
   const { empList } = useWorkerHook();
 
   useEffect(() => {
@@ -26,6 +27,15 @@ export default function AddUppadModal(props) {
     setAmmount("");
     setEmpName("");
   }, [props.show]);
+
+  useEffect(() => {
+    let list = localStorage.getItem("EmpList")
+    if(empList?.length === 0){
+      setEmployeeList(JSON.parse(list))
+    }else{
+      setEmployeeList(empList)
+    }
+  },[empList])
 
   const handleSubmit = () => {
     setLoader(true);
@@ -38,14 +48,14 @@ export default function AddUppadModal(props) {
         notification["success"]({
           message: "Uppad Added Successfully",
         });
+        props.handleCloseUppad();
       }
+      setLoader(false);
     });
-    setLoader(false);
-    props.handleCloseUppad();
   };
 
   return (
-    <Modal show={props.show}>
+    <Modal show={props.show} onHide={props.handleCloseUppad}>
       <Modal.Header>
         <Modal.Title>Uppads</Modal.Title>
         <div onClick={props.handleCloseUppad}>
@@ -60,12 +70,12 @@ export default function AddUppadModal(props) {
               <div className="col-6">
                 <Select
                   showSearch
-                  style={{ width: "100%", margin: "3px" }}
+                  className="w-100-m-3"
                   placeholder="Search Employee"
                   onChange={(value) => setEmpName(value)}
                   optionFilterProp="children"
                 >
-                  {empList?.map((ele, index) => {
+                  {employeeList?.map((ele, index) => {
                     return (
                       <Option key={index} value={ele._id}>
                         {ele.name}
@@ -81,7 +91,7 @@ export default function AddUppadModal(props) {
               <div className="col-6">Date:</div>
               <div className="col-6">
                 <DatePicker
-                  style={{ width: "100%", margin: "3px" }}
+                  className="w-100-m-3"
                   disabledDate={(current) => current.isAfter(moment())}
                   onChange={(date, dateString) => setDate(dateString)}
                 />
@@ -93,7 +103,8 @@ export default function AddUppadModal(props) {
               <div className="col-6">Amount:</div>
               <div className="col-6">
                 <InputNumber
-                  style={{ width: "100%", margin: "3px" }}
+                  className="w-100-m-3"
+                  min={0}
                   onChange={(value) => setAmmount(value)}
                 />
               </div>
@@ -107,7 +118,7 @@ export default function AddUppadModal(props) {
         </Button>
         <Button
           variant="primary"
-          disabled={empName === "" || date === "" || ammount === ""}
+          disabled={empName === "" || date === "" || ammount === "" || loader || ammount === null }
           onClick={handleSubmit}
         >
           Add{" "}

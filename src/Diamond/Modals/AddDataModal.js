@@ -11,31 +11,55 @@ export default function AddDataModal(props) {
   const { Option } = Select;
   const [empName, setEmpName] = useState("");
   const [process, setProcess] = useState("");
-  const [date, setDate] = useState();
+  const [date, setDate] = useState(moment(new Date()).format("YYYY-MM-DD"));
   const [loader, setLoader] = useState(false);
   const [data, setData] = useState({});
+  const [employeeList, setEmployeeList] = useState([]);
+  const [typeList, setTypeList] = useState([]);
   const { diamondTypeList } = useDiamondTypeHook();
+  const [editLoader, setEditLoader] = useState(false);
   const { empList } = useWorkerHook();
-
   useEffect(() => {
     setEmpName("");
     setProcess("");
-    setDate("");
+    // setDate("");
     setData({});
   }, [props.show]);
 
   useEffect(() => {
+    if (diamondTypeList?.length === 0) {
+      setTypeList(JSON.parse(localStorage.getItem("typeList")));
+    } else {
+      setTypeList(diamondTypeList);
+    }
+  }, [diamondTypeList]);
+
+  useEffect(() => {
+    let list = localStorage.getItem("EmpList");
+    if (empList?.length === 0) {
+      setEmployeeList(JSON.parse(list));
+    } else {
+      setEmployeeList(empList);
+    }
+  }, [empList]);
+
+  useEffect(() => {
     if (props.id) {
+      setEditLoader(true);
       getSingleReport(props.id).then((res) => {
-        let data = res.data.data;
-        console.log("🚀 ~ file: AddDataModal.js:31 ~ getSingleReport ~ data", data)
+        let data = res?.data?.data;
+        console.log(
+          "🚀 ~ file: AddDataModal.js:51 ~ getSingleReport ~ data",
+          data
+        );
         list.map((ele) => {
-          if(ele.process === data.process){
-            setProcess(ele.title)
+          if (ele?.process === data?.process) {
+            setProcess(ele?.process);
+            setDate(data.date.slice(0, 10));
           }
-        })
-        // setDate(new Date(data.date.slice(0, 10)))
-        setData(data.pcs)
+        });
+        setEditLoader(false);
+        setData(data.pcs);
         employeechange(data.workerid);
       });
     }
@@ -52,26 +76,31 @@ export default function AddDataModal(props) {
       process: process,
       date: date,
       total: total,
-      id : props?.id
+      id: props?.id,
     };
     setLoader(true);
 
-    if(props?.id){
-      await updateReport(params,data).then(
-        notification["success"]({
-          message: "Report Added Successfully",
+    if (props?.id) {
+      await updateReport(params, data)
+        .then(() => {
+          notification["success"]({
+            message: "Report Updated Successfully",
+          });
+          props.handleCloseData()
         })
-      ).catch(
-        notification["error"]({
-          message: "Something Went Wrong",
-        })
-      )
-    }else{
+        .catch(() => {
+          notification["error"]({
+            message: "Something Went Wrong",
+          });
+        });
+    } else {
       await addReport(params, data)
-        .then(
+        .then(() => {
           notification["success"]({
             message: "Report Added Successfully",
           })
+          props.handleCloseData()
+        }
         )
         .catch(() => {
           notification["error"]({
@@ -86,131 +115,139 @@ export default function AddDataModal(props) {
         id = ele.id;
       }
     });
-    props.onDataSubmit(id);
     setLoader(false);
-    props.handleCloseData();
+    props.onDataSubmit(id);
   };
 
   const employeechange = (value) => {
     setEmpName(value);
-    const result = empList?.filter((emp) => {
-      console.log("🚀 ~ file: AddDataModal.js:76 ~ result ~ emp._id === value", emp._id === value)
+    const result = employeeList?.filter((emp) => {
       return emp._id === value;
     });
     setProcess(result[0].process);
   };
+
   return (
-    <Modal show={props.show} handlecloseuppad={props.handlecloseData}>
+    <Modal show={props.show} onHide={props.handleCloseData}>
       <Modal.Header>
-        <Modal.Title>Add New Data</Modal.Title>
+        <Modal.Title>{props?.id ? "Edit" : "Add New"} Data</Modal.Title>
         <div onClick={props.handleCloseData}>
           <CloseOutlined />
         </div>
       </Modal.Header>
       <Modal.Body>
-        <div>
-          <div className="container">
-            <div className="row">
-              <div className="col-6">Select Employee :</div>
-              <div className="col-6">
-                <Select
-                  showSearch
-                  style={{ width: "100%", margin: "3px" }}
-                  placeholder="Search Employee"
-                  onChange={(value) => employeechange(value)}
-                  optionFilterProp="children"
-                  value={empName}
-
-                >
-                  {empList?.map((ele, index) => {
-                    return (
-                      <Option key={index} value={ele._id}>
-                        {ele.name}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </div>
-            </div>
+        {editLoader ? (
+          <div style={{ textAlign: "center" }}>
+            {" "}
+            &nbsp; <Spin size="small" />
           </div>
-        </div>
-
-        <div className="container">
-          <div className="row">
-            <div className="col-6">Date:</div>
-            <div className="col-6">
-              <DatePicker
-                style={{ width: "100%", margin: "3px" }}
-                disabledDate={(current) => current.isAfter(moment())}
-                onChange={(date, dateString) => setDate(dateString)}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="row">
-            <div className="col-6">Process Name:</div>
-            <div className="col-6">
-              <Select
-                showSearch
-                style={{ width: "100%", margin: "3px" }}
-                placeholder="Select Process"
-                onChange={(value) => setProcess(value)}
-                value={process}
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children.includes(input)
-                }
-                filterSort={(optionA, optionB) =>
-                  optionA.children
-                    .toLowerCase()
-                    .localeCompare(optionB.children.toLowerCase())
-                }
-              >
-                {list.map((ele) => {
-                  return <Option value={ele?.process}>{ele?.title}</Option>;
-                })}
-              </Select>
-            </div>
-          </div>
-        </div>
-        <hr />
-
-        <div className="container">
-          <div className="row">
-            <div className="col-12">Diamond Quantity (size/type):</div>
-          </div>
-        </div>
-        <hr />
-        <div className="container">
-          <div style={{ fontSize: "12px" }}>
-            {diamondTypeList?.map((ele) => {
-              return (
-                <div className="row mt-3">
-                  <div className="col-6"> {ele} : </div>
+        ) : (
+          <>
+            <div>
+              <div className="container">
+                <div className="row">
+                  <div className="col-6">Select Employee :</div>
                   <div className="col-6">
-                    <Input
-                      type="number"
-                      value={data?.[ele]}
-                      onChange={(e) =>
-                        setData({ ...data, [ele]: e.target.value })
-                      }
-                    />
-                    <br />
+                    <Select
+                      showSearch
+                      className="w-100-m-3"
+                      placeholder="Search Employee"
+                      onChange={(value) => employeechange(value)}
+                      optionFilterProp="children"
+                      value={empName}
+                    >
+                      {employeeList?.map((ele, index) => {
+                        return (
+                          <Option key={index} value={ele._id}>
+                            {ele.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
+                <div className="row">
+                  <div className="col-6">Date:</div>
+                  <div className="col-6">
+                    <DatePicker
+                      className="w-100-m-3"
+                      value={moment(date)}
+                      onChange={(date, dateString) => {
+                        setDate(dateString);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">Process Name:</div>
+                  <div className="col-6">
+                    <Select
+                      showSearch
+                      className="w-100-m-3"
+                      disabled
+                      placeholder="Select Process"
+                      onChange={(value) => setProcess(value)}
+                      value={process}
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.children.includes(input)
+                      }
+                      filterSort={(optionA, optionB) =>
+                        optionA.children
+                          .toLowerCase()
+                          .localeCompare(optionB.children.toLowerCase())
+                      }
+                    >
+                      {list.map((ele) => {
+                        return (
+                          <Option value={ele?.process}>{ele?.title}</Option>
+                        );
+                      })}
+                    </Select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div className="container">
+              <div className="row">
+                <div className="col-12">Diamond Quantity (size/type):</div>
+              </div>
+            </div>
+            <div className="container">
+              <div style={{ fontSize: "12px" }}>
+                {typeList?.map((ele) => {
+                  return (
+                    <div className="row mt-3">
+                      <div className="col-6"> {ele} : </div>
+                      <div className="col-6">
+                        <Input
+                          type="number"
+                          value={data?.[ele]}
+                          onChange={(e) =>
+                            setData({ ...data, [ele]: e.target.value })
+                          }
+                        />
+                        <br />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.handleCloseData}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleChange}>
-          Add{" "}
+        <Button
+          variant="primary"
+          disabled={loader || process === "" || empName === "" || data === ""}
+          onClick={handleChange}
+        >
+          {props?.id ? "Edit" : "Add"}{" "}
           {loader ? (
             <>
               {" "}

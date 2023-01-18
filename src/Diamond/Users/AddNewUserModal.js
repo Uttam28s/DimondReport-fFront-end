@@ -43,7 +43,7 @@ export default function AddNewUserModal(props) {
     }
   };
   return (
-    <Modal show={props.show} handleclose={props.handleclose}>
+    <Modal show={props.show} onHide={() => props.setShow(false)}>
       <Modal.Header>
         <Modal.Title>Add New User</Modal.Title>
         <div onClick={() => props.setShow(false)}>
@@ -62,7 +62,7 @@ export default function AddNewUserModal(props) {
                 onChange={(e) => setName(e.target.value)}
                 style={{ width: "60%", margin: "2px" }}
               />
-              <p style={{ color: "red", fontSize: "13px" }}>{error?.name}</p>
+              <p className="color-red" style={{ fontSize: "13px" }}>{error?.name}</p>
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function AddNewUserModal(props) {
                 onChange={(e) => setPassword(e.target.value)}
                 style={{ width: "60%", margin: "2px" }}
               />
-              <p style={{ color: "red", fontSize: "13px" }}>
+              <p className="color-red" style={{ fontSize: "13px" }}>
                 {error?.password}
               </p>
             </div>
@@ -89,7 +89,7 @@ export default function AddNewUserModal(props) {
         <Button variant="secondary" onClick={() => props.setShow(false)}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleOnSubmit}>
+        <Button variant="primary" disabled={loader} onClick={handleOnSubmit}>
           Add
           {loader ? (
             <>

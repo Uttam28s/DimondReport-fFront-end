@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { CloseOutlined } from "@mui/icons-material";
 import Modal from "react-bootstrap/Modal";
 import { addType, getPriceList, updatePrice } from "../ApiConn/Api";
-import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 import { list } from "../Common/common";
-import AddType from "./AddType";
 
 export default function UpdatePriceModal(props) {
   const [process, setProcess] = useState("");
@@ -13,9 +11,9 @@ export default function UpdatePriceModal(props) {
   const [data, setData] = useState({});
   const [diamondType, setDiamondType] = useState([]);
   const [type, setType] = useState("");
-  const [addType,setAddType] = useState()
+  const [show, setShow] = useState(true);
+  const [priceLoader , setPriceLoader] = useState(false)
   const { Option } = Select;
-  const { diamondTypeList } = useDiamondTypeHook;
   useEffect(() => {
     setData({});
   }, [props.show]);
@@ -25,16 +23,17 @@ export default function UpdatePriceModal(props) {
     setLoader(true);
     updatePrice(data, process, adminId).then((res) => {
       notification["success"]({
-        message: "Price Updated Successully" || "",
+        message: "Price Updated Successully",
       });
+      setLoader(false);
+      setData({});
+      props.handleClosePrice();
     });
-    setLoader(false);
-    setData({});
-    props.handleClosePrice();
   };
 
   const handleProcess = async (value) => {
     setProcess(value);
+    setPriceLoader(true)
     await getPriceList(value).then((res) => {
       let obj = res.reduce(function (result, item) {
         var key = Object.keys(item)[0]; //first property: a, b, c
@@ -44,26 +43,33 @@ export default function UpdatePriceModal(props) {
       setData(obj);
       setDiamondType(Object.keys(obj));
     });
+    setPriceLoader(false)
+
   };
 
   const handleSubmit = () => {
-    if (diamondTypeList?.includes(type.toLowerCase())) {
-      notification["error"]({
-        message: "Already Having this type",
-      });
-      return;
-    }
-    setLoader(true);
     let adminId = localStorage.getItem("AdminId");
-    addType({ type: type.toLowerCase(), adminId: adminId }).then((res) => {
-      notification["success"]({
-        message: "Added Successfully",
+    
+    setLoader(true);
+    addType({ type: type.toLowerCase(), adminId: adminId })
+      .then((res) => {
+        notification["success"]({
+          message: "Added Successfully",
+        });
+        setType("");
+        setShow(true);
+        setLoader(false);
+        
+      })
+      .catch(() => {
+        notification["error"]({
+          message: "Already Having this type",
+        });
+        setLoader(false);
       });
-    });
-    setLoader(false);
   };
   return (
-    <Modal show={props.show}>
+    <Modal show={props.show} onHide={props.handleClosePrice}>
       <Modal.Header>
         <Modal.Title>Update Prices</Modal.Title>
         <div onClick={props.handleClosePrice}>
@@ -72,16 +78,16 @@ export default function UpdatePriceModal(props) {
       </Modal.Header>
       <Modal.Body>
         <div className="container">
-          <div className="row">
-            <div className="col-4">Type : </div>
-            <div className="col-6">
+          <div className={`row ${show ? "add-type-hide" : "add-type-show"}`}>
+            <div className="col-4">Add New Type: </div>
+            <div className="col-4">
               <Input
                 required
                 onChange={(e) => setType(e.target.value)}
-                style={{ width: "100%", margin: "2px" }}
+                className="w-100-m-3"
               />
             </div>
-            <div className="col-2">
+            <div className="col-4">
               <Button
                 variant="primary"
                 disabled={type === ""}
@@ -91,7 +97,7 @@ export default function UpdatePriceModal(props) {
                 {loader ? (
                   <>
                     {" "}
-                    &nbsp; <Spin size="small" />{" "}
+                    &nbsp; <Spin size="small" />
                   </>
                 ) : (
                   ""
@@ -99,12 +105,12 @@ export default function UpdatePriceModal(props) {
               </Button>
             </div>
           </div>
-          <div className="row">
-            <div className="col-4">Process:</div>
-            <div className="col-6">
+          <div className={`row ${show ? "add-type-show" : "add-type-hide"}`}>
+            <div className="col-4">Process: </div>
+            <div className="col-5">
               <Select
                 showSearch
-                style={{ width: "100%" }}
+                style={{ width: "100%", margin: "3px" }}
                 placeholder="Select Process"
                 onChange={(value) => {
                   handleProcess(value);
@@ -124,37 +130,67 @@ export default function UpdatePriceModal(props) {
                 })}
               </Select>
             </div>
-            {/* <div className="col-2">
-              <Button onClick={() => setAddType(!addType)}>+</Button>
-            </div> */}
+            <div className="col-3">
+              <Button disabled={loader} onClick={() =>{ 
+                setShow(!show)
+              }}>+ Type</Button>
+            </div>
           </div>
         </div>
-        {diamondType.map((ele) => {
-          return (
-            <div className="container mt-3">
-              <div className="row">
-                <div className="col-4">{ele}</div>
-                <div className="col-8">
-                  <Input
-                    value={data[ele]}
-                    onChange={(e) =>
-                      setData({ ...data, [ele]: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        <hr className={` ${show ? "add-type-show" : "add-type-hide"}`}/>
+          
+        {
+          priceLoader ? 
+                  <div style={{ textAlign : "center"}}>
+                    {" "}
+                    &nbsp; <Spin size="small" />
+                  </div>
+           :
+           (<>
+           {diamondType.map((ele) => {
+             return (
+               <>
+                 <div
+                   className={`container mt-3 ${
+                     show ? "add-type-show" : "add-type-hide"
+                   }`}
+                 >
+                   <div className="row">
+                     <div className="col-4">{ele}</div>
+                     <div className="col-5">
+                       <Input
+                         value={data[ele]}
+                         onChange={(e) =>
+                           setData({ ...data, [ele]: e.target.value })
+                         }
+                       />
+                     </div>
+                   </div>
+                 </div>
+               </>
+             );
+           })}
+           </>)
+
+        }
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.handleClosePrice}>
           Close
         </Button>
         <Button
+          variant="secondary"
+          className={`${show ? "add-type-hide" : "add-type-show"}`}
+          onClick={() => setShow(true)}
+          disabled={loader}
+        >
+          Back
+        </Button>
+        <Button
           variant="primary"
-          disabled={process === ""}
+          disabled={process === "" || loader || priceLoader}
           onClick={handleChange}
+          className={`${show ? "add-type-show" : "add-type-hide"}`}
         >
           Update{" "}
           {loader ? (

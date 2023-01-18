@@ -5,12 +5,13 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import CardContent from "@mui/material/CardContent";
 import 'react-notifications/lib/notifications.css';
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const LeftBar = (props) => {
   const [currentCode, setCurrentCode] = useState("");
   const [previousCode, setPreviousCode] = useState("");
   const [sumOfCode, setsumOfCode] = useState("");
-
+  const navigate = useNavigate()
   useEffect(() => {
     focusInput();
   })
@@ -71,6 +72,7 @@ const LeftBar = (props) => {
   return (
     <div className="left-bar-wrapper seprater">
       <NotificationContainer />
+      <Button variant="contained" onClick={() => navigate('/diamond')}>Back To Diamond</Button>
       <div className="title">Code Scanner</div>
       <p className="sep"></p>
       <div className="qrcode-vid-wrapper">

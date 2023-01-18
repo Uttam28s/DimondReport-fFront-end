@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button, message, notification, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteReport } from "../ApiConn/Api";
@@ -28,17 +28,22 @@ const columns = [
   },
 ];
 
-const handleDelete = (id) => {
-  deleteReport(id)
-}
 
 const TableAll = (props) => {
   const { diamondTypeList } = useDiamondTypeHook();
   const [column, setColumns] = useState([]);
   const [dataAdd, setDataAdd] = useState(false);
   const [id, setId] = useState("");
-  const handleCloseData = () => setDataAdd(false);
+  const handleClose = () => setDataAdd(false);
   
+  const handleDelete = async (id) => {
+    await deleteReport(id).then((res) => {
+      notification["success"]({
+        message: "Report Deleted SuccessFully"
+      });
+    })
+    props.onDataSubmit(props?.tableShow)
+  }
   const total = [
     {
       title: "Total Pcs.",
@@ -126,7 +131,7 @@ const TableAll = (props) => {
           id={id}
           onDataSubmit={props.onDataSubmit}
           onHide={() => setDataAdd(false)}
-          handleCloseData={handleCloseData}
+          handleCloseData={handleClose}
         />
       )}
       <div className="semiTitle">{props.title}</div>

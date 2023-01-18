@@ -176,7 +176,7 @@ const TableEmpRecord = (props) => {
 
         <Select
           showSearch
-          style={{ marginTop: "10px", height: "20%", paddingTop: "5px" }}
+          style={{ marginTop: "10px", height: "20%" }}
           placeholder="Search Employee"
           onChange={(value) => setEmployee(value)}
           optionFilterProp="children"

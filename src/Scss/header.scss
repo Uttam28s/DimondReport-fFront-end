@@ -9,7 +9,8 @@
 // }
 
 .semiTitle{
-        background-color: #756666;
+        // background-color: #756666;
+        background-color: #f34079;
         text-align: center;
         color: white;
         margin: 15px 0px;
@@ -34,9 +35,12 @@
         cursor: pointer;
 }
         
-
+.ant-btn {
+         border : 1px solid rgb(37, 36, 36)
+}
 .ant-btn[disabled] {
         color: #f34079
+        
 }
 
 .login-input { 
@@ -44,20 +48,42 @@
         height: 5vh;
         color: black;
         background-color: #f2e2e2;
+        font-weight: bold;
+        font-size: large;
 }
 
 .ant-picker {
-        border: 1px solid #000000;
+        border: 1px solid #878787;
+        margin: 8px;
+
 }
 
 .ant-select {
-        border: 1px solid #000000;      
+        border: 1px solid #878787;
 }
 
 .ant-input-number {
-        border: 1px solid #000000;          
+        border: 1px solid #878787;
 }
 
 .ant-input {
-        border: 1px solid #000000;          
+        border: 1px solid #878787;
+}
+
+.add-type-hide {
+        position: absolute;
+        z-index: -1;
+}
+.add-type-show {
+        position: relative;
+        z-index: 2;  
+}
+
+.w-100-m-3 { 
+        width: 100%;
+        margin : 3px
+}
+
+.color-red { 
+color: red;
 }

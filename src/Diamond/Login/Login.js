@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Input, notification, Spin } from "antd";
 import { LoginConfirm } from "../ApiConn/Api";
 import { useNavigate } from "react-router-dom";
+import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 
 const Loader = styled.div`
   width: 50px;
@@ -20,6 +21,8 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
+  const { diamondTypeList } = useDiamondTypeHook();
+
   useEffect(() => {
     localStorage.clear();
   }, []);
@@ -53,7 +56,7 @@ export default function Login(props) {
 
   return (
     <div>
-      <MainTitle hidden={true} logoutHidden={true} />
+      <MainTitle qrhidden ={true} hidden={true} logoutHidden={true} />
         <Form className="container py-5 h-100" onSubmit={onClickHandle}>
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">

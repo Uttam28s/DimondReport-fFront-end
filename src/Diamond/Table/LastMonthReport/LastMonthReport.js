@@ -1,4 +1,4 @@
-import { Button, notification, Select, Spin, Table } from "antd";
+import { Button, DatePicker, notification, Select, Spin, Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -65,6 +65,7 @@ const FinalTotalField = styled.div`
 
 const LastMonthReport = () => {
   const { Option } = Select;
+  const [status, setStatus] = useState(false)
   const [taliyaData, setTaliyaData] = useState([]);
   const [pelData, setPelData] = useState([]);
   const [mathalaData, setMathalaData] = useState([]);
@@ -78,6 +79,7 @@ const LastMonthReport = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const { diamondTypeList } = useDiamondTypeHook();
   const [finalTotalField, setFinalTotalField] = useState([]);
+  const [year, setYear] = useState(moment().year())
   const Tables = [
     {
       data: taliyaData || [],
@@ -111,6 +113,7 @@ const LastMonthReport = () => {
   useEffect(() => {
     let rightside = ["total", "uppad", "jama", "salary"];
     let arr = [];
+      
     diamondTypeList?.map((ele) => {
       arr.push(`${ele}pcs`);
     });
@@ -216,9 +219,8 @@ const LastMonthReport = () => {
   useEffect(() => {
     setLoader(true);
 
-    FetchMonthData(month)
+    FetchMonthData(month,year)
       .then((res) => {
-        console.log("🚀 ~ file: LastMonthReport.js:221 ~ .then ~ res", res)
         if (res?.MathalaData) {
           setMathalaData(
             TotalCalculate(res?.MathalaData, "Mathala Employee Report")
@@ -263,11 +265,13 @@ const LastMonthReport = () => {
         });
         setLoader(false);
       });
-  }, [month,totalField]);
+  }, [month,year, totalField, status]);
 
   const printItems = () => {
     window.print();
   };
+  const yearFormat = 'YYYY';
+
   return (
     <>
       <MainTitle />
@@ -279,7 +283,7 @@ const LastMonthReport = () => {
         <>
           <Heading>Employee {MonthName[month + 1]} Month Data</Heading>
           <Container className="col-6 d-flex">
-            <PrintCell className="col-4">
+            <PrintCell className="col-3">
               <Select
                 showSearch
                 style={{ width: "100%" }}
@@ -296,6 +300,14 @@ const LastMonthReport = () => {
                   );
                 })}
               </Select>
+            </PrintCell>
+            <PrintCell className="col-3">
+                <DatePicker
+                style={{ width: "100%", margin: "0px"}}
+                defaultValue={moment(moment().year(), yearFormat)}
+                onChange={(date, dateString) => setYear(dateString)}
+                picker="year"
+                />
             </PrintCell>
             <PrintCell className="col-2">
               <Button onClick={printItems}>Print</Button>
@@ -319,6 +331,7 @@ const LastMonthReport = () => {
                             data={ele.data}
                             title={ele.title}
                             diamondTypeList={diamondTypeList}
+                            setStatus={() => setStatus(!status)}
                           />
                         </>
                       );

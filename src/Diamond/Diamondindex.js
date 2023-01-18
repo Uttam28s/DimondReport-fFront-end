@@ -29,16 +29,18 @@ const DiamondIndex = () => {
 
   const getReportFunc = async (params) => {
     let id = localStorage.getItem("AdminId");
+    let workerList = JSON.parse(localStorage.getItem("EmpList"));
+
     params["adminId"] = id;
-    let res = await getWorkerList()
+    let res = getWorkerList()
     getReport(params)
       .then((x) => {
         const report = x.data.data;
         for (let j = 0; j < report.length; j++) {
-          for (let i = 0; i < res?.data?.data?.length; i++) {
-            if (report[j].workerid === res?.data?.data?.[i]._id) {
+          for (let i = 0; i < workerList?.length; i++) {
+            if (report[j].workerid === workerList?.[i]._id) {
               report[j].index = j + 1;
-              report[j].name = res?.data?.data?.[i].name;
+              report[j].name = workerList?.[i].name;
               report[j].date = report[j].date.slice(0, 10);
             }
           }
@@ -151,13 +153,12 @@ const DiamondIndex = () => {
           })}
         </ul>
       </div>
-      <div className="p-2 bd-highlight col-lg-4 col-sm-6">
+      <div className="p-2 bd-highlight col-lg-4 col-sm-6 m-10">
         <DatePicker
           disabledDate={(current) => current.isAfter(moment())}
           onChange={(date, dateString) => {
             setStart(dateString);
           }}
-          style={{ margin: "10px" }}
         />
         <DatePicker
           disabledDate={(current) => current.isAfter(moment())}
@@ -169,7 +170,6 @@ const DiamondIndex = () => {
             };
             handleReport(params);
           }}
-          style={{ margin: "10px" }}
         />
       </div>
       <Header onDataSubmit={onClickHandle} id={id}/>
@@ -180,11 +180,11 @@ const DiamondIndex = () => {
         </Loader>
       ) : (
         <div style={{ margin: "10px" }}>
-          {tableShow === 5 ? <TableAll data={data} title="Table Data" /> : ""}
-          {tableShow === 1 ? <TableAll data={data} title="Taliya Data" /> : ""}
-          {tableShow === 2 ? <TableAll data={data} title="Mathala Data" /> : ""}
-          {tableShow === 4 ? <TableAll data={data} title="Russian Data" /> : ""}
-          {tableShow === 3 ? <TableAll data={data} title="Pel Data" /> : ""}
+          {tableShow === 5 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow}  data={data} title="Table Data" /> : ""}
+          {tableShow === 1 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow} data={data} title="Taliya Data" /> : ""}
+          {tableShow === 2 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow} data={data} title="Mathala Data" /> : ""}
+          {tableShow === 4 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow} data={data} title="Russian Data" /> : ""}
+          {tableShow === 3 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow} data={data} title="Pel Data" /> : ""}
         </div>
       )}
     </>

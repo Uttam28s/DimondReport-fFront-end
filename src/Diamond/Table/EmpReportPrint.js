@@ -85,7 +85,7 @@ class ComponentToPrint extends React.Component {
           ) : (
             ""
           )}
-          <table style={{ margin: "50px" }}>
+          <table style={{ margin: "50px", backgroundColor:"white" }}>
             <Tr>
               <Th style={{ width: "35%" }}>Type </Th>
               <Th style={{ width: "20%" }}>Pcs </Th>

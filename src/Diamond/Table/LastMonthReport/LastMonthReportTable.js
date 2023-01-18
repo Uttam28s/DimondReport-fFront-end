@@ -3,17 +3,20 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ChangePaidStatus } from "../../ApiConn/Api";
+import AlertModal from "../../Common/AlertModal";
 import { useDiamondTypeHook } from "../../Hooks/getDiamondType";
 
 const PaidDiv = styled.p`
   color: green;
-  text-align: center;
+  text-align: left;
 `;
-const PendingButton = styled(Button)`
-  color: red;
-`;
+
 const LastMonthReportTable = (props) => {
   const [columns, setColumns] = useState([]);
+
+  
+  const [statusFlag,setStatusFlag] = useState(false) 
+  const [id,setId] = useState("")
   const leftSideColumns = [
     {
       title: "Index",
@@ -34,7 +37,7 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b style={{ color: "red" }}>{record?.workerName}</b>
+              <b className="color-red">{record?.workerName}</b>
             ) : (
               record?.workerName
             )}
@@ -54,7 +57,7 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b style={{ color: "red" }}>{record?.total}</b>
+              <b className="color-red">{record?.total}</b>
             ) : (
               record?.total
             )}
@@ -71,7 +74,7 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b style={{ color: "red" }}>{record?.uppad}</b>
+              <b className="color-red">{record?.uppad}</b>
             ) : (
               record?.uppad
             )}
@@ -88,7 +91,7 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b style={{ color: "red" }}>{record?.jama}</b>
+              <b className="color-red">{record?.jama}</b>
             ) : (
               record?.jama
             )}
@@ -105,7 +108,7 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b style={{ color: "red" }}>{record?.salary}</b>
+              <b className="color-red">{record?.salary}</b>
             ) : (
               record?.salary
             )}
@@ -124,9 +127,15 @@ const LastMonthReportTable = (props) => {
         ) : record.status === "paid" ? (
           <PaidDiv>Paid</PaidDiv>
         ) : (
-          <PendingButton onClick={() => handlePaidButton(record?.workerid)}>
+          <Button className="color-red" onClick={() => { 
+            // handlePaidButton(record?.workerid)
+            setId(record?.workerid)
+            setStatusFlag(true)
+          }
+          }
+          >
             Pending
-          </PendingButton>
+          </Button>
         );
       },
     },
@@ -143,7 +152,7 @@ const LastMonthReportTable = (props) => {
           return (
             <span>
               {record?.workerName === "Total" ? (
-                <b style={{ color: "red" }}>{record?.[`${ele}pcs`]}</b>
+                <b className="color-red">{record?.[`${ele}pcs`]}</b>
               ) : (
                 record?.[`${ele}pcs`]
               )}
@@ -160,11 +169,14 @@ const LastMonthReportTable = (props) => {
       month: moment().month(),
       workerid: workerid,
     };
+    setStatusFlag(false)
+
     await ChangePaidStatus(params)
       .then((res) => {
         notification["success"]({
           message: "Status Updated Successfully",
         });
+        props?.setStatus()
       })
       .catch((err) => {
         notification["error"]({
@@ -172,9 +184,16 @@ const LastMonthReportTable = (props) => {
         });
       });
   };
+
+  const callchangeStatus = () => handlePaidButton(id)
   return (
     <>
       <div className="semiTitle">{props.title}</div>
+
+
+      <AlertModal statusFlag={statusFlag} callchangeStatus={callchangeStatus} />
+    
+      
       <Table
         style={{ margin: "10px" }}
         columns={columns}

@@ -9,9 +9,15 @@ const MainTitle = (props) => {
       className="navbar navbar-expand-lg navbar-light"
       style={{ backgroundColor: "#6c757d" }}
     >
-      <Button onClick={() => navigate("/qrcode")}>QrCode</Button>
-
       <h4 style={{ margin: "10px", color: "white" }}>Diamond</h4>
+      {!props.qrhidden && (
+        <Button
+          style={{ marginRight: "10px" }}
+          onClick={() => navigate("/qrcode")}
+        >
+          QrCode
+        </Button>
+      )}
       {!props?.hidden && (
         <Button onClick={() => navigate("/diamond")}>Back</Button>
       )}
@@ -43,19 +49,19 @@ const list = [
 ];
 
 const MonthName = {
-  1: 'January',
-  2: 'February',
-  3: 'March',
-  4: 'April',
-  5: 'May',
-  6: 'June',
-  7: 'July',
-  8: 'August',
-  9: 'September',
-  10: 'October',
-  11: 'November',
-  12: 'December',
-}
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
 const dummyUserData = [
   {
     name: "Manoj",

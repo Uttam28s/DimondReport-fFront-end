@@ -21,16 +21,17 @@ export default function AddEmpModal(props) {
         notification["success"]({
           message: "Worker Added Successfully",
         });
+        setLoader(false);
+        setName("");
+        setDate("");
+        props.handleClose();
       })
       .catch((err) => {
         notification["error"]({
           message: "Name Already Exist",
         });
+        setLoader(false);
       });
-    setLoader(false);
-    setName("");
-    setDate("");
-    props.handleClose();
   };
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function AddEmpModal(props) {
   };
 
   return (
-    <Modal show={props.show} handleclose={props.handleclose}>
+    <Modal show={props.show} onHide={props.handleClose}>
       <ModalHeader title="Add New Employee" onClick={props.handleClose} />
       <Modal.Body>
         <div className="container">
@@ -107,7 +108,7 @@ export default function AddEmpModal(props) {
         </div>
       </Modal.Body>
       <ModalFooter 
-        disabled={name === "" || date === "" || process === ""}  
+        disabled={name === "" || date === "" || process === "" || loader}  
         onClick={handleSubmit} 
         loader={loader} 
         handleClose={props.handleClose} 
