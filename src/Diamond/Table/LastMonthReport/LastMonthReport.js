@@ -82,6 +82,14 @@ const LastMonthReport = () => {
   const [year, setYear] = useState(moment().year())
   const Tables = [
     {
+      data: tableData || [],
+      title: "Table Employee Report",
+    },
+    {
+      data: russianData || [],
+      title: "Russian Employee Report",
+    },
+    {
       data: taliyaData || [],
       title: "Taliya Employee Report",
     },
@@ -90,16 +98,8 @@ const LastMonthReport = () => {
       title: "Pel Employee Report",
     },
     {
-      data: russianData || [],
-      title: "Russian Employee Report",
-    },
-    {
       data: mathalaData || [],
       title: "Mathala Employee Report",
-    },
-    {
-      data: tableData || [],
-      title: "Table Employee Report",
     },
   ];
 
@@ -113,8 +113,13 @@ const LastMonthReport = () => {
   useEffect(() => {
     let rightside = ["total", "uppad", "jama", "salary"];
     let arr = [];
-      
-    diamondTypeList?.map((ele) => {
+    let list =[]
+    if(diamondTypeList?.length === 0){
+      list = JSON.parse(localStorage.getItem("typeList"))
+    }else{
+      list = diamondTypeList
+    }
+    list?.map((ele) => {
       arr.push(`${ele}pcs`);
     });
     setTotalField(arr.concat(rightside));
@@ -182,7 +187,7 @@ const LastMonthReport = () => {
       },
     ];
     let finalTotalC = [];
-    diamondTypeList?.map((ele) => {
+    list?.map((ele) => {
       finalTotalC.push({
         title: `total${ele} Pcs`,
         dataIndex: `total${ele}pcs`,
@@ -199,7 +204,7 @@ const LastMonthReport = () => {
       });
     });
     setFinalTotalField(finalTotalL.concat(finalTotalC, finalTotalR));
-  }, [diamondTypeList]);
+  }, []);
 
   const TotalCalculate = (data, title) => {
     let obj = {};
@@ -228,20 +233,21 @@ const LastMonthReport = () => {
         }
         if (res?.TaliyaData) {
           setTaliyaData(
-            TotalCalculate(res?.TaliyaData, "Mathala Employee Report")
+            TotalCalculate(res?.TaliyaData, "Taliya Employee Report")
           );
         }
         if (res?.PelData) {
-          setPelData(TotalCalculate(res?.PelData, "Mathala Employee Report"));
+          setPelData(TotalCalculate(res?.PelData, "Pel Employee Report"));
         }
         if (res?.RussianData) {
           setRussianData(
-            TotalCalculate(res?.RussianData, "Mathala Employee Report")
+            TotalCalculate(res?.RussianData, "Russian Employee Report")
           );
         }
         if (res?.TableData) {
+          console.log("🚀 ~ file: LastMonthReport.js:243 ~ .then ~ res?.TableData", res?.TableData)
           setTableData(
-            TotalCalculate(res?.TableData, "Mathala Employee Report")
+            TotalCalculate(res?.TableData, "Table Employee Report")
           );
         }
 
@@ -324,6 +330,7 @@ const LastMonthReport = () => {
               {showTables ? (
                 <>
                   {Tables.map((ele) => {
+                    console.log("🚀 ~ file: LastMonthReport.js:327 ~ {Tables.map ~ ele", ele.title,ele.data)
                     if (ele.data.length !== 1) {
                       return (
                         <>

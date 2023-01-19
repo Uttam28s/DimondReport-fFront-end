@@ -7,6 +7,16 @@ import { DeleteUser, getUsers, LoginConfirm, updateFlag } from "../ApiConn/Api";
 const ButtonforchangeFlag = styled(Button)`
   color: red;
 `;
+
+const Loader = styled.div`
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+`;
+
 const UserlistTable = (props) => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
@@ -48,7 +58,6 @@ const UserlistTable = (props) => {
         setLoader(false);
       })
       .catch((e) => {
-        console.log("🚀 ~ file: UserlistTable.js:51 ~ handleLogIn ~ e", e)
         notification["error"]({
           message: e?.response?.data?.message,
         });
@@ -128,17 +137,9 @@ const UserlistTable = (props) => {
           <Button
             disabled={record.role === "SuperAdmin"}
             type="button"
-            onClick={() => handleLogIn(record.name,record.password)}
+            onClick={() => handleLogIn(record.name, record.password)}
           >
             LogIn
-            {loader ? (
-              <>
-                &nbsp;
-                <Spin size="small" />{" "}
-              </>
-            ) : (
-              ""
-            )}
           </Button>
         );
       },
@@ -146,21 +147,32 @@ const UserlistTable = (props) => {
   ];
 
   useEffect(() => {
+    setLoader(true);
     getUsers().then((res) => {
-      setData(res.data);
+      setLoader(false);
+      setData(res?.data);
     });
   }, [props.reFetch, reload]);
   return (
     <>
-      <div className="semiTitle">Users List</div>
-      <Table
-        style={{ margin: "10px" }}
-        columns={columns}
-        dataSource={data}
-        bordered
-        size="middle"
-        pagination={false}
-      />
+      {loader ? (
+        <Loader>
+          &nbsp;
+          <Spin size="large" />{" "}
+        </Loader>
+      ) : (
+        <>
+          <div className="semiTitle">Users List</div>
+          <Table
+            style={{ margin: "10px" }}
+            columns={columns}
+            dataSource={data}
+            bordered
+            size="middle"
+            pagination={false}
+          />
+        </>
+      )}
     </>
   );
 };

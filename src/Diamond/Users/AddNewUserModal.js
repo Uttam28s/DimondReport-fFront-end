@@ -36,9 +36,15 @@ export default function AddNewUserModal(props) {
         notification["success"]({
           message: "User Created Successfully",
         });
-      });
-      setLoader(false);
-      props.setShow(false);
+        props.setAdd(!props.add)
+        props.setShow(false);
+        setLoader(false);
+      }).catch((res) => {
+        notification["success"]({
+          message: "User Already Exists",
+        });
+        setLoader(false);
+      })
       setError({});
     }
   };
