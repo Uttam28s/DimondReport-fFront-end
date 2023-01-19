@@ -17,6 +17,8 @@ const LastMonthReportTable = (props) => {
   
   const [statusFlag,setStatusFlag] = useState(false) 
   const [id,setId] = useState("")
+  const handleCloseData = () => setStatusFlag(false)
+
   const leftSideColumns = [
     {
       title: "Index",
@@ -191,7 +193,7 @@ const LastMonthReportTable = (props) => {
       <div className="semiTitle">{props.title}</div>
 
 
-      <AlertModal statusFlag={statusFlag} callchangeStatus={callchangeStatus} />
+      <AlertModal statusFlag={statusFlag} handleCloseData={handleCloseData} callchangeStatus={callchangeStatus} />
     
       
       <Table
