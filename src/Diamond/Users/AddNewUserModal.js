@@ -40,7 +40,7 @@ export default function AddNewUserModal(props) {
         props.setShow(false);
         setLoader(false);
       }).catch((res) => {
-        notification["success"]({
+        notification["error"]({
           message: "User Already Exists",
         });
         setLoader(false);
