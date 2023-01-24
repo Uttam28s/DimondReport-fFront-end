@@ -21,7 +21,6 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
-  const { diamondTypeList } = useDiamondTypeHook();
 
   useEffect(() => {
     localStorage.clear();
