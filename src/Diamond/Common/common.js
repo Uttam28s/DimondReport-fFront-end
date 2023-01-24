@@ -28,7 +28,6 @@ const MainTitle = (props) => {
           onClick={() => {
             localStorage.clear();
             navigate("/login");
-            window.location.reload(false);
           }}
         >
           Logout

@@ -30,16 +30,17 @@ export default function Login(props) {
     setLoader(true);
     await LoginConfirm({ password: password, name: name })
       .then((res) => {
-        localStorage.setItem("authLogin", true);
-        localStorage.setItem("role", res?.data?.role);
+        console.log("🚀 ~ file: Login.js:33 ~ .then ~ res", res)
+        // localStorage.setItem("authLogin", true);
+        // localStorage.setItem("role", res?.data?.role);
         localStorage.setItem("AdminId", res?.data?._id);
         notification["success"]({
           message: res?.message,
         });
 
-        props.setAuthLogin(true);
-        let role = localStorage.getItem("role");
-        if (role === "SuperAdmin") {
+        // props.setAuthLogin(true);
+        // let role = localStorage.getItem("role");
+        if (res.data?.role === "SuperAdmin") {
           navigate("/diamond/user");
         } else {
           navigate("/diamond");

@@ -10,20 +10,20 @@ import Users from "./Diamond/Users/users";
 import Login from "./Diamond/Login/Login";
 
 function App() {
-  const [authLogin, setAuthLogin] = useState(false);
-  useEffect(() => {
-    let status = localStorage.getItem("authLogin");
-    setAuthLogin(status || false);
-  }, []);
+  // const [authLogin, setAuthLogin] = useState(false);
+  // useEffect(() => {
+  //   let status = localStorage.getItem("authLogin");
+  //   setAuthLogin(status || false);
+  // }, []);
   return (
     <div>
       <HashRouter>
         <Routes>
-          {authLogin ? (
+          {/* {authLogin ? ( */}
             <>
-              {localStorage.getItem("role") === "SuperAdmin" && (
+              {/* {localStorage.getItem("role") === "SuperAdmin" && ( */}
                 <Route path="*" element={<Navigate to="/diamond/user" />} />
-              )}
+              {/* )} */}
 
               <Route path={"/diamond"} element={<DiamondIndex />} />
               <Route path={"/diamond/bulkUpload"} element={<BulkUpload />} />
@@ -31,16 +31,16 @@ function App() {
               <Route path={"/diamond/monthwisereport"} element={<LastMonthReport />} />
               <Route path={"/diamond/user"} element={<Users />} />
               <Route path={"/qrcode"} element={<Index />} />
-            </>
+            {/* </>
           ) : (
-            <>
+            <> */}
               <Route
                 path={"/login"}
-                element={<Login setAuthLogin={setAuthLogin} />}
+                element={<Login />}
               />
               <Route path="/" element={<Navigate to="/login" />} />
             </>
-          )}
+          {/* )} */}
         </Routes>
       </HashRouter>
     </div>
