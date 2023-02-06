@@ -49,12 +49,13 @@ const DiamondIndex = () => {
         let price = {};
         let arr = [];
         report.map((ele) => {
-          Object.keys(ele.pcs).map((i) => {
-            pcs[i] = ele.pcs[i];
-            ele[i] = ele.pcs[i];
+          Object.keys(ele.pcs[0]).map((i) => {
+            pcs[i] = ele.pcs[0][i];
+            ele[i] = ele.pcs[0][i];
           });
-          Object.keys(ele.price).map((i) => {
-            price[i] = ele.price[i];
+          Object.keys(ele.price[0]).map((i) => {
+            price[i] = ele.price[0][i];
+
           });
           let obj = {
             ...ele,

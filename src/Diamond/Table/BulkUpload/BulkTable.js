@@ -150,6 +150,7 @@ const BulkTable = (props) => {
       ) : (
       <Table
         style={{ margin: "10px" }}
+        scroll={{ x: true }}
         columns={columns}
         dataSource={data}
         bordered

@@ -351,6 +351,7 @@ const LastMonthReport = () => {
                     showHeader={false}
                     dataSource={[total]}
                     bordered
+                    scroll={{ x: true }}
                     size="middle"
                     pagination={false}
                   />

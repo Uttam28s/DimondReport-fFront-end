@@ -92,10 +92,10 @@ const TableEmpRecord = (props) => {
     diamondTypeList.map((type) => {
       data.map((ele) => {
         pcsObj[`${type}pcs`] =
-          pcsObj?.[`${type}pcs`] + Number(ele?.pcs[type] || 0);
+          pcsObj?.[`${type}pcs`] + Number(ele?.pcs[0][type] || 0);
         pricePcs[`${type}Price`] =
           pricePcs?.[`${type}Price`] +
-          (ele?.[type] || 0) * (ele?.price?.[`${type}Price`] || 0);
+          (ele?.pcs[0][type] || 0) * (ele?.price?.[0]?.[`${type}Price`] || 0);
       });
     });
     data.map((ele) => {
@@ -135,11 +135,11 @@ const TableEmpRecord = (props) => {
       let price = {};
       let arr = [];
       report.map((ele) => {
-        Object.keys(ele.pcs).map((i) => {
-          pcs[i] = ele.pcs[i];
-          ele[i] = ele.pcs[i];
+        Object.keys(ele.pcs[0]).map((i) => {
+          pcs[i] = ele.pcs[0][i];
+          ele[i] = ele.pcs[0][i];
         });
-        Object.keys(ele.price).map((i) => {
+        Object.keys(ele.price[0]).map((i) => {
           price[i] = ele.price[i];
         });
         let obj = {
@@ -213,7 +213,7 @@ const TableEmpRecord = (props) => {
         </button>
       </div>
 
-      <Table columns={column} dataSource={data} bordered size="middle" />
+      <Table columns={column} dataSource={data} scroll={{ x: true }} bordered size="middle" />
       <ComponentToPrint
         diamondTypeList={diamondTypeList}
         price={price}

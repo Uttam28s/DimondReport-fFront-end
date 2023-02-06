@@ -199,6 +199,7 @@ const LastMonthReportTable = (props) => {
       <Table
         style={{ margin: "10px" }}
         columns={columns}
+        scroll={{ x: true }}
         dataSource={props.data}
         bordered
         size="middle"

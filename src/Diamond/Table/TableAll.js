@@ -135,7 +135,12 @@ const TableAll = (props) => {
         />
       )}
       <div className="semiTitle">{props.title}</div>
-      <Table columns={column} dataSource={props.data} bordered size="middle" />
+      <Table 
+        columns={column}
+        scroll={{ x: true }}
+        dataSource={props.data} 
+        bordered size="middle" 
+      />
     </>
   );
 };

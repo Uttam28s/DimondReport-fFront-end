@@ -57,7 +57,13 @@ const AdminRecordTable = (props) => {
   return (
     <>
       <div className="semiTitle">Data</div>
-      <Table columns={columns} dataSource={data} bordered size="middle" />
+      <Table 
+        columns={columns} 
+        dataSource={data} 
+        bordered
+        scroll={{ x: true }}
+        size="middle" 
+      />
     </>
   );
 };

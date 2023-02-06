@@ -169,6 +169,7 @@ const UserlistTable = (props) => {
             dataSource={data}
             bordered
             size="middle"
+            scroll={{ x: true }}
             pagination={false}
           />
         </>
