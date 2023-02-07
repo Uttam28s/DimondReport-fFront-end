@@ -126,7 +126,7 @@ const LastMonthReport = () => {
 
     const finalTotalL = [
       {
-        title: "Title",
+        title: "",
         key: "_id",
         width:"5%",
         render: (text, record, index) => {
@@ -134,7 +134,7 @@ const LastMonthReport = () => {
         },
       },
       {
-        title: "Name",
+        title: "Title",
         key: "name",
         width: "10%",
         render: (text, record, index) => {
@@ -259,7 +259,6 @@ const LastMonthReport = () => {
           );
         }
         if (res?.TableData) {
-          console.log("🚀 ~ file: LastMonthReport.js:243 ~ .then ~ res?.TableData", res?.TableData)
           setTableData(
             TotalCalculate(res?.TableData, "Table Employee Report")
           );
@@ -350,6 +349,7 @@ const LastMonthReport = () => {
                           <LastMonthReportTable
                             data={ele.data}
                             title={ele.title}
+                            month={month}
                             diamondTypeList={diamondTypeList}
                             setStatus={() => setStatus(!status)}
                           />
@@ -363,7 +363,7 @@ const LastMonthReport = () => {
                   <Table
                     style={{ margin: "10px" }}
                     columns={finalTotalField}
-                    showHeader={false}
+                    showHeader={true}
                     dataSource={[total]}
                     scroll={{ x: true }}
                     bordered

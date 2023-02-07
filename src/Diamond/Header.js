@@ -72,6 +72,12 @@ const Header = (props) => {
         ) : (
           ""
         )}
+          <SecondaryButton
+          onClick={() => {
+            navigate("./worker");
+          }}
+          title="Worker List"
+        />
       </div>
       <AddEmpModal
         show={show}

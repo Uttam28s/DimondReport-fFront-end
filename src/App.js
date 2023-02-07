@@ -8,6 +8,7 @@ import TableEmpRecord from "./Diamond/Table/TableEmpRecord";
 import LastMonthReport from "./Diamond/Table/LastMonthReport/LastMonthReport";
 import Users from "./Diamond/Users/users";
 import Login from "./Diamond/Login/Login";
+import WorkerListTable from "./Diamond/Worker/WorkerList";
 
 function App() {
   // const [authLogin, setAuthLogin] = useState(false);
@@ -30,6 +31,7 @@ function App() {
               <Route path={"/diamond/empReport"} element={<TableEmpRecord />} />
               <Route path={"/diamond/monthwisereport"} element={<LastMonthReport />} />
               <Route path={"/diamond/user"} element={<Users />} />
+              <Route path={"/diamond/worker"} element={<WorkerListTable />} />
               <Route path={"/qrcode"} element={<Index />} />
             {/* </>
           ) : (

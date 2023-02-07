@@ -126,6 +126,7 @@ const LastMonthReportTable = (props) => {
           <PaidDiv>Paid</PaidDiv>
         ) : (
           <Button
+          disabled={moment().month() > props?.month}
             className="color-red"
             onClick={() => {
               setId(record?.workerid);

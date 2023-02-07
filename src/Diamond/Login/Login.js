@@ -29,7 +29,6 @@ export default function Login(props) {
     setLoader(true);
     await LoginConfirm({ password: password, name: name })
       .then((res) => {
-        console.log("🚀 ~ file: Login.js:33 ~ .then ~ res", res)
         // localStorage.setItem("authLogin", true);
         // localStorage.setItem("role", res?.data?.role);
         localStorage.setItem("AdminId", res?.data?._id);

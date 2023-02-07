@@ -11,6 +11,14 @@ export const addWorkerName = async (name, process) => {
   return response;
 };
 
+export const updateWorker = async (name,process,id) => {
+  const adminId = localStorage.getItem("AdminId");
+  const response = await axios.put(
+    `${apiURL}/settings/updateworker?name=${name}&process=${process}&adminId=${adminId}&id=${id}`
+  );
+  return response;
+}
+
 // For Update the Price
 export const updatePrice = async (data, process, adminId) => {
   const response = await axios.put(
@@ -125,6 +133,11 @@ export const DeleteUser = async (id) => {
   const response = await axios.delete(`${apiURL}/user/deleteuser?&id=${id}`);
   return response.data;
 };
+
+export const DeleteWorker = async (id,adminId) => {
+  const response = await axios.delete(`${apiURL}/settings/deleteWorker?&id=${id}&adminId=${adminId}`);
+  return response.data;
+}
 
 export const LoginConfirm = async (data) => {
   const response = await axios.post(`${apiURL}/user/checkLogin`, data);

@@ -229,9 +229,6 @@ export default function AddDataModal(props) {
                     <div className="row mt-3">
                       <div className="col-6"> {ele} : </div>
                       <div className="col-6">
-                        {
-                          console.log("🚀 ~ file: AddDataModal.js:238 ~  ~ data?.ele", data)
-                        }
                         <Input
                           type="number"
                           value={data?.[ele]}

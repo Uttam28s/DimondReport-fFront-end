@@ -1,10 +1,9 @@
 import { CloseOutlined } from '@mui/icons-material'
 import { Button } from 'antd'
-import React, { useState } from 'react'
+import React from 'react'
 import { Modal } from 'react-bootstrap'
 
 const AlertModal = (props) => {
-    console.log("🚀 ~ file: AlertModal.js:6 ~ AlertModal ~ props", props)
     return (
     <Modal show={props.statusFlag} onHide={props.handleCloseData}>
       <Modal.Header>
