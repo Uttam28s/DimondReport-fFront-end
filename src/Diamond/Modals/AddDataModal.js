@@ -48,19 +48,25 @@ export default function AddDataModal(props) {
       setEditLoader(true);
       getSingleReport(props.id).then((res) => {
         let data = res?.data?.data;
-        console.log(
-          "🚀 ~ file: AddDataModal.js:51 ~ getSingleReport ~ data",
-          data
-        );
+        setData(Object.fromEntries(data.pcs));
+
         list.map((ele) => {
           if (ele?.process === data?.process) {
             setProcess(ele?.process);
-            setDate(data.date.slice(0, 10));
+            setDate(data?.date.slice(0, 10));
           }
+          return ''
         });
         setEditLoader(false);
-        setData(data.pcs);
-        employeechange(data.workerid);
+        // setData(data?.pcs);
+        setEmpName(data?.workerid);
+        if(employeeList){
+          const result = employeeList?.filter((emp) => {
+            return emp?._id === data?.workerid;
+          });
+          setProcess(result[0].process);
+        }
+        
       });
     }
   }, [props]);
@@ -69,6 +75,7 @@ export default function AddDataModal(props) {
     let total = 0;
     Object.keys(data).map((ele) => {
       total = total + Number(data[ele]);
+      return ''
     });
     let params = {
       workerid: empName,
@@ -114,6 +121,7 @@ export default function AddDataModal(props) {
       if (ele.process === params["process"]) {
         id = ele.id;
       }
+      return ''
     });
     setLoader(false);
     props.onDataSubmit(id);
@@ -221,11 +229,19 @@ export default function AddDataModal(props) {
                     <div className="row mt-3">
                       <div className="col-6"> {ele} : </div>
                       <div className="col-6">
+                        {
+                          console.log("🚀 ~ file: AddDataModal.js:238 ~  ~ data?.ele", data)
+                        }
                         <Input
                           type="number"
                           value={data?.[ele]}
-                          onChange={(e) =>
-                            setData({ ...data, [ele]: e.target.value })
+                          onChange={(e) => {
+                            if(e.target.value === ""){
+                              setData({ ...data, [ele]: 0 })
+                            }else{
+                              setData({ ...data, [ele]: e.target.value })
+                            }
+                          }
                           }
                         />
                         <br />
@@ -244,7 +260,7 @@ export default function AddDataModal(props) {
         </Button>
         <Button
           variant="primary"
-          disabled={loader || process === "" || empName === "" || data === ""}
+          disabled={loader || process === "" || empName === "" || typeList.length !== Object.keys(data).length}
           onClick={handleChange}
         >
           {props?.id ? "Edit" : "Add"}{" "}

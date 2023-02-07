@@ -60,7 +60,6 @@ const Container = styled.div`
 
 const FinalTotalField = styled.div`
   color: blue;
-  font-size: 2vh;
 `;
 
 const LastMonthReport = () => {
@@ -121,6 +120,7 @@ const LastMonthReport = () => {
     }
     list?.map((ele) => {
       arr.push(`${ele}pcs`);
+      return ''
     });
     setTotalField(arr.concat(rightside));
 
@@ -128,10 +128,18 @@ const LastMonthReport = () => {
       {
         title: "Title",
         key: "_id",
-        width: "17%",
+        width:"5%",
+        render: (text, record, index) => {
+          ""
+        },
+      },
+      {
+        title: "Name",
+        key: "name",
+        width: "10%",
         render: (text, record, index) => {
           return (
-            <FinalTotalField className="text-center">
+            <FinalTotalField>
               Final Total
             </FinalTotalField>
           );
@@ -144,7 +152,7 @@ const LastMonthReport = () => {
         title: "Salary",
         dataIndex: "total",
         key: "_id",
-        width: "10%",
+        width: "5%",
         render: (text, record, index) => {
           return <FinalTotalField>{record?.totaltotal}</FinalTotalField>;
         },
@@ -153,7 +161,7 @@ const LastMonthReport = () => {
         title: "Uppad",
         dataIndex: "totaluppad",
         key: "_id",
-        width: "10%",
+        width: "5%",
         render: (text, record, index) => {
           return <FinalTotalField>{record?.totaluppad}</FinalTotalField>;
         },
@@ -162,7 +170,7 @@ const LastMonthReport = () => {
         title: "Jama",
         dataIndex: "totaljama",
         key: "_id",
-        width: "10%",
+        width: "5%",
         render: (text, record, index) => {
           return <FinalTotalField>{record?.totaljama}</FinalTotalField>;
         },
@@ -171,28 +179,30 @@ const LastMonthReport = () => {
         title: "Total",
         dataIndex: "salary",
         key: "_id",
-        width: "10%",
+        width: "5%",
         render: (text, record, index) => {
           return <FinalTotalField>{record?.totalsalary}</FinalTotalField>;
         },
       },
       {
-        title: "Total",
+        title: "",
         dataIndex: "salary",
-        key: "_id",
-        width: "10%",
+        width : "10%",
         render: (text, record, index) => {
-          return "";
+          return (
+            ""
+          )
         },
+        
       },
+      
     ];
     let finalTotalC = [];
     list?.map((ele) => {
       finalTotalC.push({
-        title: `total${ele} Pcs`,
+        title: `${ele} Pcs`,
         dataIndex: `total${ele}pcs`,
         key: "_id",
-        width: "10%",
 
         render: (text, record, index) => {
           return (
@@ -202,6 +212,7 @@ const LastMonthReport = () => {
           );
         },
       });
+      return ''
     });
     setFinalTotalField(finalTotalL.concat(finalTotalC, finalTotalR));
   }, []);
@@ -210,11 +221,14 @@ const LastMonthReport = () => {
     let obj = {};
     totalField.map((ele) => {
       obj[ele] = 0;
+      return ''
     });
     totalField.map((key) => {
       data.map((ele) => {
         obj[key] = obj[key] + ele[key];
+        return ''
       });
+      return ''
     });
     obj["workerName"] = "Total";
     data.push(obj);
@@ -330,7 +344,6 @@ const LastMonthReport = () => {
               {showTables ? (
                 <>
                   {Tables.map((ele) => {
-                    console.log("🚀 ~ file: LastMonthReport.js:327 ~ {Tables.map ~ ele", ele.title,ele.data)
                     if (ele.data.length !== 1) {
                       return (
                         <>
@@ -343,15 +356,17 @@ const LastMonthReport = () => {
                         </>
                       );
                     }
+                    return ''
                   })}
                   <br />
+               
                   <Table
                     style={{ margin: "10px" }}
                     columns={finalTotalField}
                     showHeader={false}
                     dataSource={[total]}
-                    bordered
                     scroll={{ x: true }}
+                    bordered
                     size="middle"
                     pagination={false}
                   />

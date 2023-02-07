@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ChangePaidStatus } from "../../ApiConn/Api";
 import AlertModal from "../../Common/AlertModal";
-import { useDiamondTypeHook } from "../../Hooks/getDiamondType";
 
 const PaidDiv = styled.p`
   color: green;
@@ -13,11 +12,9 @@ const PaidDiv = styled.p`
 
 const LastMonthReportTable = (props) => {
   const [columns, setColumns] = useState([]);
-
-  
-  const [statusFlag,setStatusFlag] = useState(false) 
-  const [id,setId] = useState("")
-  const handleCloseData = () => setStatusFlag(false)
+  const [statusFlag, setStatusFlag] = useState(false);
+  const [id, setId] = useState("");
+  const handleCloseData = () => setStatusFlag(false);
 
   const leftSideColumns = [
     {
@@ -25,7 +22,6 @@ const LastMonthReportTable = (props) => {
       dataIndex: "index",
       key: "_id",
       width: "5%",
-      fixed: "center",
       render: (text, record, index) => {
         return <span>{record?.workerName === "Total" ? "" : index + 1}</span>;
       },
@@ -33,8 +29,8 @@ const LastMonthReportTable = (props) => {
     {
       title: "Name",
       dataIndex: "workerName",
+      width: "10%",
       key: "_id",
-      width: "12%",
       render: (text, record, index) => {
         return (
           <span>
@@ -54,7 +50,7 @@ const LastMonthReportTable = (props) => {
       title: "Salary",
       dataIndex: "total",
       key: "_id",
-      width: "10%",
+      width: "5%",
       render: (text, record, index) => {
         return (
           <span>
@@ -71,7 +67,7 @@ const LastMonthReportTable = (props) => {
       title: "Uppad",
       dataIndex: "uppad",
       key: "_id",
-      width: "10%",
+      width: "5%",
       render: (text, record, index) => {
         return (
           <span>
@@ -88,7 +84,7 @@ const LastMonthReportTable = (props) => {
       title: "Jama",
       dataIndex: "jama",
       key: "_id",
-      width: "10%",
+      width: "5%",
       render: (text, record, index) => {
         return (
           <span>
@@ -105,7 +101,7 @@ const LastMonthReportTable = (props) => {
       title: "Total",
       dataIndex: "salary",
       key: "_id",
-      width: "10%",
+      width: "5%",
       render: (text, record, index) => {
         return (
           <span>
@@ -129,12 +125,12 @@ const LastMonthReportTable = (props) => {
         ) : record.status === "paid" ? (
           <PaidDiv>Paid</PaidDiv>
         ) : (
-          <Button className="color-red" onClick={() => { 
-            // handlePaidButton(record?.workerid)
-            setId(record?.workerid)
-            setStatusFlag(true)
-          }
-          }
+          <Button
+            className="color-red"
+            onClick={() => {
+              setId(record?.workerid);
+              setStatusFlag(true);
+            }}
           >
             Pending
           </Button>
@@ -149,7 +145,6 @@ const LastMonthReportTable = (props) => {
         title: `${ele} Pcs`,
         dataIndex: `${ele}pcs`,
         key: "_id",
-        width: "10%",
         render: (text, record, index) => {
           return (
             <span>
@@ -162,23 +157,24 @@ const LastMonthReportTable = (props) => {
           );
         },
       });
+      return "";
     });
     setColumns(leftSideColumns.concat(arr, rightSideColumns));
-  }, [props.diamondTypeList]);
+  }, [props?.diamondTypeList]);
 
   const handlePaidButton = async (workerid) => {
     let params = {
       month: moment().month(),
       workerid: workerid,
     };
-    setStatusFlag(false)
+    setStatusFlag(false);
 
     await ChangePaidStatus(params)
       .then((res) => {
         notification["success"]({
           message: "Status Updated Successfully",
         });
-        props?.setStatus()
+        props?.setStatus();
       })
       .catch((err) => {
         notification["error"]({
@@ -187,15 +183,15 @@ const LastMonthReportTable = (props) => {
       });
   };
 
-  const callchangeStatus = () => handlePaidButton(id)
+  const callchangeStatus = () => handlePaidButton(id);
   return (
     <>
       <div className="semiTitle">{props.title}</div>
-
-
-      <AlertModal statusFlag={statusFlag} handleCloseData={handleCloseData} callchangeStatus={callchangeStatus} />
-    
-      
+      <AlertModal
+        statusFlag={statusFlag}
+        handleCloseData={handleCloseData}
+        callchangeStatus={callchangeStatus}
+      />
       <Table
         style={{ margin: "10px" }}
         columns={columns}

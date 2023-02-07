@@ -1,6 +1,5 @@
-import { Button, message, notification, Table } from "antd";
+import { Button, notification, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { deleteReport } from "../ApiConn/Api";
 import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 import AddDataModal from "../Modals/AddDataModal";
@@ -11,20 +10,21 @@ const columns = [
     dataIndex: "index",
     key: "_id",
     width: 60,
-    fixed: "center",
+    fixed: 'left',
   },
   {
     title: "Date",
     dataIndex: "date",
-    width: 60,
-    fixed: "center",
+    width: 100,
+    fixed: 'left',
+    
   },
   {
     title: "Name",
     dataIndex: "name",
     key: "_id",
     width: 100,
-    fixed: "center",
+    fixed: 'left',
   },
 ];
 
@@ -60,7 +60,7 @@ const TableAll = (props) => {
     {
       title: "Edit",
       key: "_id",
-      width: "10%",
+      width: "8%",
       render: (text, record, index) => {
         return (
           <Button
@@ -78,7 +78,7 @@ const TableAll = (props) => {
     {
       title: "Delete",
       key: "_id",
-      width: "10%",
+      width: "8%",
       render: (text, record, index) => {
         return (
           <Button
@@ -120,6 +120,7 @@ const TableAll = (props) => {
           },
         ],
       });
+      return ''
     });
     setColumns(columns.concat(obj, total));
   }, [diamondTypeList]);
