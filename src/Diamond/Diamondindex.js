@@ -59,7 +59,7 @@ const DiamondIndex = () => {
           });
           let obj = {
             ...ele,
-            ...pcs,
+            pcs,
             ...price,
           };
           arr.push(obj);

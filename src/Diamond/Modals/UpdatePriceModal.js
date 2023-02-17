@@ -2,7 +2,7 @@ import { Button, Input, notification, Select, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { CloseOutlined } from "@mui/icons-material";
 import Modal from "react-bootstrap/Modal";
-import { addType, getPriceList, updatePrice } from "../ApiConn/Api";
+import { addType, deleteType, getPriceList, updatePrice } from "../ApiConn/Api";
 import { list } from "../Common/common";
 
 export default function UpdatePriceModal(props) {
@@ -68,6 +68,21 @@ export default function UpdatePriceModal(props) {
         setLoader(false);
       });
   };
+
+  const deleteTypeHandle = (type,process) => {
+    const adminId = localStorage.getItem("AdminId");
+    deleteType(type,process,adminId).then((res) => {
+      notification["success"]({
+        message: "Deleted Successfylly",
+      });
+      handleProcess(process)
+    }).catch((err) => {
+      notification["error"]({
+        message: "Something Went wrong",
+      });
+    })
+  }
+
   return (
     <Modal show={props.show} onHide={props.handleClosePrice}>
       <Modal.Header>
@@ -165,6 +180,11 @@ export default function UpdatePriceModal(props) {
                          }
                        />
                      </div>
+                     <div className="col-2">
+                     <Button disabled={loader} onClick={() =>{ 
+                        deleteTypeHandle(ele,process)
+                      }}>delete</Button>
+                     </div>
                    </div>
                  </div>
                </>
@@ -175,9 +195,6 @@ export default function UpdatePriceModal(props) {
         }
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClosePrice}>
-          Close
-        </Button>
         <Button
           variant="secondary"
           className={`${show ? "add-type-hide" : "add-type-show"}`}

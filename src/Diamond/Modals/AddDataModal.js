@@ -4,7 +4,6 @@ import { CloseOutlined } from "@mui/icons-material";
 import Modal from "react-bootstrap/Modal";
 import { addReport, getSingleReport, updateReport } from "../ApiConn/Api";
 import moment from "moment";
-import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 import { useWorkerHook } from "../Hooks/getWorker";
 import { list } from "../Common/common";
 export default function AddDataModal(props) {
@@ -16,7 +15,6 @@ export default function AddDataModal(props) {
   const [data, setData] = useState({});
   const [employeeList, setEmployeeList] = useState([]);
   const [typeList, setTypeList] = useState([]);
-  const { diamondTypeList } = useDiamondTypeHook();
   const [editLoader, setEditLoader] = useState(false);
   const { empList } = useWorkerHook();
   useEffect(() => {
@@ -27,12 +25,8 @@ export default function AddDataModal(props) {
   }, [props.show]);
 
   useEffect(() => {
-    if (diamondTypeList?.length === 0) {
-      setTypeList(JSON.parse(localStorage.getItem("typeList")));
-    } else {
-      setTypeList(diamondTypeList);
-    }
-  }, [diamondTypeList]);
+      setTypeList(JSON.parse(localStorage.getItem("activeTypeList")));
+  }, []);
 
   useEffect(() => {
     let list = localStorage.getItem("EmpList");
@@ -257,7 +251,7 @@ export default function AddDataModal(props) {
         </Button>
         <Button
           variant="primary"
-          disabled={loader || process === "" || empName === "" || typeList.length !== Object.keys(data).length}
+          disabled={loader || process === "" || empName === ""  }
           onClick={handleChange}
         >
           {props?.id ? "Edit" : "Add"}{" "}

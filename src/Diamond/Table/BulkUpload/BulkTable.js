@@ -4,6 +4,7 @@ import { addBulkReport, getWorkerListBulk } from "../../ApiConn/Api";
 import { useDiamondTypeHook } from "../../Hooks/getDiamondType";
 import styled from "styled-components";
 import { typeList } from "antd/lib/message";
+import { useNavigate } from "react-router-dom";
 
 
 const Loader = styled.div`
@@ -22,7 +23,7 @@ const BulkTable = (props) => {
   const { diamondTypeList } = useDiamondTypeHook();
   const [tableLoader, setTableLoader] = useState(false)
   const [typeList,setTypeList] = useState([])
-
+  const navigate = useNavigate()
   const onClickhandler = () => {
     var today = new Date();
     data.map((ele, index) => {
@@ -38,6 +39,7 @@ const BulkTable = (props) => {
         notification["success"]({
           message: res?.data?.message,
         });
+        navigate('/diamond')
       })
       .catch(() => {
         notification["error"]({

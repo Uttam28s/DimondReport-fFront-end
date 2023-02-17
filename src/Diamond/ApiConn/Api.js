@@ -1,6 +1,6 @@
 import axios from "axios";
-const apiURL = "https://salary-report-api.onrender.com/api/diamond";
-// const apiURL = "http://localhost:3003/api/diamond";
+// const apiURL = "https://salary-report-api.onrender.com/api/diamond";
+const apiURL = "http://localhost:3003/api/diamond";
 
 // to Add New Worker
 export const addWorkerName = async (name, process) => {
@@ -90,6 +90,13 @@ export const getReport = async (params) => {
   return response;
 };
 
+export const deleteType = async (type,process,adminId) => {
+  const response = await axios.delete(
+    `${apiURL}/user/deletetype?type=${type}&process=${process}&adminId=${adminId}`
+  )
+  return response
+}
+
 export const getEmployeeReport = async (params) => {
   const response = await axios.get(
     `${apiURL}/employee/report?emp_id=${params["emp_id"]}&from=${params["from"]}&to=${params["to"]}`
@@ -164,6 +171,7 @@ export const getDiamondTypeList = async (adminId) => {
     `${apiURL}/user/diamondTypeList?adminId=${adminId}`
   );
   localStorage.setItem("typeList",JSON.stringify(response?.data?.data));
+  localStorage.setItem("activeTypeList",JSON.stringify(response?.data?.activeData));
 
   return response.data;
 };
