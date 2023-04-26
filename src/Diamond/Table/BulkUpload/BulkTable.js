@@ -20,10 +20,10 @@ const BulkTable = (props) => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [columns, setColumns] = useState([]);
-  const { diamondTypeList } = useDiamondTypeHook();
   const [tableLoader, setTableLoader] = useState(false)
   const [typeList,setTypeList] = useState([])
   const navigate = useNavigate()
+  const { activeTypeList } = useDiamondTypeHook()
   const onClickhandler = () => {
     var today = new Date();
     data.map((ele, index) => {
@@ -78,10 +78,10 @@ const BulkTable = (props) => {
       },
     ];
     let list = []
-    if(diamondTypeList?.length === 0){
+    if(activeTypeList?.length === 0){
       list = typeList
     }else{
-      list = diamondTypeList
+      list = activeTypeList
     }
     list?.map((ele) => {
       arr.push({
@@ -115,7 +115,7 @@ const BulkTable = (props) => {
       },
     ];
     setColumns(leftColumns.concat(arr, rightColumns));
-  }, [diamondTypeList, data, typeList]);
+  }, [activeTypeList, data, typeList]);
 
   const onChangeHandler = (name, value, id) => {
     let newname = name;

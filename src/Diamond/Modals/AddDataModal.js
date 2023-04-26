@@ -6,6 +6,7 @@ import { addReport, getSingleReport, updateReport } from "../ApiConn/Api";
 import moment from "moment";
 import { useWorkerHook } from "../Hooks/getWorker";
 import { list } from "../Common/common";
+import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 export default function AddDataModal(props) {
   const { Option } = Select;
   const [empName, setEmpName] = useState("");
@@ -17,6 +18,7 @@ export default function AddDataModal(props) {
   const [typeList, setTypeList] = useState([]);
   const [editLoader, setEditLoader] = useState(false);
   const { empList } = useWorkerHook();
+  const { activeTypeList } = useDiamondTypeHook()
   useEffect(() => {
     setEmpName("");
     setProcess("");
@@ -25,8 +27,8 @@ export default function AddDataModal(props) {
   }, [props.show]);
 
   useEffect(() => {
-      setTypeList(JSON.parse(localStorage.getItem("activeTypeList")));
-  }, []);
+      setTypeList( activeTypeList || JSON.parse(localStorage.getItem("activeTypeList")));
+  }, [activeTypeList]);
 
   useEffect(() => {
     let list = localStorage.getItem("EmpList");
@@ -52,7 +54,6 @@ export default function AddDataModal(props) {
           return ''
         });
         setEditLoader(false);
-        // setData(data?.pcs);
         setEmpName(data?.workerid);
         if(employeeList){
           const result = employeeList?.filter((emp) => {

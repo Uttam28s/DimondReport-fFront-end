@@ -9,43 +9,31 @@ import LastMonthReport from "./Diamond/Table/LastMonthReport/LastMonthReport";
 import Users from "./Diamond/Users/users";
 import Login from "./Diamond/Login/Login";
 import WorkerListTable from "./Diamond/Worker/WorkerList";
+import { PrivateRoute, RestrictedRoutes } from "./helper/ProtectedRoute";
 
 function App() {
-  // const [authLogin, setAuthLogin] = useState(false);
-  // useEffect(() => {
-  //   let status = localStorage.getItem("authLogin");
-  //   setAuthLogin(status || false);
-  // }, []);
   return (
-    <div>
       <HashRouter>
         <Routes>
-          {/* {authLogin ? ( */}
-            <>
-              {/* {localStorage.getItem("role") === "SuperAdmin" && ( */}
-                <Route path="*" element={<Navigate to="/diamond/user" />} />
-              {/* )} */}
-
-              <Route path={"/diamond"} element={<DiamondIndex />} />
-              <Route path={"/diamond/bulkUpload"} element={<BulkUpload />} />
-              <Route path={"/diamond/empReport"} element={<TableEmpRecord />} />
-              <Route path={"/diamond/monthwisereport"} element={<LastMonthReport />} />
-              <Route path={"/diamond/user"} element={<Users />} />
-              <Route path={"/diamond/worker"} element={<WorkerListTable />} />
-              <Route path={"/qrcode"} element={<Index />} />
-            {/* </>
-          ) : (
-            <> */}
-              <Route
-                path={"/login"}
-                element={<Login />}
-              />
-              <Route path="/" element={<Navigate to="/login" />} />
-            </>
-          {/* )} */}
+          <Route path="/" element={<RestrictedRoutes />}>
+            <Route path={"/login"} element={<Login />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+          </Route>
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="*" element={<Navigate to="/diamond/user" />} />
+            <Route path={"/diamond"} element={<DiamondIndex />} />
+            <Route path={"/diamond/bulkUpload"} element={<BulkUpload />} />
+            <Route path={"/diamond/empReport"} element={<TableEmpRecord />} />
+            <Route
+              path={"/diamond/monthwisereport"}
+              element={<LastMonthReport />}
+            />
+            <Route path={"/diamond/user"} element={<Users />} />
+            <Route path={"/diamond/worker"} element={<WorkerListTable />} />
+            <Route path={"/qrcode"} element={<Index />} />
+          </Route>
         </Routes>
       </HashRouter>
-    </div>
   );
 }
 

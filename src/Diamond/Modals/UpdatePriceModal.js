@@ -59,6 +59,7 @@ export default function UpdatePriceModal(props) {
         setType("");
         setShow(true);
         setLoader(false);
+        handleProcess(process)
         
       })
       .catch(() => {

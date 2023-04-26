@@ -1,7 +1,7 @@
 {
   "name": "qr-code",
   "homepage": "./",
-  "version": "1.2.6",
+  "version": "1.2.10",
   "private": true,
   "scripts": {
     "start": "set PORT=3010 && react-scripts start",
