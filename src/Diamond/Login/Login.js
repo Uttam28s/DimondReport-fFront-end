@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { MainTitle } from "../Common/common";
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import styled from "styled-components";
-import { Input, notification, Spin } from "antd";
+import { Input, notification, Spin, Form } from "antd";
 import { LoginConfirm } from "../ApiConn/Api";
 import { useNavigate } from "react-router-dom";
-import { useDiamondTypeHook } from "../Hooks/getDiamondType";
 
-const Loader = styled.div`
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -25px 0 0 -25px;
-`;
 export default function Login(props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +42,8 @@ export default function Login(props) {
   return (
     <div>
       <MainTitle qrhidden ={true} hidden={true} logoutHidden={true} />
-        <Form className="container py-5 h-100" onSubmit={onClickHandle}>
+      <div className="d-flex justify-content-center align-items-center">
+        <Form className="container py-5 h-100" onFinish={onClickHandle}>
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div
@@ -84,7 +74,7 @@ export default function Login(props) {
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
-                    <Button className="btn btn-lg bg-light text-dark border-secondary" disabled={name === "" || password=== ""} type="submit">
+                    <Button className="btn btn-lg bg-light text-dark border-secondary cursor-pointer" disabled={name === "" || password=== ""} type="submit">
                       Login
                       {loader ? (
                         <>
@@ -100,6 +90,7 @@ export default function Login(props) {
             </div>
           </div>
         </Form>
+      </div>
     </div>
   );
 }

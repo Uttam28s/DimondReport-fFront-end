@@ -16,11 +16,10 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path="/" element={<RestrictedRoutes />}>
+            <Route path="/" element={<Login />} />
             <Route path={"/login"} element={<Login />} />
-            <Route path="/" element={<Navigate to="/login" />} />
           </Route>
           <Route path="/" element={<PrivateRoute />}>
-            <Route path="*" element={<Navigate to="/diamond/user" />} />
             <Route path={"/diamond"} element={<DiamondIndex />} />
             <Route path={"/diamond/bulkUpload"} element={<BulkUpload />} />
             <Route path={"/diamond/empReport"} element={<TableEmpRecord />} />

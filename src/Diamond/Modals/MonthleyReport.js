@@ -18,7 +18,6 @@ export default function MonthReport(props) {
   const [loader, setLoader] = useState(false);
   const { empList } = useWorkerHook();
   const [employeeList,setEmployeeList] = useState([])
-
   const handleChange = async () => {
     let params = {
       month: month,
@@ -57,7 +56,12 @@ export default function MonthReport(props) {
       month: month,
       workerid: empName,
     };
-    await ChangePaidStatus(params);
+    await ChangePaidStatus(params).then((res) => {
+      notification["success"]({
+        message: "Status Updated Successfully",
+      });    
+      setStatus('paid')
+    });
   };
 
   const employeechange = (value) => {
@@ -208,7 +212,7 @@ export default function MonthReport(props) {
                       ""
                     ) : (
                       <Button
-                        style={{ margin: "10px" }}
+                        style={{ margin: "5px" }}
                         variant="secondary"
                         onClick={() => handlePaidButton("paid")}
                       >
