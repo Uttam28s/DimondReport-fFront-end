@@ -118,6 +118,12 @@ const DiamondIndex = () => {
       case 5:
         params = { process: "table" };
         break;
+      case 6:
+        params = { process: "4P" };
+        break;
+      case 7:
+        params = { process: "tiching" };
+        break;
       default:
         break;
     }
@@ -182,6 +188,8 @@ const DiamondIndex = () => {
       ) : (
         <div style={{ margin: "10px" }}>
           {tableShow === 5 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow}  data={data} title="Table Data" /> : ""}
+          {tableShow === 6 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow}  data={data} title="4P Data" /> : ""}
+          {tableShow === 7 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow}  data={data} title="Tiching Data" /> : ""}
           {tableShow === 1 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow} data={data} title="Taliya Data" /> : ""}
           {tableShow === 2 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow} data={data} title="Mathala Data" /> : ""}
           {tableShow === 4 ? <TableAll onDataSubmit={onClickHandle} tableShow={tableShow} data={data} title="Russian Data" /> : ""}

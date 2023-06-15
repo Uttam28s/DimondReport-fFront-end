@@ -70,6 +70,8 @@ const LastMonthReport = () => {
   const [mathalaData, setMathalaData] = useState([]);
   const [russianData, setRussianData] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [fPData, setFPData] = useState([]);
+  const [tichingData, setTichingData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [month, setMonth] = useState(moment().month());
   const [total, setTotal] = useState("");
@@ -99,6 +101,14 @@ const LastMonthReport = () => {
     {
       data: mathalaData || [],
       title: "Mathala Employee Report",
+    },
+    {
+      data: fPData || [],
+      title: "4P Employee Report",
+    },
+    {
+      data: tichingData || [],
+      title: "Tiching Employee Report",
     },
   ];
 
@@ -263,12 +273,24 @@ const LastMonthReport = () => {
             TotalCalculate(res?.TableData, "Table Employee Report")
           );
         }
+        if (res?.fPData) {
+          setFPData(
+            TotalCalculate(res?.fPData, "4P Employee Report")
+          );
+        }
+        if (res?.tichingData) {
+          setTichingData(
+            TotalCalculate(res?.tichingData, "Tiching Employee Report")
+          );
+        }
 
         if (
           res.TaliyaData.length === 1 &&
           res.MathalaData.length === 1 &&
           res.PelData.length === 1 &&
           res.RussianData.length === 1 &&
+          res.fPData.length === 1 &&
+          res.tichingData.length === 1 &&
           res.TableData.length === 1
         ) {
           setShowTables(false);

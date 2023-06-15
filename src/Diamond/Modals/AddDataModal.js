@@ -226,6 +226,7 @@ export default function AddDataModal(props) {
                       <div className="col-6">
                         <Input
                           type="number"
+                          defaultValue={0}
                           value={data?.[ele]}
                           onChange={(e) => {
                             if(e.target.value === ""){

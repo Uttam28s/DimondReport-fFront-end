@@ -40,11 +40,13 @@ const MainTitle = (props) => {
 };
 
 const list = [
-  { id: 5, type: "Table", process: "table", title: "Table" },
-  { id: 4, type: "Russian", process: "russian", title: "Russian" },
+  { id: 6, type: "4P", process: "4P", title: "4P" },
+  { id: 7, type: "Tiching", process: "tiching", title: "Tiching" },
   { id: 1, type: "Talyu", process: "taliya", title: "Taliya" },
-  { id: 3, type: "Pel", process: "pel", title: "Pel" },
   { id: 2, type: "Mathalu", process: "mathala", title: "Mathala" },
+  { id: 3, type: "Pel", process: "pel", title: "Pel" },
+  { id: 4, type: "Russian", process: "russian", title: "Russian" },
+  { id: 5, type: "Table", process: "table", title: "Table" },
 ];
 
 const MonthName = {

@@ -60,6 +60,16 @@ const BulkUpload = () => {
       ) : (
         ""
       )}
+      {tableShow === 6 ? (
+        <BulkTable title="4P Bulk Upload" process="4P" />
+      ) : (
+        ""
+      )}
+      {tableShow === 7 ? (
+        <BulkTable title="Tiching Bulk Upload" process="tiching" />
+      ) : (
+        ""
+      )}
     </>
   );
 };
