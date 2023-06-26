@@ -56,7 +56,6 @@ export default function UpdatePriceModal(props) {
         notification["success"]({
           message: "Added Successfully",
         });
-        setType("");
         setShow(true);
         setLoader(false);
         handleProcess(process)
@@ -68,6 +67,7 @@ export default function UpdatePriceModal(props) {
         });
         setLoader(false);
       });
+      setType("");
   };
 
   const deleteTypeHandle = (type,process) => {
@@ -99,6 +99,7 @@ export default function UpdatePriceModal(props) {
             <div className="col-4">
               <Input
                 required
+                value={type}
                 onChange={(e) => setType(e.target.value)}
                 className="w-100-m-3"
               />
@@ -199,7 +200,7 @@ export default function UpdatePriceModal(props) {
         <Button
           variant="secondary"
           className={`${show ? "add-type-hide" : "add-type-show"}`}
-          onClick={() => setShow(true)}
+          onClick={() => {setShow(true); setType('')}}
           disabled={loader}
         >
           Back

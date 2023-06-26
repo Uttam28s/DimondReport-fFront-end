@@ -383,7 +383,7 @@ const LastMonthReport = () => {
                   <br />
                
                   <Table
-                    style={{ margin: "10px" }}
+                    style={{ margin: "10px", paddingBottom: "20px" }}
                     columns={finalTotalField}
                     showHeader={true}
                     dataSource={[total]}

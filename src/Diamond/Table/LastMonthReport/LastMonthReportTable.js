@@ -10,6 +10,26 @@ const PaidDiv = styled.p`
   text-align: left;
 `;
 
+const PrintCell = styled.div`
+  &.margin-left {
+    margin-left: 20px;
+  }
+`;
+
+const Container = styled.div`
+// .fullPage {
+//   height: 100vh;
+// }
+  @media print {
+    ${PrintCell} {
+      display: none;
+    }
+    .fullPage {
+      page-break-after: always;
+    }
+  }
+`;
+
 const LastMonthReportTable = (props) => {
   const [columns, setColumns] = useState([]);
   const [statusFlag, setStatusFlag] = useState(false);
@@ -123,18 +143,22 @@ const LastMonthReportTable = (props) => {
         return record?.workerName === "Total" ? (
           ""
         ) : record.status === "paid" ? (
-          <PaidDiv>Paid</PaidDiv>
+          <PrintCell>
+            <PaidDiv>Paid</PaidDiv>
+          </PrintCell>
         ) : (
-          <Button
-          disabled={moment().month() > props?.month}
-            className="color-red"
-            onClick={() => {
-              setId(record?.workerid);
-              setStatusFlag(true);
-            }}
-          >
-            Pending
-          </Button>
+          <PrintCell>
+            <Button
+              disabled={moment().month() > props?.month}
+              className="color-red"
+              onClick={() => {
+                setId(record?.workerid);
+                setStatusFlag(true);
+              }}
+            >
+              Pending
+            </Button>
+          </PrintCell>
         );
       },
     },
@@ -186,13 +210,19 @@ const LastMonthReportTable = (props) => {
 
   const callchangeStatus = () => handlePaidButton(id);
   return (
-    <>
-      <div className="semiTitle">{props.title}</div>
+    <Container>
+      <div className="semiTitle">
+        {props.title}{" "}
+        {/* <PrintCell className="margin-left">
+          <Button onClick={printItems}>Print</Button>
+        </PrintCell> */}
+      </div>
       <AlertModal
         statusFlag={statusFlag}
         handleCloseData={handleCloseData}
         callchangeStatus={callchangeStatus}
       />
+      <div className="fullPage">
       <Table
         style={{ margin: "10px" }}
         columns={columns}
@@ -202,7 +232,8 @@ const LastMonthReportTable = (props) => {
         size="middle"
         pagination={false}
       />
-    </>
+      </div>
+    </Container>
   );
 };
 

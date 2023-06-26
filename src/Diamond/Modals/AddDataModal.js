@@ -55,8 +55,8 @@ export default function AddDataModal(props) {
         });
         setEditLoader(false);
         setEmpName(data?.workerid);
-        if(employeeList){
-          const result = employeeList?.filter((emp) => {
+        if(empList && empList.length){
+          const result = empList?.filter((emp) => {
             return emp?._id === data?.workerid;
           });
           setProcess(result[0].process);
@@ -64,12 +64,16 @@ export default function AddDataModal(props) {
         
       });
     }
-  }, [props]);
+  }, [props.id]);
 
   const handleChange = async () => {
     let total = 0;
+    let updatePcs = {};
     Object.keys(data).map((ele) => {
       total = total + Number(data[ele]);
+      if(!ele.includes('Price')){
+        updatePcs[ele] = data[ele];
+      }
       return ''
     });
     let params = {
@@ -81,9 +85,8 @@ export default function AddDataModal(props) {
       id: props?.id,
     };
     setLoader(true);
-
     if (props?.id) {
-      await updateReport(params, data)
+      await updateReport(params, updatePcs)
         .then(() => {
           notification["success"]({
             message: "Report Updated Successfully",
