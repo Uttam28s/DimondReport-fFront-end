@@ -17,15 +17,22 @@ const PrintCell = styled.div`
 `;
 
 const Container = styled.div`
-// .fullPage {
-//   height: 100vh;
-// }
+  // .fullPage {
+  //   height: 100vh;
+  // }
   @media print {
     ${PrintCell} {
       display: none;
     }
     .fullPage {
       page-break-after: always;
+    }
+    .ant-table-thead {
+      font-size: x-large;
+    }
+    .font-large {
+      font-weight: 600;
+      font-size: x-large;
     }
   }
 `;
@@ -38,26 +45,30 @@ const LastMonthReportTable = (props) => {
 
   const leftSideColumns = [
     {
-      title: "Index",
+      title: "No",
       dataIndex: "index",
       key: "_id",
-      width: "5%",
+      // width: "5%",
       render: (text, record, index) => {
-        return <span>{record?.workerName === "Total" ? "" : index + 1}</span>;
+        return (
+          <span className="font-large">
+            {record?.workerName === "Total" ? "" : index + 1}
+          </span>
+        );
       },
     },
     {
       title: "Name",
       dataIndex: "workerName",
-      width: "10%",
+      width: "20%",
       key: "_id",
       render: (text, record, index) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red">{record?.workerName}</b>
+              <b className="color-red font-large">{record?.workerName}</b>
             ) : (
-              record?.workerName
+              <p className="font-large">{record?.workerName}</p>
             )}
           </span>
         );
@@ -75,9 +86,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red">{record?.total}</b>
+              <b className="color-red font-large">{record?.total}</b>
             ) : (
-              record?.total
+              <p className="font-large">{record?.total}</p>
             )}
           </span>
         );
@@ -92,9 +103,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red">{record?.uppad}</b>
+              <b className="color-red font-large">{record?.uppad}</b>
             ) : (
-              record?.uppad
+              <p className="font-large">{record?.uppad}</p>
             )}
           </span>
         );
@@ -109,9 +120,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red">{record?.jama}</b>
+              <b className="color-red font-large">{record?.jama}</b>
             ) : (
-              record?.jama
+              <p className="font-large">{record?.jama}</p>
             )}
           </span>
         );
@@ -126,9 +137,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red">{record?.salary}</b>
+              <b className="color-red font-large">{record?.salary}</b>
             ) : (
-              record?.salary
+              <p className="font-large">{record?.salary}</p>
             )}
           </span>
         );
@@ -174,9 +185,9 @@ const LastMonthReportTable = (props) => {
           return (
             <span>
               {record?.workerName === "Total" ? (
-                <b className="color-red">{record?.[`${ele}pcs`]}</b>
+                <b className="color-red font-large">{record?.[`${ele}pcs`]}</b>
               ) : (
-                record?.[`${ele}pcs`]
+                <p className="font-large">{record?.[`${ele}pcs`]}</p>
               )}
             </span>
           );
@@ -212,7 +223,7 @@ const LastMonthReportTable = (props) => {
   return (
     <Container>
       <div className="semiTitle">
-        {props.title}{" "}
+        <p className="font-large">{props.title} </p>
         {/* <PrintCell className="margin-left">
           <Button onClick={printItems}>Print</Button>
         </PrintCell> */}
@@ -223,15 +234,15 @@ const LastMonthReportTable = (props) => {
         callchangeStatus={callchangeStatus}
       />
       <div className="fullPage">
-      <Table
-        style={{ margin: "10px" }}
-        columns={columns}
-        scroll={{ x: true }}
-        dataSource={props.data}
-        bordered
-        size="middle"
-        pagination={false}
-      />
+        <Table
+          style={{ margin: "10px" }}
+          columns={columns}
+          scroll={{ x: true }}
+          dataSource={props.data}
+          bordered
+          size="small"
+          pagination={false}
+        />
       </div>
     </Container>
   );

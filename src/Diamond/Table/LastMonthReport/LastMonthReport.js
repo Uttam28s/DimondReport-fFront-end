@@ -60,6 +60,7 @@ const Container = styled.div`
 
 const FinalTotalField = styled.div`
   color: blue;
+  font-size : x-large;
 `;
 
 const LastMonthReport = () => {
