@@ -1,7 +1,7 @@
 import axios from "axios";
 // const apiURL = "https://dimond-report-be.vercel.app/api/diamond";
-// const apiURL = "https://salary-report-api.onrender.com/api/diamond";
-const apiURL = "http://localhost:3003/api/diamond";
+const apiURL = "https://salary-report-api.onrender.com/api/diamond";
+// const apiURL = "http://localhost:3003/api/diamond";
 
 export const updateJangad = async (id,data) => {
   const response = await axios.put(`${apiURL}/jangad?id=${id}`, { data })
