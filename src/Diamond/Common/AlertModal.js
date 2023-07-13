@@ -7,7 +7,7 @@ const AlertModal = (props) => {
     return (
     <Modal show={props.statusFlag} onHide={props.handleCloseData}>
       <Modal.Header>
-        <h5> Are You Sure want To change the Status</h5>
+        <h5> change the Status to <span style={{ color : "green", fontWeight : "bold"}}>Paid</span> </h5>
         <div onClick={props.handleCloseData}>
           <CloseOutlined />
         </div>

@@ -8,10 +8,10 @@ import MonthReport from "./Modals/MonthleyReport";
 import { useNavigate } from "react-router-dom";
 // import AddType from "./Modals/AddType";
 import { SecondaryButton } from "./Common/button";
+import { Dropdown, Space } from "antd";
 
 const Header = (props) => {
   let navigate = useNavigate();
-
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -37,47 +37,158 @@ const Header = (props) => {
   // const handleCloseAddType = () => setShowType(false);
 
   const handleBulkUpload = () => {
-    navigate("./bulkUpload");
+    navigate("/diamond/bulkUpload");
   };
+
+  const items = [
+    {
+      key: "1",
+      label: <div className="dropdown_subtitle" onClick={() => handleShow()}>Add Worker</div>,
+    },
+    {
+      key: "2",
+      label: (
+        <div
+        className="dropdown_subtitle"
+          onClick={() =>
+            localStorage.getItem("role") === "SuperAdmin"
+              ? navigate("/diamond/user")
+              : navigate("/diamond/worker")
+          }
+        >
+          WorkerList
+        </div>
+      ),
+    },
+  ];
+
+  const items1 = [
+    {
+      key: "1",
+      label: (
+        <div
+          className="border-0 dropdown_subtitle"
+          onClick={() => navigate("/diamond/empReport")}
+        >
+          Employee Report
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <div
+          className="border-0 dropdown_subtitle"
+          onClick={() => navigate("/diamond/monthwisereport")}
+        >
+          Month Report
+        </div>
+      ),
+    },
+  ];
+
+  const items2 = [
+    {
+      key: "1",
+      label: (
+        <div className="border-0 dropdown_subtitle" onClick={() => handleShowUppad()}>
+          Add Uppad
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <div
+          className="border-0 dropdown_subtitle"
+          onClick={() => navigate("/diamond/uppadDetails")}
+        >
+          Uppad Details
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <div className="border-0 dropdown_subtitle" onClick={() => handleShowPrice()}>
+          Update Price
+        </div>
+      ),
+    },
+  ];
+
+  const items3 = [
+    {
+      key: "1",
+      label: (
+        <div
+          className="border-0 dropdown_subtitle"
+          onClick={() => navigate("/diamond/jangadList")}
+        >
+          Jangad List
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <div className="border-0 dropdown_subtitle" onClick={() => navigate("/diamond/jangad")}>
+          Add Jangad
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div>
-      <div className=" p-2 bd-highlight" style={{ textAlign: "end" }}>
-        {/* <SecondaryButton onClick={handleAddType} title="Add Type" /> */}
-        <SecondaryButton onClick={handleShowPrice} title="Update Price" />
+      <div className="  bd-highlight d-flex align-items-center" style={{ textAlign: "end" }}>
+        <SecondaryButton onClick={() => navigate('/diamond')} title="Work Data" />
         <SecondaryButton onClick={handleShowAdd} title="Add Data" />
         <SecondaryButton onClick={handleBulkUpload} title="Bulk Upload" />
-        <SecondaryButton onClick={handleShowUppad} title="Uppad" />
-        <SecondaryButton onClick={handleMonthReport} title="Month Report" />
-        <SecondaryButton
-          onClick={() => {
-            navigate("./empReport");
-          }}
-          title="Emp. Record"
-        />
-        <SecondaryButton
-          onClick={() => {
-            navigate("./monthwisereport");
-          }}
-          title="Month's Total"
-        />
-        <SecondaryButton onClick={handleShow} title="Add Worker" />
-        {localStorage.getItem("role") === "SuperAdmin" ? (
-          <SecondaryButton
-            onClick={() => {
-              navigate("./user");
-            }}
-            title="Users"
-          />
-        ) : (
-          ""
-        )}
-          <SecondaryButton
-          onClick={() => {
-            navigate("./worker");
-          }}
-          title="Worker List"
-        />
+        <div className="mx-3">
+          <Space direction="horizontal">
+            <Space wrap>
+              <Dropdown
+                menu={{
+                  items,
+                }}
+                placement="bottom"
+              >
+                <div   className={`dropdown_button`}>Worker</div>
+              </Dropdown>
+            </Space>
+            <Space wrap>
+              <Dropdown
+                menu={{
+                  items: items1,
+                }}
+                placement="bottom"
+              >
+                <div   className={`dropdown_button`}>Report</div>
+              </Dropdown>
+            </Space>
+            <Space wrap>
+              <Dropdown
+                menu={{
+                  items: items3,
+                }}
+                placement="bottom"
+              >
+                <div   className={`dropdown_button`}>Jangad</div>
+              </Dropdown>
+            </Space>
+            <Space wrap>
+              <Dropdown
+                menu={{
+                  items: items2,
+                }}
+                placement="bottom"
+              >
+                <div   className={`dropdown_button`}>Salary</div>
+              </Dropdown>
+            </Space>
+          </Space>
+        </div>
       </div>
       <AddEmpModal
         show={show}
@@ -113,13 +224,6 @@ const Header = (props) => {
           handleCloseMonthReport={handleCloseMonthReport}
         />
       )}
-      {/* {showType && (
-        <AddType
-          show={showType}
-          onHide={() => setShowType(false)}
-          handleCloseAddType={handleCloseAddType}
-        />
-      )} */}
     </div>
   );
 };

@@ -135,3 +135,29 @@ body {
     /* background: #ca090900; */
 }
 
+.ant-spin-dot-item .new_spin {
+    background-color: #EC268F !important;
+  }
+
+.dropdown_button {
+    cursor : pointer;
+    padding : 3px 18px;
+    color : white;
+
+}
+
+.dropdown_subtitle {
+    padding : 3px 10px
+}
+
+.dropdown_subtitle:hover {
+    background-color: grey;
+    color : white;
+    padding : 3px 10px
+}
+
+.dropdown_button:hover {
+    cursor : pointer;
+    background-color: #5a6268;     
+
+}

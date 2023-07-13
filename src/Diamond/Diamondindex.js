@@ -140,7 +140,7 @@ const DiamondIndex = () => {
 
   return (
     <>
-      <MainTitle hidden={true} />
+      <MainTitle hidden={true} onClickHandle={onClickHandle}/>
       <div style={{ margin: "10px", textAlign: "end" }}>
         <ul style={{ display: "inline-block" }} className="navbar-nav">
           {list.map((ele, index) => {
@@ -179,7 +179,7 @@ const DiamondIndex = () => {
           }}
         />
       </div>
-      <Header onDataSubmit={onClickHandle} id={id}/>
+      {/* <Header onDataSubmit={onClickHandle} id={id}/> */}
       {loader ? (
         <Loader>
           {" "}

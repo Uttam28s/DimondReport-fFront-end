@@ -56,12 +56,12 @@ export default function MonthReport(props) {
       month: month,
       workerid: empName,
     };
-    await ChangePaidStatus(params).then((res) => {
-      notification["success"]({
-        message: "Status Updated Successfully",
-      });    
-      setStatus('paid')
-    });
+    // await ChangePaidStatus(params).then((res) => {
+    //   notification["success"]({
+    //     message: "Status Updated Successfully",
+    //   });    
+    //   setStatus('paid')
+    // });
   };
 
   const employeechange = (value) => {

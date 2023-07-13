@@ -1,7 +1,27 @@
 import axios from "axios";
-const apiURL = "https://dimond-report-be.vercel.app/api/diamond";
+// const apiURL = "https://dimond-report-be.vercel.app/api/diamond";
 // const apiURL = "https://salary-report-api.onrender.com/api/diamond";
-// const apiURL = "http://localhost:3003/api/diamond";
+const apiURL = "http://localhost:3003/api/diamond";
+
+export const updateJangad = async (id,data) => {
+  const response = await axios.put(`${apiURL}/jangad?id=${id}`, { data })
+  return response.data;
+}
+
+export const addJangad = async (data) => {
+  const response = await axios.post(`${apiURL}/jangad`, { data });
+  return response.data;
+}
+
+export const removeJangad = async (id) => {
+  const response = await axios.delete(`${apiURL}/jangad?id=${id}`);
+  return response.data;
+}
+
+export const getJangadList = async () => {
+  const response = await axios.get(`${apiURL}/jangad`);
+  return response.data;
+}
 
 // to Add New Worker
 export const addWorkerName = async (name, process) => {
@@ -75,10 +95,17 @@ export const getWorkerListBulk = async (process) => {
 };
 
 // Add Uppad
-export const addUppad = async (workerid, upad, month) => {
-  month = month.slice(5, 7);
+export const addUppad = async (workerid, upad, date) => {
+  let month = date.slice(5, 7);
   const response = await axios.post(
-    `${apiURL}/salary/upad?workerid=${workerid}&upad=${upad}&month=${month}`
+    `${apiURL}/salary/upad?workerid=${workerid}&upad=${upad}&month=${month}&date=${date}`
+  );
+  return response;
+};
+
+export const getUppadDetails = async (params) => {
+  const response = await axios.get(
+    `${apiURL}/salary/upad?startDate=${params["startDate"]}&endDate=${params["endDate"]}&workerId=${params["workerId"]}`
   );
   return response;
 };
@@ -114,7 +141,7 @@ export const GetMonthReport = async (params) => {
 
 export const ChangePaidStatus = async (params) => {
   const response = await axios.put(
-    `${apiURL}/salary/paidStatus?&workerid=${params["workerid"]}&month=${params["month"]}`
+    `${apiURL}/salary/paidStatus?&workerid=${params["workerid"]}&month=${params["month"]}&type=${params['type']}`
   );
   return response;
 };

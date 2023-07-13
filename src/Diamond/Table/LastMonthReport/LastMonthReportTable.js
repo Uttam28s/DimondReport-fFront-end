@@ -86,9 +86,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red font-large">{record?.total}</b>
+              <b className="color-red font-large">{record?.total?.toFixed(2)}</b>
             ) : (
-              <p className="font-large">{record?.total}</p>
+              <p className="font-large">{record?.total?.toFixed(2)}</p>
             )}
           </span>
         );
@@ -103,9 +103,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red font-large">{record?.uppad}</b>
+              <b className="color-red font-large">{record?.uppad?.toFixed(2)}</b>
             ) : (
-              <p className="font-large">{record?.uppad}</p>
+              <p className="font-large">{record?.uppad?.toFixed(2)}</p>
             )}
           </span>
         );
@@ -120,9 +120,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red font-large">{record?.jama}</b>
+              <b className="color-red font-large">{record?.jama?.toFixed(2) }</b>
             ) : (
-              <p className="font-large">{record?.jama}</p>
+              <p className="font-large">{record?.jama?.toFixed(2)}</p>
             )}
           </span>
         );
@@ -137,9 +137,9 @@ const LastMonthReportTable = (props) => {
         return (
           <span>
             {record?.workerName === "Total" ? (
-              <b className="color-red font-large">{record?.salary}</b>
+              <b className="color-red font-large">{record?.salary?.toFixed(2)}</b>
             ) : (
-              <p className="font-large">{record?.salary}</p>
+              <p className="font-large">{record?.salary?.toFixed(2)}</p>
             )}
           </span>
         );
@@ -160,7 +160,7 @@ const LastMonthReportTable = (props) => {
         ) : (
           <PrintCell>
             <Button
-              disabled={moment().month() > props?.month}
+              // disabled={moment().month() > props?.month}
               className="color-red"
               onClick={() => {
                 setId(record?.workerid);
@@ -200,9 +200,12 @@ const LastMonthReportTable = (props) => {
 
   const handlePaidButton = async (workerid) => {
     let params = {
-      month: moment().month(),
+      month: props?.month,
       workerid: workerid,
     };
+    if(params.month === moment().month()){
+      params['type'] = true
+    }
     setStatusFlag(false);
 
     await ChangePaidStatus(params)
