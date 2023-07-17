@@ -14,7 +14,7 @@ const Users = () => {
   const [add,setAdd] = useState(false);
   return (
     <>
-      <MainTitle hidden={true} />
+      <MainTitle hidden={true} hiddenMenu={true} />
       <AddNewUserBtnDiv>
         <Button onClick={() => setShow(true)}>Add New User</Button>
       </AddNewUserBtnDiv>

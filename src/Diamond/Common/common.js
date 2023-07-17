@@ -47,9 +47,11 @@ const MainTitle = (props) => {
             ""
           )}
         </div>
+        {!props?.hiddenMenu && (
         <div>
           <Header onDataSubmit={props?.onClickHandle} id={props?.id} />
         </div>
+        )}
       </div>
     </nav>
   );

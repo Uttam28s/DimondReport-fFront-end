@@ -41,7 +41,7 @@ export default function Login(props) {
 
   return (
     <div>
-      <MainTitle qrhidden ={true} hidden={true} logoutHidden={true} />
+      <MainTitle qrhidden ={true} hidden={true} logoutHidden={true} hiddenMenu={true} />
       <div className="d-flex justify-content-center align-items-center">
         <Form className="container py-5 h-100" onFinish={onClickHandle}>
           <div className="row d-flex justify-content-center align-items-center h-100">
